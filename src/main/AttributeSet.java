@@ -6,16 +6,30 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class FileSet {
+/**
+ * Receives the file and decomposes them line by line, sending it to the correct place.
+ * It can receive a train set or a test set.
+ * @author 
+ *
+ */
+public class AttributeSet {
 	
-	public FileSet(File file) throws FileNotFoundException {
+	
+	/**
+	 * 
+	 * @param file
+	 * 			CSV type of file formated with a heading containing the attributes of the random variables (X1, ... , Xn, C) and bellow the elements
+	 * @throws FileNotFoundException
+	 */
+	public AttributeSet(File file) {
 
         BufferedReader br = null;   
         String line = "";
         String cvsSplitBy = ",";
         
-        br = new BufferedReader(new FileReader(file));
+        
         try {
+        	br = new BufferedReader(new FileReader(file));
         	boolean fileHeading = false;
             while ((line = br.readLine()) != null) {
             	if(!fileHeading) { //it hasn't reached the heading with the name of the variables
