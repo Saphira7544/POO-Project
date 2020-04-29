@@ -15,8 +15,8 @@ public abstract class ScoreModel {
 	 */
 	public abstract double calc_weight(Edge edge, Graph graph);
 
-	public static int log2(int x)
-	{
+	public static int log2(int x){
 	    return (int) (Math.log(x) / Math.log(2));
 	}
+
 }

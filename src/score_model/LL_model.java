@@ -1,10 +1,11 @@
 package score_model;
 
 /**
- * Calculate weight of the edge between Xi and Xj
+ * Calculate weight of the edge using the Log-Likelihood (LL) Method
  */
-public abstract class LL_model extends ScoreModel{
+public class LL_model extends ScoreModel{
 	
+	@Override
 	public double calc_weight() {
 		
 		double weight = 0;

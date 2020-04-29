@@ -19,7 +19,6 @@ public class AttributeSet {
 	 * 
 	 * @param file
 	 * 			CSV type of file formated with a heading containing the attributes of the random variables (X1, ... , Xn, C) and bellow the elements
-	 * @throws FileNotFoundException
 	 */
 	public AttributeSet(File file) {
 

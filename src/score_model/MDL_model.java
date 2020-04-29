@@ -13,7 +13,7 @@ public class MDL_model extends LL_model{
 		int s = 0;	// HERE			//
 		int N = 0;	// 				//
 		
-		weight = LL_weight - (s*(ri-1)*(qi-1)) / 2 * Math.log(N);
+		weight = LL_weight - (s*(ri-1)*(qi-1)) / 2 * Math.log(N); // log refers to base e, same as ln
 		
 		return weight;
 	}

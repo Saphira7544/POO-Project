@@ -7,7 +7,8 @@ public class TrainSet extends AttributeSet{
 
 	public TrainSet(File file) throws FileNotFoundException {
 		super(file);
-		// TODO Auto-generated constructor stub
+		
+		// CREATE A NEW GRAPH FOR EACH Xi
 	}
 
 }
