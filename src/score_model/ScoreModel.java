@@ -1,5 +1,6 @@
 package score_model;
 
+
 /**
  * Abstract class, it's incomplete and general and therefore needs to be extended by actual score models
  * @author 
@@ -15,8 +16,8 @@ public abstract class ScoreModel {
 	 */
 	public abstract double calc_weight(Edge edge, Graph graph);
 
-	public static int log2(int x){
-	    return (int) (Math.log(x) / Math.log(2));
+	
+	public static double log2(double x){
+	    return (Math.log(x) / Math.log(2));
 	}
-
 }

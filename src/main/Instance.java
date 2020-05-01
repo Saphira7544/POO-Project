@@ -1,0 +1,45 @@
+package main;
+
+public class Instance {
+	
+	int [] values; 		// Line of values from 0 to ri-1
+	int class_variable;	// Class variable
+	
+	/**
+	 * Receives a String[] containing the elements of a line from the file and converts
+	 * each element to an integer so it can be used 
+	 * 
+	 * @param elements : Line from the file divided by commas
+	 */
+	public Instance(String[] elements) {
+		
+		int size = elements.length;
+	    values = new int [ size -1 ];
+	    
+	    for(int i = 0; i < size - 1 ; i++) {
+	    	
+	         values[i] = Integer.parseInt(elements[i]);
+	    }
+	    
+	    class_variable = Integer.parseInt(elements[size]);
+	}
+	
+	/**
+	 * Gets the value of the Class Variable for this line
+	 * 
+	 * @return class variable from line k
+	 */
+	public  int getClassVariable() {
+		
+		return class_variable;
+	}
+	
+	/**
+	 * Gets the value x_ik for this line
+	 * @param i : feature from the line
+	 * @return	returns the value of the corresponding feature from this line
+	 */
+	public int getValue(int i) {
+		return values[i];
+	}
+}
