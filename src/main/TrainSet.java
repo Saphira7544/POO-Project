@@ -11,4 +11,6 @@ public class TrainSet extends AttributeSet{
 		// CREATE A NEW GRAPH FOR EACH Xi
 	}
 
+	
+	
 }
