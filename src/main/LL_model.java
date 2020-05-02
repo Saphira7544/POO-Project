@@ -1,5 +1,4 @@
-package score_model;
-
+package main;
 
 /**
  * Calculate weight of the edge using the Log-Likelihood (LL) Method

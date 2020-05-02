@@ -11,17 +11,18 @@ public class Instance {
 	 * 
 	 * @param elements : Line from the file divided by commas
 	 */
-	public Instance(String[] elements) {
+	public Instance(String line) {
 		
+		String[] elements = line.split("\\s*,\\s*"); 
 		int size = elements.length;
-	    values = new int [ size -1 ];
+	    values = new int [ size - 1 ];
 	    
 	    for(int i = 0; i < size - 1 ; i++) {
 	    	
-	         values[i] = Integer.parseInt(elements[i]);
+	         values[i] = Integer.parseInt(elements[i]);   
 	    }
 	    
-	    class_variable = Integer.parseInt(elements[size]);
+	    class_variable = Integer.parseInt(elements[size-1]); //last position
 	}
 	
 	/**
@@ -42,4 +43,13 @@ public class Instance {
 	public int getValue(int i) {
 		return values[i];
 	}
+	
+	/**
+	 * Gets 
+	 * @return
+	 */
+	public int[] getArray(){
+		return values;
+	}
+
 }

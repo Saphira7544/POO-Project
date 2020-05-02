@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,15 +16,11 @@ import java.util.List;
  */
 public class FileSet {
 	
-	List<Instance> Instances;
+	List<Instance> Instances = new ArrayList<>();
 	int nFeatures = 0;
-	/**
-	 * Function to get
-	 * @return entire list of instances
-	 */
-	public List<Instance> getInstances() {
-		return Instances;
-	}
+	
+	
+	
 	/**
 	 * 
 	 * @param file
@@ -58,9 +55,11 @@ public class FileSet {
                 // Has found the heading and now it's reading the values
             	if(!line.equals("")) {//line has something written
             		
-            		String[] elements = line.split(cvsSplitBy);            		
-            		addInstance(new Instance(elements));
-            		           		
+            		System.out.println(line);
+            		//addInstance(new Instance(elements));
+            		Instance Instance = new Instance(line);
+            		
+            		Instances.add(Instance);          		
             	}	
             	else // in case the line with the follows isn't right after the headline
             		continue;
@@ -82,6 +81,14 @@ public class FileSet {
 	}
 	
 	/**
+	 * Function to get
+	 * @return entire list of instances
+	 */
+	public List<Instance> getInstances() {
+		return Instances;
+	}
+	
+	/**
 	 * Adds a list to the Linked List Instance with a line of integers corresponding to the
 	 * values for each instance of the file
 	 * 
@@ -96,7 +103,7 @@ public class FileSet {
 	 * 
 	 * @return number of features n
 	 */
-	public int getNumbFeatures() {
+	public int get_n() {
 		return nFeatures;
 	}
 	
@@ -105,7 +112,10 @@ public class FileSet {
 	 * 
 	 * @return size of the Linked List created with all the instances
 	 */
-	public int get_ri() {
+	public int get_N() {
 		return Instances.size();
 	}
+	
+	
+	
 }
