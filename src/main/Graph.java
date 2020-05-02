@@ -3,19 +3,50 @@ package main;
 import java.util.Map;
 import java.util.Objects;
 import java.util.List;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 
 public class Graph<T> {
-	private Map <Node, List<Edge>> DAG;
-	private T trainSet;
+	private final Map <Node<T>, List<Node<T>>> DAG;
+	private final List<Edge<T>> allEdges;
 	
-	public Graph(T trainSet) {
-		DAG = new HashMap<Node, List<Edge>>();
-		this.trainSet = trainSet;
+	public Graph(LinkedList<Edge<T>> allEdges) {
+		DAG = new HashMap<Node<T>, List<Node<T>>>();
+		
+		this.allEdges = allEdges;
+		
+		for(Edge<T> E: allEdges) {
+			//check if parent is equal to child
+			if(!E.getParent().equals(E.getChild())) {
+				//created the list of Nodes that define the connected nodes
+				DAG.putIfAbsent(E.getParent(), new ArrayList<Node<T>>());
+
+				//check if already on the graph
+				if(!DAG.get(E.getParent()).contains(E.getChild())) {
+				
+					//add the child to the list of connections after Linked List is created
+					DAG.get(E.getParent()).add(E.getChild());
+			
+				}
+			}
+		}
+	}
+	
+	public void applyKruskal() {
+		
 	}
 
+	//getters
+	public Map<Node<T>, List<Node<T>>> getDAG() {
+		return DAG;
+	}
+
+	public List<Edge<T>> getAllEdges() {
+		return allEdges;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		//same position in memory
@@ -37,15 +68,15 @@ public class Graph<T> {
 	}
 	
 	@Override
-    public String toString() {
-        return DAG.toString();
-    }
-
-	public Map<Node, List<Edge>> getDAG() {
-		return DAG;
+	public String toString() {
+		String listS = new String("Graph \n");
+			
+		for (Node<T> N: DAG.keySet()){
+			listS += N.toString() + "=" + DAG.get(N).toString() + "\n";
+		} 
+		
+		return listS;
 	}
 
-	public void setDAG(Map<Node, List<Edge>> dAG) {
-		DAG = dAG;
-	}
+	
 }

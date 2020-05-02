@@ -1,27 +1,38 @@
 package main;
 
-import java.util.*;
+import java.util.Objects;
 
-public class Node{
-	//index of feature from X1,..,Xn with n = total number of features
-	private int i;
-	//number of value Xi can take
-	private int ri;
+public class Node<T>{
 	
-	
-	//linked list of edges connected to a certain Node
-	private LinkedList<Edge> connections = new LinkedList<Edge>();
+	private final T data;	
 
-	public Node(int i, int ri){
-		this.i = i;
-		this.ri = ri;
+	public Node(T data){
+		this.data = data;
 	}
-	//getter function
-	public void getEdge(Edge newEdge) {
 
+	public T getData() {
+		return data;
 	}
-	//setter function
-	public void setEdge() {
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(data);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Node<?> other = (Node<?>) obj;
+		return Objects.equals(data, other.data);
+	}
 		
+	@Override
+	public String toString() {
+		return "Node [data=" + data + "]";
 	}
 }
