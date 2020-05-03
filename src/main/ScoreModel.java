@@ -1,6 +1,9 @@
 package main;
 
 
+import main.Edge;
+import main.Graph;
+
 /**
  * Abstract class, it's incomplete and general and therefore needs to be extended by actual score models
  * @author 
