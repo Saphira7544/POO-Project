@@ -45,8 +45,8 @@ public class Instance {
 	}
 	
 	/**
-	 * Gets 
-	 * @return
+	 * Gets full line from the input file
+	 * @return array with values from a line in the input file
 	 */
 	public int[] getArray(){
 		return values;

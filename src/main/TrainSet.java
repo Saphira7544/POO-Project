@@ -10,7 +10,7 @@ public class TrainSet extends FileSet{
 	public TrainSet(File file) throws FileNotFoundException {
 		
 		super(file);
-
+		
 		// Checks the max value of each node
 		for(int i = 0; i < Instances.size() - 1 ; i++) {
 			for(int j = 0; j < nFeatures - 1 ; j++) {
@@ -18,7 +18,12 @@ public class TrainSet extends FileSet{
 					ranges[j] = Instances.get(i).getValue(j);
 				}
 			}
-		}	
+		}
+		
+		for(int a = 0; a < nFeatures - 1 ; a++) {
+			
+		}
+		
 	}
 	
 	/**
