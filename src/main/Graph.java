@@ -5,46 +5,27 @@ import java.util.Objects;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 
-public class Graph<T> {
-	private final Map <Node<T>, List<Node<T>>> DAG;
-	private final List<Edge<T>> allEdges;
+public class Graph {
+	private final Map <Node, List<Edge>> DAG;
 	
-	public Graph(LinkedList<Edge<T>> allEdges) {
-		DAG = new HashMap<Node<T>, List<Node<T>>>();
-		
-		this.allEdges = allEdges;
-		
-		for(Edge<T> E: allEdges) {
-			//check if parent is equal to child
-			if(!E.getParent().equals(E.getChild())) {
-				//created the list of Nodes that define the connected nodes
-				DAG.putIfAbsent(E.getParent(), new ArrayList<Node<T>>());
-
-				//check if already on the graph
-				if(!DAG.get(E.getParent()).contains(E.getChild())) {
-				
-					//add the child to the list of connections after Linked List is created
-					DAG.get(E.getParent()).add(E.getChild());
-			
-				}
-			}
-		}
+	public Graph() {
+		DAG = new HashMap<Node, List<Edge>>();
 	}
 	
-	public void applyKruskal() {
-		
+	public void addNode(Node newNode) {
+	    DAG.putIfAbsent(newNode, new ArrayList<>());
 	}
-
-	//getters
-	public Map<Node<T>, List<Node<T>>> getDAG() {
-		return DAG;
-	}
-
-	public List<Edge<T>> getAllEdges() {
-		return allEdges;
+	
+	/*
+	 * public void removeNode(Node a) { DAG.values().stream().forEach(e ->
+	 * e.remove(a)); DAG.remove(a); }
+	 */
+	
+	public void addEdge(Node parent, Node child, boolean directed) {
+		Edge newEdge = new Edge(child, directed); 
+	    DAG.get(parent).add(newEdge);
 	}
 	
 	@Override
@@ -58,7 +39,7 @@ public class Graph<T> {
 		if (getClass() != obj.getClass())
 			return false;
 		//cast to Graph class
-		Graph<?> other = (Graph<?>) obj;
+		Graph other = (Graph) obj;
 		return Objects.equals(DAG, other.DAG);
 	}
 	
@@ -71,12 +52,10 @@ public class Graph<T> {
 	public String toString() {
 		String listS = new String("Graph \n");
 			
-		for (Node<T> N: DAG.keySet()){
+		for (Node N: DAG.keySet()){
 			listS += N.toString() + "=" + DAG.get(N).toString() + "\n";
 		} 
 		
 		return listS;
 	}
-
-	
 }
