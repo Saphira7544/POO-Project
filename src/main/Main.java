@@ -17,6 +17,7 @@ public class Main {
 		File TrainFile = new File(args[0]);
 			
 		try {	
+			@SuppressWarnings("unused")
 			TrainSet traindata = new TrainSet(TrainFile);
 			
 		} catch (FileNotFoundException e) {
