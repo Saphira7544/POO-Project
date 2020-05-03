@@ -5,25 +5,29 @@ import java.io.FileNotFoundException;
 
 public class TrainSet extends FileSet{
 	
+	private Graph graph = new Graph();
+	private Node newNode;
 	int[] ranges;
 	
 	public TrainSet(File file) throws FileNotFoundException {
 		
 		super(file);
 		
+		ranges = new int [nFeatures];
 		// Checks the max value of each node
-		for(int i = 0; i < Instances.size() - 1 ; i++) {
-			for(int j = 0; j < nFeatures - 1 ; j++) {
+		for(int i = 0; i < Instances.size()  ; i++) {			
+			for(int j = 0; j < nFeatures; j++) {
 				if(Instances.get(i).getValue(j) > ranges[j]) {
 					ranges[j] = Instances.get(i).getValue(j);
 				}
 			}
 		}
 		
-		for(int a = 0; a < nFeatures - 1 ; a++) {
-			
+		// Creates a new node for each feature and adds it to the graph
+		for(int a = 0; a < nFeatures ; a++) {
+			newNode = new Node(features[a], ranges[a]);
+			graph.addNode(newNode);
 		}
-		
 	}
 	
 	/**

@@ -53,7 +53,6 @@ public class FileSet {
                 // Has found the heading and now it's reading the values
             	if(!line.equals("")) {//line has something written
             		
-            		System.out.println(line);
             		//addInstance(new Instance(elements));
             		Instance Instance = new Instance(line);
             		

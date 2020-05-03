@@ -13,10 +13,10 @@ public class Main {
 		}
 		
 		File TrainFile = new File(args[0]);
-			
+		TrainSet TrainData = null;
 		try {	
-			@SuppressWarnings("unused")
-			TrainSet traindata = new TrainSet(TrainFile);
+
+			TrainData = new TrainSet(TrainFile);
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

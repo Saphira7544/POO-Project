@@ -20,7 +20,7 @@ public class Graph {
 	 * @param newNode with the feature index and range
 	 */
 	public void addNode(Node newNode) {
-	    DAG.putIfAbsent(newNode, new ArrayList<>());
+	    DAG.putIfAbsent(newNode, new ArrayList<Edge>());
 	}
 	
 	/**
@@ -53,6 +53,10 @@ public class Graph {
 		return Objects.equals(DAG, other.DAG);
 	}
 	
+	/**
+	 * 
+	 * @return Returns the full graph
+	 */
 	public Map<Node, List<Edge>> getDAG() {
 		return DAG;
 	}

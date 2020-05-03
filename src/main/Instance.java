@@ -15,9 +15,10 @@ public class Instance {
 		
 		String[] elements = line.split("\\s*,\\s*"); 
 		int size = elements.length;
+
 	    values = new int [ size - 1 ];
 	    
-	    for(int i = 0; i < size - 1 ; i++) {
+	    for(int i = 0; i < size -1; i++) {
 	    	
 	         values[i] = Integer.parseInt(elements[i]);   
 	    }
