@@ -10,9 +10,9 @@ public class Node{
 
 	int[][][][] Nijkc;
 	
+	int[][] Nijc;
 	
-	private int[][] Nijc;
-	private int[] cCounts;
+	int[] cCounts;
 
 	public Node(String key, int range){
 		this.label = key;
