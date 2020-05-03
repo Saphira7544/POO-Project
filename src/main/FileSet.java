@@ -18,7 +18,7 @@ public class FileSet {
 	
 	List<Instance> Instances = new ArrayList<>();
 	int nFeatures = 0;
-	
+	String[] features;
 	
 	
 	/**
@@ -43,11 +43,9 @@ public class FileSet {
             		else { //found line with the heading names
             			fileHeading = true;
             			// use comma as separator
-                        String[] features = line.split(cvsSplitBy);
-                        
+                        features = line.split(cvsSplitBy);
                         // Removes the Class variable from the number of Features
-                        nFeatures = features.length -1;
-                          
+                        nFeatures = features.length -1;   
             		}
             		continue;//keeps reading until it finds the heading
             	}
