@@ -1,4 +1,4 @@
-package score_model;
+package main;
 
 /**
  * Calculate weight of the edge using the Log-Likelihood (LL) Method
@@ -6,8 +6,7 @@ package score_model;
 public class LL_model extends ScoreModel{
 	
 	@Override
-	public double calc_weight() {
-		
+	public double calc_weight(Edge edge, Graph graph) {
 		double weight = 0;
 		int qi = 0;	// SUBSTITUTE	//
 		int ri = 0;	// VALUES		//

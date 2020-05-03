@@ -1,4 +1,4 @@
-package score_model;
+package main;
 
 public class MDL_model extends LL_model{
 

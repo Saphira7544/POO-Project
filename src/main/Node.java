@@ -15,12 +15,20 @@ public class Node{
 	int[] cCounts;
 
 	public Node(String key, int range){
-		this.label = key;
+		this.key = key;
 		this.range = range;
 	}
 
+	public boolean isVisited() {
+		return isVisited;
+	}
+
+	public void setVisited(boolean isVisited) {
+		this.isVisited = isVisited;
+	}
+
 	public String getKey() {
-		return label;
+		return key;
 	}
 	
 	public int getRange() {
@@ -36,12 +44,12 @@ public class Node{
 		if (getClass() != obj.getClass())
 			return false;
 		Node other = (Node) obj;
-		return Objects.equals(label, other.label) & Objects.equals(range, other.range);
+		return Objects.equals(key, other.key) & Objects.equals(range, other.range);
 	}
 		
 	@Override
 	public String toString() {
-		return label;
+		return key;
 	}
 
 }

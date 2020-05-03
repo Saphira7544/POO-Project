@@ -20,19 +20,29 @@ public class Graph {
 		DAG = new HashMap<Node, List<Edge>>();
 	}
 	
+	/**
+	 * add in the hash table the key newNode and creates 
+	 * an empty list of edges
+	 * @param newNode with the feature index and range
+	 */
 	public void addNode(Node newNode) {
-	    DAG.putIfAbsent(newNode, new ArrayList<>());
+	    DAG.putIfAbsent(newNode, new ArrayList<Edge>());
+	}
+	
+	/**
+	 * @param parent defines the key of the hash
+	 * @param child node that is going to be saved inside object edge
+	 * @param directed saves
+	 */
+	public void addEdge(Node parent, Node child, boolean directed) {
+		Edge newEdge = new Edge(child, directed); 
+	    DAG.get(parent).add(newEdge);
 	}
 	
 	/*
 	 * public void removeNode(Node a) { DAG.values().stream().forEach(e ->
 	 * e.remove(a)); DAG.remove(a); }
 	 */
-	
-	public void addEdge(Node parent, Node child, boolean directed) {
-		Edge newEdge = new Edge(child, directed); 
-	    DAG.get(parent).add(newEdge);
-	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -49,6 +59,14 @@ public class Graph {
 		return Objects.equals(DAG, other.DAG);
 	}
 	
+	/**
+	 * 
+	 * @return Returns the full graph
+	 */
+	public Map<Node, List<Edge>> getDAG() {
+		return DAG;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(DAG);
