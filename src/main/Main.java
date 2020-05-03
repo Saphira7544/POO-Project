@@ -18,6 +18,7 @@ public class Main {
 		g.addEdge(node1, node3, false);
 		
 		System.out.println(g);
+		
 	}
 
 }
