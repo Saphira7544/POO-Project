@@ -4,7 +4,7 @@ public class Instance {
 	
 	int [] values; 		// Line of values from 0 to ri-1
 	int class_variable;	// Class variable
-	
+	int range_Cvar = 0;		// Max value of class variable
 	/**
 	 * Receives a String[] containing the elements of a line from the file and converts
 	 * each element to an integer so it can be used 
@@ -24,6 +24,9 @@ public class Instance {
 	    }
 	    
 	    class_variable = Integer.parseInt(elements[size-1]); //last position
+	    if(class_variable > range_Cvar) {
+	    	range_Cvar = class_variable;
+	    }
 	}
 	
 	/**
@@ -52,5 +55,8 @@ public class Instance {
 	public int[] getArray(){
 		return values;
 	}
-
+	
+	public int getClassRange() {
+		return range_Cvar;
+	}
 }

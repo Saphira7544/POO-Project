@@ -56,7 +56,7 @@ public class FileSet {
             		//addInstance(new Instance(elements));
             		Instance Instance = new Instance(line);
             		
-            		Instances.add(Instance);          		
+            		Instances.add(Instance);    
             	}	
             	else // in case the line with the follows isn't right after the headline
             		continue;

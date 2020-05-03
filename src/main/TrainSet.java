@@ -30,6 +30,8 @@ public class TrainSet extends FileSet{
 		}
 	}
 	
+	
+	
 	/**
 	 * Gets max range of a Feature
 	 * @param i : Index of Feature

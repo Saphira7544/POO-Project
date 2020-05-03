@@ -12,12 +12,16 @@ import java.util.Iterator;
 
 public class Graph {
 	
-	
+	TrainSet TrainData;
 	private final Map <Node, List<Edge>> DAG;
 
 	
 	public Graph() {
 		DAG = new HashMap<Node, List<Edge>>();
+	}
+	
+	public void setTrainData(TrainSet traindata) {
+		this.TrainData = traindata;
 	}
 	
 	/**
@@ -89,9 +93,8 @@ public void updateNodeCounts(TrainSet set)  {
 	
 	Node node1 = new Node("X1", 2);
 	
-	int nrInstances = 5; //get from isabel
-
-	int nrXs = DAG.size(); //get from isabel
+	int nrInstances = TrainData.get_N(); 
+	int nrXs = TrainData.get_n(); 
 
 	// Next lines will initialize the variable Node.counts of every Node in this.nodeArray
 	
@@ -107,9 +110,9 @@ public void updateNodeCounts(TrainSet set)  {
 		for (int j = 0; j < nrclass; j++) {
 			
 			// iniciate all possible values of Nijkc for each son
-			DAG.get(i).Nijkc[j] = new int[range de j][range de i][classRange];
+			DAG.get(i).Nijkc[j] = new int[TrainData.getRange(j)][TrainData.getRange(i)][classRange];
 		}
-		DAG.get(i).Nijc = new int[range de i][classRange];
+		DAG.get(i).Nijc = new int[TrainData.getRange(i)][classRange];
 	}
 	DAG.Nc = new int[classRange];
 

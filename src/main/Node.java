@@ -5,8 +5,9 @@ import java.util.Objects;
 
 public class Node{
 	
-	private final String label;	
+	private final String key;	
 	private final int range;
+	private boolean isVisited = false;
 
 	int[][][][] Nijkc;
 	

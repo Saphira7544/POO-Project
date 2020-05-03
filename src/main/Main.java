@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 public class Main {
-
+	
+	public static Graph graph = new Graph(); 
+	
 	public static void main(String[] args) {
 		// Exits if arguments are not correctly input
 		if(args.length != 3) { 
@@ -23,8 +25,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		
-	
+		graph.setTrainData( TrainData );
 	}
 
 	
