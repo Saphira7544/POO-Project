@@ -1,19 +1,18 @@
 package main;
 
-public class Node {
+import java.util.Objects;
 
-<<<<<<< Updated upstream
-=======
+
 public class Node{
 	
 	private final String label;	
 	private final int range;
+
 	int[][][][] Nijkc;
 	
 	
 	private int[][] Nijc;
 	private int[] cCounts;
-	
 
 	public Node(String key, int range){
 		this.label = key;
@@ -44,12 +43,8 @@ public class Node{
 	public String toString() {
 		return label;
 	}
-	
+
+}
 	
 
 	
-	
-	
-	
->>>>>>> Stashed changes
-}

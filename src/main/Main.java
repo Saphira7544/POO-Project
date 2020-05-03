@@ -6,21 +6,21 @@ import java.io.FileNotFoundException;
 public class Main {
 
 	public static void main(String[] args) {
-		
-		// Exits if arguments are not correctly input
-		if(args.length != 3) { 
-			System.err.println("Necessary arguments: TrainFile TestFile Score(LL or MDL)");
-			System.exit(-1);
-		}
-		
-		File TrainFile = new File(args[0]);
-		try {
-			TrainSet TrainData = new TrainSet(TrainFile);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
+		Graph g = new Graph();		
+		
+		Node node1 = new Node("X1", 2);
+		Node node2 = new Node("X2", 2);
+		Node node3 = new Node("X3", 2);
+		
+		g.addNode(node1);
+		g.addNode(node2);
+		g.addNode(node3);
+		g.addEdge(node1, node2, false);
+		g.addEdge(node3, node2, false);
+		g.addEdge(node1, node3, false);
+		
+		System.out.println(g);
 	}
 
 }
