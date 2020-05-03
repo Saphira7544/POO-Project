@@ -56,16 +56,18 @@ public class Main {
 		Edge<Vector<Integer>> edge3 = new Edge<Vector<Integer>>(node2,node3, false);
 		Edge<Vector<Integer>> edge4 = new Edge<Vector<Integer>>(node5,node4, false);
 
+		Graph g = new Graph();		
 		
-		LinkedList<Edge<Vector<Integer>>> allEdges = new LinkedList<Edge<Vector<Integer>>>();
+		Node node1 = new Node("X1", 2);
+		Node node2 = new Node("X2", 2);
+		Node node3 = new Node("X3", 2);
 		
-		allEdges.add(edge1);
-		allEdges.add(edge2);
-		allEdges.add(edge3);
-		allEdges.add(edge4);
-		
-		Graph<Vector<Integer>> g = new Graph<Vector<Integer>>(allEdges);
-		
+		g.addNode(node1);
+		g.addNode(node2);
+		g.addNode(node3);
+		g.addEdge(node1, node2, false);
+		g.addEdge(node3, node2, false);
+		g.addEdge(node1, node3, false);
 		
 		System.out.println(g);
 	}

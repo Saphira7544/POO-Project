@@ -2,47 +2,20 @@ package main;
 
 import java.util.Objects;
 
-public class Edge<T> {
-	private final Node<T> child;
-	private final Node<T> parent;
+public class Edge {
+	private final Node child;
 	//TRUE if there is a child and a parent FALSE if undirected graph
 	private boolean directed;
 	//saves the weight between two nodes based on LL or MDL
 	private float weight;
 	
-	public Edge(Node<T> parent, Node<T> child, boolean directed) {
+	public Edge(Node child, boolean directed) {
 		this.child = child;
-		this.parent = parent;
 		this.directed = directed;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(child, directed, parent, weight);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Edge<?> other = (Edge<?>) obj;
-		//alfaij = alfaji 
-		return ( (Objects.equals(child, other.child) && Objects.equals(parent, other.parent)) ||
-			     (Objects.equals(child, other.parent) && Objects.equals(parent, other.child)) )
-				&& Float.floatToIntBits(weight) == Float.floatToIntBits(other.weight);
-	}
-
-
-	public Node<T> getChild() {
+	public Node getChild() {
 		return child;
-	}
-
-	public Node<T> getParent() {
-		return parent;
 	}
 
 	public boolean isDirected() {
@@ -63,7 +36,25 @@ public class Edge<T> {
 
 	@Override
 	public String toString() {
-		return "Edge [child=" + child + ", parent=" + parent + ", directed=" + directed + ", weight=" + weight + "]";
+		return "Edge [child=" + child + ", directed=" + directed + ", weight=" + weight + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(child, directed, weight);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Edge other = (Edge) obj;
+		return Objects.equals(child, other.child) && directed == other.directed
+				&& Float.floatToIntBits(weight) == Float.floatToIntBits(other.weight);
 	}
 	
 	
