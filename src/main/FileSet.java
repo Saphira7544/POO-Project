@@ -19,12 +19,10 @@ public class FileSet {
 	List<Instance> Instances = new ArrayList<>();
 	int nFeatures = 0;
 	String[] features;
-	
-	
+	int classRange;
 	/**
 	 * 
-	 * @param file
-	 * 			CSV type of file formated with a heading containing the attributes of the random variables (X1, ... , Xn, C) and bellow the elements
+	 * @param file : CSV type of file formated with a heading containing the attributes of the random variables (X1, ... , Xn, C) and bellow the elements
 	 */
 	public FileSet(File file) {
 
@@ -55,8 +53,12 @@ public class FileSet {
             		
             		//addInstance(new Instance(elements));
             		Instance Instance = new Instance(line);
+            		Instances.add(Instance);   
             		
-            		Instances.add(Instance);    
+            		// Updates the max range of the class_variable
+            		if( Instance.class_variable > classRange) {
+            			classRange = Instance.class_variable;
+            		}
             	}	
             	else // in case the line with the follows isn't right after the headline
             		continue;
@@ -113,6 +115,8 @@ public class FileSet {
 		return Instances.size();
 	}
 	
-	
+	public int getClassRange() {
+		return classRange;
+	}
 	
 }

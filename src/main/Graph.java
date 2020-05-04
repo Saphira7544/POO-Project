@@ -95,11 +95,10 @@ public void updateNodeCounts(TrainSet set)  {
 	
 	int nrInstances = TrainData.get_N(); 
 	int nrXs = TrainData.get_n(); 
-
-	// Next lines will initialize the variable Node.counts of every Node in this.nodeArray
+	int classRange = TrainData.getClassRange();
 	
-	int nrclass = 2; //get from isabel
-	// Initialize nodes' counts
+	// Next lines will initialise the variable Node.counts of every Node in this.nodeArray
+	// Initialise nodes' counts
 	
 	
 	Set<Node> keys = DAG.keySet();
@@ -107,9 +106,9 @@ public void updateNodeCounts(TrainSet set)  {
 	            
 		key.Nijkc = new int[nrXs][][][];
 		
-		for (int j = 0; j < nrclass; j++) {
+		for (int j = 0; j < classRange; j++) {
 			
-			// iniciate all possible values of Nijkc for each son
+			// Initialise all possible values of Nijkc for each son
 			DAG.get(i).Nijkc[j] = new int[TrainData.getRange(j)][TrainData.getRange(i)][classRange];
 		}
 		DAG.get(i).Nijc = new int[TrainData.getRange(i)][classRange];
