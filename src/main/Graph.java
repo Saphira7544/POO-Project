@@ -99,8 +99,7 @@ public void updateNodeCounts()  {
 	
 	int nrInstances = TrainData.get_N(); 
 	int nrXs = TrainData.get_n(); 
-
-	// Next lines will initialize the variable Node.counts of every Node in this.nodeArray
+	int classRange = TrainData.getClassRange();
 	
 	int nrclass = 3; //get from isabel
 	

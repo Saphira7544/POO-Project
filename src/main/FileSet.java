@@ -29,8 +29,7 @@ public class FileSet {
 
 	/**
 	 * 
-	 * @param file
-	 * 			CSV type of file formated with a heading containing the attributes of the random variables (X1, ... , Xn, C) and bellow the elements
+	 * @param file : CSV type of file formated with a heading containing the attributes of the random variables (X1, ... , Xn, C) and bellow the elements
 	 */
 	public FileSet(File file) {
 
@@ -61,6 +60,7 @@ public class FileSet {
             		
             		//addInstance(new Instance(elements));
             		Instance Instance = new Instance(line);
+            		  
             		
             		Instances.add(Instance);   
             		
@@ -125,6 +125,8 @@ public class FileSet {
 		return Instances.size();
 	}
 	
-	
+	public int getClassRange() {
+		return classRange;
+	}
 	
 }

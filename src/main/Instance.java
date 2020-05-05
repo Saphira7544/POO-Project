@@ -21,12 +21,8 @@ public class Instance {
 	    for(int i = 0; i < size -1; i++) {
 	    	
 	         values[i] = Integer.parseInt(elements[i]);   
-	    }
-	    
-	    class_variable = Integer.parseInt(elements[size-1]); //last position
-	    if(class_variable > range_Cvar) {
-	    	range_Cvar = class_variable;
-	    }
+	    }	    
+	    class_variable = Integer.parseInt(elements[size-1]); //last position	    
 	}
 	
 	/**
@@ -54,9 +50,5 @@ public class Instance {
 	 */
 	public int[] getArray(){
 		return values;
-	}
-	
-	public int getClassRange() {
-		return range_Cvar;
 	}
 }
