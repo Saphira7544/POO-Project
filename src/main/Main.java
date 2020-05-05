@@ -8,7 +8,6 @@ public class Main {
 	public static Graph graph = new Graph(); 
 	
 	
-	
 	public static void main(String[] args) {
 		
 		
@@ -24,7 +23,10 @@ public class Main {
 		try {	
 
 			TrainData = new TrainSet(TrainFile);
+			graph = TrainData.getGraph();
+			
 			graph.setTrainData( TrainData );
+			graph.updateNodeCounts();
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -34,7 +36,8 @@ public class Main {
 		
 	
 		
-		graph.updateNodeCounts();
+		
+		
 		
 		
 		

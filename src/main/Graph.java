@@ -12,22 +12,23 @@ import java.util.Iterator;
 
 public class Graph {
 	
+	
+	
 	TrainSet TrainData;
 	private final Map <Node, List<Edge>> DAG;
+			
 	
-	List<Instance> Instances = TrainData.getInstances();
-			//new ArrayList<>();
 	
-	//Instance Instance = TrainData.getInstances();
-
 	
 	public Graph() {
-		DAG = new HashMap<Node, List<Edge>>();
+		this.DAG = new HashMap<Node, List<Edge>>();
 	}
 	
 	public void setTrainData(TrainSet traindata) {
 		this.TrainData = traindata;
 	}
+	
+	
 	
 	/**
 	 * add in the hash table the key newNode and creates 
@@ -35,7 +36,8 @@ public class Graph {
 	 * @param newNode with the feature index and range
 	 */
 	public void addNode(Node newNode) {
-	    DAG.putIfAbsent(newNode, new ArrayList<Edge>());
+		
+	    this.DAG.putIfAbsent(newNode, new ArrayList<Edge>());
 	}
 	
 	/**
@@ -52,6 +54,7 @@ public class Graph {
 	 * public void removeNode(Node a) { DAG.values().stream().forEach(e ->
 	 * e.remove(a)); DAG.remove(a); }
 	 */
+	
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -94,84 +97,82 @@ public class Graph {
 	
 	
 
-public void updateNodeCounts()  {
+	public void updateNodeCounts()  {
 	
+	System.out.println(DAG);
 	
 	int nrInstances = TrainData.get_N(); 
 	int nrXs = TrainData.get_n(); 
-	int classRange = TrainData.getClassRange();
+	int nrClass = TrainData.getClassRange();
 	
-	int nrclass = 3; //get from isabel
+	//int nrclass = 3; //get from isabel
 	
 	/*int[][][][] a = new int[3][2][2][2];
 	a[1][1][1][1] = TrainData.classRange;
 	a[2][1][1][1] = 2;*/
-	
+
 	
 	// Initialize nodes' counts
 	Set<Node> keys = DAG.keySet();
 	
+	
 	for (Node key : keys) {
 	        
-	
 		for (int j = 0; j < nrXs; j++) {
 			
 			// iniciate all possible values of Nijkc for each son
-			key.setNijkc(new int[nrXs][TrainData.getRange(j)][key.getRange()][nrclass]);
-			
+			key.setNijkc(new int[nrXs][TrainData.getRange(j)][key.getRange()][nrClass]);
 			
 		}
+		
+		key.setNijc(new int[key.getRange()][nrClass]);
+		key.setNc(new int [nrClass]);
+		
 		//key.setNijkc(a);
 		//System.out.println(key + " " + key.getNijkc()[1][1][1][1]);
 	}
-		
-	
 	
 	int[] Inst = new int[TrainData.get_n()];
 	int C = 0;
-
 	
 	for (int k = 0; k < TrainData.get_N(); k++) {
 	
-		Inst = Instances.get(k).getArray();
-		C = Instances.get(k).getClassVariable(); 
+		Inst = TrainData.getInstances().get(k).getArray();
+		C = TrainData.getInstances().get(k).getClassVariable(); 
 		
-		updateNodeCountsFromPattern(Inst , C );
+		updateNodeCountsFromInstance(Inst , C );
 		
 	}
 }
 
 
-private void updateNodeCountsFromPattern( int[] Inst, int C) {
+	private void updateNodeCountsFromInstance( int[] Inst, int C) {
 
-	int nrXs = TrainData.get_n();
-	
-	int index = -1;
-	
-	Set<Node> keys = DAG.keySet();
-	
-	for (Node key : keys) {
-	    
+		int nrXs = TrainData.get_n();
 		
-		int[][][][] aux = new int[nrXs][][][];
+		Set<Node> keys = DAG.keySet();
 		
-		index++;
-		
-			for (int j = 0; j < nrXs; j++) {
-				
-				if (index == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
-	
-					aux[index][0][ Inst[index] ][C]++;
-					
-					continue;
-				}
-				
-				aux[j][ Inst[j] ][ Inst[index] ][C]++;
-				
-			}
+		for (Node key : keys) {
+		    	
+			int[][][][] aux = new int[nrXs][nrXs][nrXs][nrXs];
+			int[][] aux2 = new int[nrXs][nrXs];
 			
-			key.setNijkc(aux);
+				for (int j = 0; j < nrXs; j++) {
+					
+					if (key.getIndex() == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
 		
+						aux[key.getIndex()][0][ Inst[key.getIndex()] ][C]++;	
+						continue;
+					}
+					
+					aux[j][ Inst[j] ][ Inst[key.getIndex()] ][C]++;
+					
+				}
+		aux2[Inst[key.getIndex()]][C]++;
+		
+		key.setNijc(aux2);
+		key.setNijkc(aux);
+			
 	}
 
 	/*outputNode.cCounts[newPattern.getOutput()]++;
