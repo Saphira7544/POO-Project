@@ -14,6 +14,11 @@ public class Graph {
 	
 	TrainSet TrainData;
 	private final Map <Node, List<Edge>> DAG;
+	
+	List<Instance> Instances = TrainData.getInstances();
+			//new ArrayList<>();
+	
+	//Instance Instance = TrainData.getInstances();
 
 	
 	public Graph() {
@@ -89,74 +94,98 @@ public class Graph {
 	
 	
 
-public void updateNodeCounts(TrainSet set)  {
+public void updateNodeCounts()  {
 	
-	Node node1 = new Node("X1", 2);
 	
 	int nrInstances = TrainData.get_N(); 
 	int nrXs = TrainData.get_n(); 
 
 	// Next lines will initialize the variable Node.counts of every Node in this.nodeArray
 	
-	int nrclass = 2; //get from isabel
+	int nrclass = 3; //get from isabel
+	
+	/*int[][][][] a = new int[3][2][2][2];
+	a[1][1][1][1] = TrainData.classRange;
+	a[2][1][1][1] = 2;*/
+	
+	
 	// Initialize nodes' counts
-	
-	
 	Set<Node> keys = DAG.keySet();
+	
 	for (Node key : keys) {
-	            
-		key.Nijkc = new int[nrXs][][][];
-		
-		for (int j = 0; j < nrclass; j++) {
+	        
+	
+		for (int j = 0; j < nrXs; j++) {
 			
 			// iniciate all possible values of Nijkc for each son
-			DAG.get(i).Nijkc[j] = new int[TrainData.getRange(j)][TrainData.getRange(i)][classRange];
+			key.setNijkc(new int[nrXs][TrainData.getRange(j)][key.getRange()][nrclass]);
+			
+			
 		}
-		DAG.get(i).Nijc = new int[TrainData.getRange(i)][classRange];
+		//key.setNijkc(a);
+		//System.out.println(key + " " + key.getNijkc()[1][1][1][1]);
 	}
-	DAG.Nc = new int[classRange];
+		
+	
+	
+	int[] Inst = new int[TrainData.get_n()];
+	int C = 0;
 
-	// Now the listOfTrainPatterns will be iterated and Node.counts will be updated
-	Iterator<Instance> iterator = set.getInstance().iterator();
-
-	Pattern newPattern;
-
-	while (iterator.hasNext()) {
-		newInstance = iterator.next();
-
-		updateNodeCountsFromPattern(set, newInstance);
+	
+	for (int k = 0; k < TrainData.get_N(); k++) {
+	
+		Inst = Instances.get(k).getArray();
+		C = Instances.get(k).getClassVariable(); 
+		
+		updateNodeCountsFromPattern(Inst , C );
+		
 	}
-
 }
 
-private void updateNodeCountsFromPattern(TrainSet set, Pattern newPattern) {
 
-	int nrXs = DAG.size();
-	
-	
+private void updateNodeCountsFromPattern( int[] Inst, int C) {
 
-	outputNode.cCounts[newPattern.getOutput()]++;
+	int nrXs = TrainData.get_n();
+	
+	int index = -1;
+	
+	Set<Node> keys = DAG.keySet();
+	
+	for (Node key : keys) {
+	    
+		
+		int[][][][] aux = new int[nrXs][][][];
+		
+		index++;
+		
+			for (int j = 0; j < nrXs; j++) {
+				
+				if (index == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
+	
+					aux[index][0][ Inst[index] ][C]++;
+					
+					continue;
+				}
+				
+				aux[j][ Inst[j] ][ Inst[index] ][C]++;
+				
+			}
+			
+			key.setNijkc(aux);
+		
+	}
+
+	/*outputNode.cCounts[newPattern.getOutput()]++;
 
 	for (int i = 0; i < nrXs; i++) { // each Xi
 		for (int p = 0; p < nrXs; p++) { // each possible parent node
 
-			if (p == i) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
-
-				/*
-				 * For Node Xi, increment counts' entry that corresponds to: empty parent configuration, node Xi has value pattern[i] and
-				 * classNode has value output
-				 */
-				DAG.keySet().Nijkc[i][0][ valor de Xi][valor de C]++;
-				continue;
-			}
-			/*
-			 * For Node Xi, increment counts' entry that corresponds to: parent p has value pattern[p], node Xi has value pattern[i] and classNode
-			 * has value output
-			 */
-			DAG.get(i).Nijkc[p][ valor de Xj ][ valor de Xi ][valor de C ]++;
+			
+			
+			DAG.get(i).Nijkc[p][ valor de Xj ][Inst[p]][C]++;
 		}
 
-		DAG.get(i).Nijc[ valor de Xi ][valor de C]++;
-	}
+		//DAG.get(i).Nijc[ valor de Xi ][valor de C]++;
+	}*/
 }
 }

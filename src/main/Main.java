@@ -7,7 +7,11 @@ public class Main {
 	
 	public static Graph graph = new Graph(); 
 	
+	
+	
 	public static void main(String[] args) {
+		
+		
 		// Exits if arguments are not correctly input
 		if(args.length != 3) { 
 			System.err.println("Necessary arguments: TrainFile TestFile Score(LL or MDL)");
@@ -15,19 +19,30 @@ public class Main {
 		}
 		
 		File TrainFile = new File(args[0]);
+		
 		TrainSet TrainData = null;
 		try {	
 
 			TrainData = new TrainSet(TrainFile);
+			graph.setTrainData( TrainData );
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		graph.setTrainData( TrainData );
+		
+	
+		
+		graph.updateNodeCounts();
+		
+		
+		
+		
 	}
 
+	
+	
 	
 
 }

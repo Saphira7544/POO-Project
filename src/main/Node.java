@@ -9,10 +9,24 @@ public class Node{
 	private final int range;
 	private boolean isVisited = false;
 
-	int[][][][] Nijkc;
+	private int[][][][] Nijkc;
+	private int[][] Nijc;
 	
-	int[][] Nijc;
 	
+	
+	public int[][][][] getNijkc() {
+		return Nijkc;
+	}
+	public void setNijkc(int[][][][] nijkc) {
+		Nijkc = nijkc;
+	}
+	public int[][] getNijc() {
+		return Nijc;
+	}
+	public void setNijc(int[][] nijc) {
+		Nijc = nijc;
+	}
+
 	int[] cCounts;
 
 	public Node(String key, int range){
@@ -50,7 +64,7 @@ public class Node{
 		
 	@Override
 	public String toString() {
-		return key;
+		return key ;
 	}
 
 }
