@@ -11,23 +11,25 @@ import java.util.Iterator;
 
 
 public class Graph {
-	
-	
-	
+
 	TrainSet TrainData;
 	private final Map <Node, List<Edge>> DAG;
-			
 	
-	
-	
+	/**
+	 * Creates the Graph constituted by a HashMap of nodes, where each Node is pointing 
+	 * to a list of all the possible edges
+	 */
 	public Graph() {
 		this.DAG = new HashMap<Node, List<Edge>>();
 	}
 	
+	/**
+	 * Sets the train data to be used in the Graph class
+	 * @param traindata : data from input argument Train File
+	 */
 	public void setTrainData(TrainSet traindata) {
 		this.TrainData = traindata;
 	}
-	
 	
 	
 	/**
@@ -95,97 +97,134 @@ public class Graph {
 		return listS;
 	}
 	
-	
-
+	/**
+	 * Function that, for each node, considers the possibilities where it is the father and all 
+	 * the remaining nodes are the son, and Initialises the several Ns for that case.
+	 */
 	public void updateNodeCounts()  {
 	
-	System.out.println(DAG);
-	
-	int nrInstances = TrainData.get_N(); 
-	int nrXs = TrainData.get_n(); 
-	int nrClass = TrainData.getClassRange();
-	
-	//int nrclass = 3; //get from isabel
-	
-	/*int[][][][] a = new int[3][2][2][2];
-	a[1][1][1][1] = TrainData.classRange;
-	a[2][1][1][1] = 2;*/
+		int nrXs = TrainData.get_n(); 
+		int nrClass = TrainData.getClassRange();
 
-	
-	// Initialize nodes' counts
-	Set<Node> keys = DAG.keySet();
-	
-	
-	for (Node key : keys) {
-	        
-		for (int j = 0; j < nrXs; j++) {
-			
-			// iniciate all possible values of Nijkc for each son
-			key.setNijkc(new int[nrXs][TrainData.getRange(j)][key.getRange()][nrClass]);
-			
+		// Initialise nodes' counts
+		Set<Node> keys = DAG.keySet();
+		
+		// Runs by each node considering it as the father
+		for (Node key : keys) {
+		    // Runs every node considering it the son
+			for (int j = 0; j < nrXs; j++) {
+				// Initialise all possible values of Nijkc for each son
+				key.setNijkc(new int[nrXs][TrainData.getRange(j)][key.getRange()][nrClass]);
+			}
+			// Initialise all possible values of Nijc and Nc
+			key.setNijc(new int[key.getRange()][nrClass]);
+			key.setNc(new int [nrClass]);	
 		}
 		
-		key.setNijc(new int[key.getRange()][nrClass]);
-		key.setNc(new int [nrClass]);
+		int[] Inst = new int[TrainData.get_n()];
+		int C = 0;
+		// For every line of the Train Data, increments the values of the corresponding N
+		for (int k = 0; k < TrainData.get_N(); k++) {
 		
-		//key.setNijkc(a);
-		//System.out.println(key + " " + key.getNijkc()[1][1][1][1]);
+			Inst = TrainData.getInstances().get(k).getArray();
+			C = TrainData.getInstances().get(k).getClassVariable(); 
+			
+			
+			
+			updateNodeCountsFromInstance(Inst , C );	
+			
+		}
 	}
-	
-	int[] Inst = new int[TrainData.get_n()];
-	int C = 0;
-	
-	for (int k = 0; k < TrainData.get_N(); k++) {
-	
-		Inst = TrainData.getInstances().get(k).getArray();
-		C = TrainData.getInstances().get(k).getClassVariable(); 
-		
-		updateNodeCountsFromInstance(Inst , C );
-		
-	}
-}
 
-
+	/**
+	 * Function that increments the several Ns considering the given line and for every 
+	 * possibility of Node with parent/son
+	 * @param Inst : Instance, line of values from the Train Data
+	 * @param C :  Class Variable from a certain line in the Train Data
+	 */
 	private void updateNodeCountsFromInstance( int[] Inst, int C) {
 
 		int nrXs = TrainData.get_n();
-		
+		int incr1 = 0;
+		int incr2 = 0;
+		int incr3 = 0;
+		// Initialise nodes' counts
 		Set<Node> keys = DAG.keySet();
 		
+		
+		
+		// Runs by each node considering it as the father
 		for (Node key : keys) {
-		    	
+			
+			int []a = new int[TrainData.getClassRange()+1];
+			a[C] = key.getNc()[C] + 1; 					
+		    key.setNc(a);
+		    System.out.println(
 			int[][][][] aux = new int[nrXs][nrXs][nrXs][nrXs];
 			int[][] aux2 = new int[nrXs][nrXs];
 			
-				for (int j = 0; j < nrXs; j++) {
-					
-					if (key.getIndex() == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
+			// Runs every node considering it the son
+			for (int j = 0; j < nrXs; j++) {
+				
+				if (key.getIndex() == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
 		
-						aux[key.getIndex()][0][ Inst[key.getIndex()] ][C]++;	
-						continue;
-					}
+					aux[key.getIndex()][0][ Inst[key.getIndex()] ][C] = ++incr1;	
 					
-					aux[j][ Inst[j] ][ Inst[key.getIndex()] ][C]++;
-					
-				}
-		aux2[Inst[key.getIndex()]][C]++;
-		
-		key.setNijc(aux2);
-		key.setNijkc(aux);
-			
+					continue;
+				}	
+				aux[j][ Inst[j] ][ Inst[key.getIndex()] ][C] = ++incr1;
+				
+			}
+			aux2[Inst[key.getIndex()]][C]= ++incr2;
+			//System.out.println(aux2[Inst[key.getIndex()]][C]);
+			key.setNijc(aux2);		
+			key.setNijkc(aux);	
+			//System.out.println(key.getNijc()[Inst[key.getIndex()]][C]);
+		}	
 	}
+	
+	public void createAllEdges() {
 
-	/*outputNode.cCounts[newPattern.getOutput()]++;
-
-	for (int i = 0; i < nrXs; i++) { // each Xi
-		for (int p = 0; p < nrXs; p++) { // each possible parent node
-
+		Set<Node> keys1 = DAG.keySet();
+		
+		// Runs by each node considering it as the father
+		for (Node key1 : keys1) {
+			
+			boolean found = false;
+			Set<Node> keys2 = DAG.keySet();
+			
+			for (Node key2 : keys2) {
+				// if it hasn't found key1, continues the for
+				if (!found && !(key1.getKey()).equals(key2.getKey())) {
+		            continue;
+		        }
+				
+		        found = true;
+		        addEdge(key1, key2, false);	
+			}
+		}	
+	}
+	public void setAllWeights(ScoreModel scoreModel) {
+		
+		int N = TrainData.get_N();
+		int s = TrainData.classRange;
+		
+		Iterator<Map.Entry<Node,List<Edge>>> itr = DAG.entrySet().iterator();
+			
+		while (itr.hasNext()) {
+			
+			Map.Entry<Node,List<Edge>> entry = itr.next();
+			
+			for(int i = 0; i < entry.getValue().size(); i++) {
+							
+				double weight = scoreModel.calc_weight(entry.getValue().get(i), entry.getKey(), N, s);
+				entry.getValue().get(i).setWeight(weight);
+			}
 			
 			
-			DAG.get(i).Nijkc[p][ valor de Xj ][Inst[p]][C]++;
+			
 		}
-
-		//DAG.get(i).Nijc[ valor de Xi ][valor de C]++;
-	}*/
-}
+		
+		
+	}
 }

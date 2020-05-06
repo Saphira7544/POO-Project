@@ -68,6 +68,7 @@ public class FileSet {
                         classRange = Instance.class_variable;
                     }
             		
+                    
             	}	
             	else // in case the line with the follows isn't right after the headline
             		continue;

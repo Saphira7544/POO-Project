@@ -23,23 +23,31 @@ public class Main {
 		try {	
 
 			TrainData = new TrainSet(TrainFile);
-			graph = TrainData.getGraph();
-			
-			graph.setTrainData( TrainData );
-			graph.updateNodeCounts();
+			// update in the main the graph and nodes created with the information from the Train File
+			graph = TrainData.getGraph(); 
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		ScoreModel scoreModel = null;
+		if ("LL".equals(args[2])) {
+			scoreModel = new LL_model();
+		} else if ("MDL".equals(args[2])) {
+			scoreModel = new MDL_model();
+		} else {
+			System.err.println("Third argument must be LL or MDL to pick Score Model.");
+			System.exit(-1);
+		}
 		
-	
+		graph.setTrainData( TrainData );
+		graph.updateNodeCounts();
 		
+		graph.createAllEdges();
 		
-		
-		
-		
+		graph.setAllWeights(scoreModel);
+		System.out.println(graph);
 		
 		
 	}

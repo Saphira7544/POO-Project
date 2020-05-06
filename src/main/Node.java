@@ -10,12 +10,9 @@ public class Node{
 	private final int index;
 	private boolean isVisited = false;
 
-	private int[][][][] Nijkc;
-	private int[][] Nijc;
-	private int[] Nc;
-	
-	
-	
+	int[][][][] Nijkc;
+	int[][] Nijc;
+	int[] Nc;
 	
 	
 	public int[] getNc() {
