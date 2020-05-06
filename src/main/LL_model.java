@@ -17,14 +17,16 @@ public class LL_model extends ScoreModel{
 
 				for( int c = 0; c < s; c++ ) {
 					
-					int Nijkc = node.getNijkc()[node.getIndex()][j][k][c]; 	
-					int Nc = node.getNc()[c];		
-					int NikcJ = edge.getChild().getNijc()[k][c];	
-					int NijcK = node.getNijc()[j][c];
-					System.out.println("Nc - " + Nc + "  Nijkc - " + Nijkc);	
+					int Nijkc = node.Nijkc[node.getIndex()][j][k][c]; 	
+					int Nc = node.Nc[c];		
+					int NikcJ = edge.getChild().Nijc[k][c];	
+					int NijcK = node.Nijc[j][c];
+					System.out.println("Nc - " + Nc + "  Nijkc - " + Nijkc + "  NikcJ - " +NikcJ+ "  NijcK - " +NijcK);	
 					if (Nijkc != 0 && Nc != 0) {
-						weight += (Nijkc/N)*ScoreModel.log2((Nijkc*Nc)/(NikcJ*NijcK));
-				
+	
+						weight += (double) Nijkc/N *log2((double)(Nijkc*Nc)/(double)(NikcJ*NijcK));
+						//System.out.println("wtf "+ (Nijkc/N) + " wtf "+ Nijkc + " wtf "+ N + " " + (double) 23/100);
+						//System.out.println( (float) (Nijkc/N) + " "+ log2(88) + " "+ (Nijkc*Nc) + " "+ (NikcJ*NijcK));
 					}
 				}
 			}

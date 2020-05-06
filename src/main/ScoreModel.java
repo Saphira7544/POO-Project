@@ -16,7 +16,19 @@ public abstract class ScoreModel {
 	public abstract double calc_weight(Edge edge, Node node, int N, int s);
 
 	
-	public static double log2(double x){
+	/*public static double log2(double x){
 	    return (Math.log(x) / Math.log(2));
+	}*/
+	
+	protected static final double ln2 = Math.log(2);
+	
+	protected final double log2(double number) {
+
+		double log2Value = Math.log(number) / ScoreModel.ln2;
+
+		if (Double.isNaN(log2Value))
+			throw new RuntimeException("Tried to calculate log2(" + number + "): NaN");
+
+		return log2Value;
 	}
 }

@@ -105,20 +105,22 @@ public class Graph {
 	
 		int nrXs = TrainData.get_n(); 
 		int nrClass = TrainData.getClassRange();
-
+		
 		// Initialise nodes' counts
 		Set<Node> keys = DAG.keySet();
 		
 		// Runs by each node considering it as the father
 		for (Node key : keys) {
+			key.Nijkc = new int[nrXs+1][][][];
 		    // Runs every node considering it the son
 			for (int j = 0; j < nrXs; j++) {
 				// Initialise all possible values of Nijkc for each son
-				key.setNijkc(new int[nrXs][TrainData.getRange(j)][key.getRange()][nrClass]);
+				
+				key.Nijkc[j] = new int[TrainData.getRange(j)+1][key.getRange()+1][nrClass+1];
 			}
 			// Initialise all possible values of Nijc and Nc
-			key.setNijc(new int[key.getRange()][nrClass]);
-			key.setNc(new int [nrClass]);	
+			key.Nijc = new int[key.getRange()+1][nrClass+1];
+			key.Nc= new int [nrClass+1];	
 		}
 		
 		int[] Inst = new int[TrainData.get_n()];
@@ -145,9 +147,6 @@ public class Graph {
 	private void updateNodeCountsFromInstance( int[] Inst, int C) {
 
 		int nrXs = TrainData.get_n();
-		int incr1 = 0;
-		int incr2 = 0;
-		int incr3 = 0;
 		// Initialise nodes' counts
 		Set<Node> keys = DAG.keySet();
 		
@@ -156,29 +155,25 @@ public class Graph {
 		// Runs by each node considering it as the father
 		for (Node key : keys) {
 			
-			int []a = new int[TrainData.getClassRange()+1];
-			a[C] = key.getNc()[C] + 1; 					
-		    key.setNc(a);
-		    System.out.println(
-			int[][][][] aux = new int[nrXs][nrXs][nrXs][nrXs];
-			int[][] aux2 = new int[nrXs][nrXs];
+			key.Nc[C]++;
 			
 			// Runs every node considering it the son
 			for (int j = 0; j < nrXs; j++) {
 				
 				if (key.getIndex() == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
-		
-					aux[key.getIndex()][0][ Inst[key.getIndex()] ][C] = ++incr1;	
+					System.out.println(C);
+					key.Nijkc[key.getIndex()][0][ Inst[key.getIndex()] ][C] ++;
 					
 					continue;
 				}	
-				aux[j][ Inst[j] ][ Inst[key.getIndex()] ][C] = ++incr1;
+				System.out.println(C);
+				key.Nijkc[j][ Inst[j] ][ Inst[key.getIndex()] ][C] ++;
 				
 			}
-			aux2[Inst[key.getIndex()]][C]= ++incr2;
+			key.Nijc[Inst[key.getIndex()]][C] ++;
 			//System.out.println(aux2[Inst[key.getIndex()]][C]);
-			key.setNijc(aux2);		
-			key.setNijkc(aux);	
+			//key.setNijc(aux2);		
+			//key.setNijkc(aux);	
 			//System.out.println(key.getNijc()[Inst[key.getIndex()]][C]);
 		}	
 	}
