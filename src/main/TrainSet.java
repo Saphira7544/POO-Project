@@ -6,6 +6,11 @@ import java.io.FileNotFoundException;
 public class TrainSet extends FileSet{
 	
 	private Graph graph = new Graph();
+	
+	public Graph getGraph() {
+		return graph;
+	}
+
 	private Node newNode;
 	int[] ranges;
 	
@@ -25,9 +30,9 @@ public class TrainSet extends FileSet{
 		
 		// Creates a new node for each feature and adds it to the graph
 		for(int a = 0; a < nFeatures ; a++) {
-			newNode = new Node(features[a], ranges[a]);
+			newNode = new Node(features[a], ranges[a], a);
 			graph.addNode(newNode);
-		}
+		}	
 	}
 	
 	

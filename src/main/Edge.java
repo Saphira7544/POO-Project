@@ -2,12 +2,10 @@ package main;
 
 import java.util.Objects;
 
-public class Edge {
+public class Edge {       
 	private final Node child;
-	//TRUE if there is a child and a parent FALSE if undirected graph
-	private boolean directed;
-	//saves the weight between two nodes based on LL or MDL
-	private float weight;
+	private boolean directed;//TRUE if child and parent are set; FALSE if undirected graph
+	private double weight; //saves the weight between two nodes based on LL or MDL
 	
 	public Edge(Node child, boolean directed) {
 		this.child = child;
@@ -26,11 +24,11 @@ public class Edge {
 		this.directed = directed;
 	}
 
-	public float getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(float weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 
@@ -53,8 +51,7 @@ public class Edge {
 		if (getClass() != obj.getClass())
 			return false;
 		Edge other = (Edge) obj;
-		return Objects.equals(child, other.child) && directed == other.directed
-				&& Float.floatToIntBits(weight) == Float.floatToIntBits(other.weight);
+		return Objects.equals(child, other.child) && directed == other.directed;
 	}
 	
 	

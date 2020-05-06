@@ -6,29 +6,32 @@ package main;
 public class LL_model extends ScoreModel{
 	
 	@Override
-	public double calc_weight(Edge edge, Graph graph) {
+	public double calc_weight(Edge edge, Node node, int N, int s) {
 		double weight = 0;
-		int qi = 0;	// SUBSTITUTE	//
-		int ri = 0;	// VALUES		//
-		int s = 0;	// HERE			//
-		
-		for(int j = 0; j < qi; j++) { /////////////// INSERIR DIREÇÕES CORRETAS DE qi ri E s////////////////////////
-			for(int k = 0; k < ri; k++) {
-				for(int c = 0; c < s; c++) {
+		int qi = node.getRange();	
+		int ri = edge.getChild().getRange();	
+			
+		for( int j = 0; j < qi; j++ ) { 
+			
+			for( int k = 0; k < ri; k++ ) {
+
+				for( int c = 0; c < s; c++ ) {
 					
-					int Nijkc = 0; 	// PUT		//
-					int N = 0;		// REAL		//
-					int Nc = 0;		// VALUES	//
-					int NikcJ = 0;	// HERE		//
-					int NijcK = 0;
-										
-					weight += (Nijkc/N)*ScoreModel.log2((Nijkc*Nc)/(NikcJ*NijcK));
-					
+					int Nijkc = node.Nijkc[node.getIndex()][j][k][c]; 	
+					int Nc = node.Nc[c];		
+					int NikcJ = edge.getChild().Nijc[k][c];	
+					int NijcK = node.Nijc[j][c];
+					System.out.println("Nc - " + Nc + "  Nijkc - " + Nijkc + "  NikcJ - " +NikcJ+ "  NijcK - " +NijcK);	
+					if (Nijkc != 0 && Nc != 0) {
+	
+						weight += (double) Nijkc/N *log2((double)(Nijkc*Nc)/(double)(NikcJ*NijcK));
+						//System.out.println("wtf "+ (Nijkc/N) + " wtf "+ Nijkc + " wtf "+ N + " " + (double) 23/100);
+						//System.out.println( (float) (Nijkc/N) + " "+ log2(88) + " "+ (Nijkc*Nc) + " "+ (NikcJ*NijcK));
+					}
 				}
 			}
 		}
-				
+		System.out.println(weight);		
 		return weight;	
 	}
-
 }

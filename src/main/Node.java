@@ -7,19 +7,45 @@ public class Node{
 	
 	private final String key;	
 	private final int range;
+	private final int index;
 	private boolean isVisited = false;
 
 	int[][][][] Nijkc;
-	
 	int[][] Nijc;
+	int[] Nc;
 	
-	int[] cCounts;
-
-	public Node(String key, int range){
-		this.key = key;
-		this.range = range;
+	
+	public int[] getNc() {
+		return Nc;
+	}
+	public void setNc(int[] nc) {
+		Nc = nc;
+	}
+	public int[][][][] getNijkc() {
+		return Nijkc;
+	}
+	public void setNijkc(int[][][][] nijkc) {
+		Nijkc = nijkc;
+	}
+	public int[][] getNijc() {
+		return Nijc;
+	}
+	public void setNijc(int[][] nijc) {
+		Nijc = nijc;
 	}
 
+	int[] cCounts;
+	
+
+	public Node(String key, int range, int index){
+		this.key = key;
+		this.range = range;
+		this.index = index;
+	}
+
+	public int getIndex() {
+		return index;
+	}
 	public boolean isVisited() {
 		return isVisited;
 	}

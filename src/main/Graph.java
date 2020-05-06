@@ -11,18 +11,26 @@ import java.util.Iterator;
 
 
 public class Graph {
-	
+
 	TrainSet TrainData;
 	private final Map <Node, List<Edge>> DAG;
-
 	
+	/**
+	 * Creates the Graph constituted by a HashMap of nodes, where each Node is pointing 
+	 * to a list of all the possible edges
+	 */
 	public Graph() {
-		DAG = new HashMap<Node, List<Edge>>();
+		this.DAG = new HashMap<Node, List<Edge>>();
 	}
 	
+	/**
+	 * Sets the train data to be used in the Graph class
+	 * @param traindata : data from input argument Train File
+	 */
 	public void setTrainData(TrainSet traindata) {
 		this.TrainData = traindata;
 	}
+	
 	
 	/**
 	 * add in the hash table the key newNode and creates 
@@ -30,7 +38,8 @@ public class Graph {
 	 * @param newNode with the feature index and range
 	 */
 	public void addNode(Node newNode) {
-	    DAG.putIfAbsent(newNode, new ArrayList<Edge>());
+		
+	    this.DAG.putIfAbsent(newNode, new ArrayList<Edge>());
 	}
 	
 	/**
@@ -47,6 +56,7 @@ public class Graph {
 	 * public void removeNode(Node a) { DAG.values().stream().forEach(e ->
 	 * e.remove(a)); DAG.remove(a); }
 	 */
+	
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -87,75 +97,129 @@ public class Graph {
 		return listS;
 	}
 	
+	/**
+	 * Function that, for each node, considers the possibilities where it is the father and all 
+	 * the remaining nodes are the son, and Initialises the several Ns for that case.
+	 */
+	public void updateNodeCounts()  {
 	
-
-public void updateNodeCounts(TrainSet set)  {
-	
-	Node node1 = new Node("X1", 2);
-	
-	int nrInstances = TrainData.get_N(); 
-	int nrXs = TrainData.get_n(); 
-	int classRange = TrainData.getClassRange();
-	
-	// Next lines will initialise the variable Node.counts of every Node in this.nodeArray
-	// Initialise nodes' counts
-	
-	
-	Set<Node> keys = DAG.keySet();
-	for (Node key : keys) {
-	            
-		key.Nijkc = new int[nrXs][][][];
+		int nrXs = TrainData.get_n(); 
+		int nrClass = TrainData.getClassRange();
 		
-		for (int j = 0; j < classRange; j++) {
-			
-			// Initialise all possible values of Nijkc for each son
-			DAG.get(i).Nijkc[j] = new int[TrainData.getRange(j)][TrainData.getRange(i)][classRange];
-		}
-		DAG.get(i).Nijc = new int[TrainData.getRange(i)][classRange];
-	}
-	DAG.Nc = new int[classRange];
-
-	// Now the listOfTrainPatterns will be iterated and Node.counts will be updated
-	Iterator<Instance> iterator = set.getInstance().iterator();
-
-	Pattern newPattern;
-
-	while (iterator.hasNext()) {
-		newInstance = iterator.next();
-
-		updateNodeCountsFromPattern(set, newInstance);
-	}
-
-}
-
-private void updateNodeCountsFromPattern(TrainSet set, Pattern newPattern) {
-
-	int nrXs = DAG.size();
-	
-	
-
-	outputNode.cCounts[newPattern.getOutput()]++;
-
-	for (int i = 0; i < nrXs; i++) { // each Xi
-		for (int p = 0; p < nrXs; p++) { // each possible parent node
-
-			if (p == i) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
-
-				/*
-				 * For Node Xi, increment counts' entry that corresponds to: empty parent configuration, node Xi has value pattern[i] and
-				 * classNode has value output
-				 */
-				DAG.keySet().Nijkc[i][0][ valor de Xi][valor de C]++;
-				continue;
+		// Initialise nodes' counts
+		Set<Node> keys = DAG.keySet();
+		
+		// Runs by each node considering it as the father
+		for (Node key : keys) {
+			key.Nijkc = new int[nrXs+1][][][];
+		    // Runs every node considering it the son
+			for (int j = 0; j < nrXs; j++) {
+				// Initialise all possible values of Nijkc for each son
+				
+				key.Nijkc[j] = new int[TrainData.getRange(j)+1][key.getRange()+1][nrClass+1];
 			}
-			/*
-			 * For Node Xi, increment counts' entry that corresponds to: parent p has value pattern[p], node Xi has value pattern[i] and classNode
-			 * has value output
-			 */
-			DAG.get(i).Nijkc[p][ valor de Xj ][ valor de Xi ][valor de C ]++;
+			// Initialise all possible values of Nijc and Nc
+			key.Nijc = new int[key.getRange()+1][nrClass+1];
+			key.Nc= new int [nrClass+1];	
 		}
-
-		DAG.get(i).Nijc[ valor de Xi ][valor de C]++;
+		
+		int[] Inst = new int[TrainData.get_n()];
+		int C = 0;
+		// For every line of the Train Data, increments the values of the corresponding N
+		for (int k = 0; k < TrainData.get_N(); k++) {
+		
+			Inst = TrainData.getInstances().get(k).getArray();
+			C = TrainData.getInstances().get(k).getClassVariable(); 
+			
+			
+			
+			updateNodeCountsFromInstance(Inst , C );	
+			
+		}
 	}
-}
+
+	/**
+	 * Function that increments the several Ns considering the given line and for every 
+	 * possibility of Node with parent/son
+	 * @param Inst : Instance, line of values from the Train Data
+	 * @param C :  Class Variable from a certain line in the Train Data
+	 */
+	private void updateNodeCountsFromInstance( int[] Inst, int C) {
+
+		int nrXs = TrainData.get_n();
+		// Initialise nodes' counts
+		Set<Node> keys = DAG.keySet();
+		
+		
+		
+		// Runs by each node considering it as the father
+		for (Node key : keys) {
+			
+			key.Nc[C]++;
+			
+			// Runs every node considering it the son
+			for (int j = 0; j < nrXs; j++) {
+				
+				if (key.getIndex() == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
+					System.out.println(C);
+					key.Nijkc[key.getIndex()][0][ Inst[key.getIndex()] ][C] ++;
+					
+					continue;
+				}	
+				System.out.println(C);
+				key.Nijkc[j][ Inst[j] ][ Inst[key.getIndex()] ][C] ++;
+				
+			}
+			key.Nijc[Inst[key.getIndex()]][C] ++;
+			//System.out.println(aux2[Inst[key.getIndex()]][C]);
+			//key.setNijc(aux2);		
+			//key.setNijkc(aux);	
+			//System.out.println(key.getNijc()[Inst[key.getIndex()]][C]);
+		}	
+	}
+	
+	public void createAllEdges() {
+
+		Set<Node> keys1 = DAG.keySet();
+		
+		// Runs by each node considering it as the father
+		for (Node key1 : keys1) {
+			
+			boolean found = false;
+			Set<Node> keys2 = DAG.keySet();
+			
+			for (Node key2 : keys2) {
+				// if it hasn't found key1, continues the for
+				if (!found && !(key1.getKey()).equals(key2.getKey())) {
+		            continue;
+		        }
+				
+		        found = true;
+		        addEdge(key1, key2, false);	
+			}
+		}	
+	}
+	public void setAllWeights(ScoreModel scoreModel) {
+		
+		int N = TrainData.get_N();
+		int s = TrainData.classRange;
+		
+		Iterator<Map.Entry<Node,List<Edge>>> itr = DAG.entrySet().iterator();
+			
+		while (itr.hasNext()) {
+			
+			Map.Entry<Node,List<Edge>> entry = itr.next();
+			
+			for(int i = 0; i < entry.getValue().size(); i++) {
+							
+				double weight = scoreModel.calc_weight(entry.getValue().get(i), entry.getKey(), N, s);
+				entry.getValue().get(i).setWeight(weight);
+			}
+			
+			
+			
+		}
+		
+		
+	}
 }
