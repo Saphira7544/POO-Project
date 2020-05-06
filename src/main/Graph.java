@@ -161,12 +161,11 @@ public class Graph {
 			for (int j = 0; j < nrXs; j++) {
 				
 				if (key.getIndex() == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
-					System.out.println(C);
+					
 					key.Nijkc[key.getIndex()][0][ Inst[key.getIndex()] ][C] ++;
 					
 					continue;
 				}	
-				System.out.println(C);
 				key.Nijkc[j][ Inst[j] ][ Inst[key.getIndex()] ][C] ++;
 				
 			}

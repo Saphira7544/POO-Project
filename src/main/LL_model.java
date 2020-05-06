@@ -21,7 +21,7 @@ public class LL_model extends ScoreModel{
 					int Nc = node.Nc[c];		
 					int NikcJ = edge.getChild().Nijc[k][c];	
 					int NijcK = node.Nijc[j][c];
-					System.out.println("Nc - " + Nc + "  Nijkc - " + Nijkc + "  NikcJ - " +NikcJ+ "  NijcK - " +NijcK);	
+					//System.out.println("Nc - " + Nc + "  Nijkc - " + Nijkc + "  NikcJ - " +NikcJ+ "  NijcK - " +NijcK);	
 					if (Nijkc != 0 && Nc != 0) {
 	
 						weight += (double) Nijkc/N *log2((double)(Nijkc*Nc)/(double)(NikcJ*NijcK));
@@ -31,7 +31,7 @@ public class LL_model extends ScoreModel{
 				}
 			}
 		}
-		System.out.println(weight);		
+		//System.out.println(weight);		
 		return weight;	
 	}
 }
