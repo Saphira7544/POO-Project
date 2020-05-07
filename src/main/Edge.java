@@ -6,12 +6,12 @@ public class Edge {
 	private final Node child;
 	//TRUE if there is a child and a parent FALSE if undirected graph
 	private boolean connected = false;
-	private boolean directed;//TRUE if child and parent are set; FALSE if undirected graph
+	private boolean directed = false;//TRUE if child and parent are set; FALSE if undirected graph
 	private double weight; //saves the weight between two nodes based on LL or MDL
 	
-	public Edge(Node child, boolean directed) {
+	public Edge(Node child, double weight) {
 		this.child = child;
-		this.directed = directed;
+		this.weight = weight;
 	}
 
 	public Node getChild() {

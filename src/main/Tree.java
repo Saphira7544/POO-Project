@@ -1,13 +1,14 @@
 package main;
 
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class Tree extends Graph{
 	
-	Node root; 	
+	Node root;
+	protected Map <Node, List<Edge>> DAG;
 	
 	public Tree( Map<Node, List<Edge>> DAG ) {
 		super();
@@ -17,7 +18,6 @@ public class Tree extends Graph{
 	public void applyPrim() {
 		Map <Node, List<Edge>> DAG = getDAG();
 		
-		Iterator<Map.Entry<Node,List<Edge>>> itr = DAG.entrySet().iterator();
 		Map.Entry<Node,List<Edge>> entry = DAG.entrySet().iterator().next();
 		
 		Node root = entry.getKey();
@@ -27,51 +27,17 @@ public class Tree extends Graph{
 		root.setVisited(true);
 		
 		while (isDisconnected()) {
-			nextNode = getMaximum(nextEdges);
+			nextNode = getMaximum(nextEdges, nextNode);
 			
 			nextEdges = DAG.get(nextNode);
 			
 			nextNode.setVisited(true);	
+			
+			this.addNode(nextNode);
 		}
-		
-		//while there are nodes that were not visited
-		/*while (isDisconnected()) {
-			Edge nextMaximum = new Edge(null, false);
-			nextMaximum.setWeight(0);
-			
-			while(itr.hasNext()) {
-				if(entry.getKey().isVisited()) {
-					Edge candidate =  getMaximum(entry.getValue());
-					if(candidate.getWeight() > nextMaximum.getWeight() && candidate.getChild().equals(currEdge)) {
-						nextMaximum = candidate;
-						nextNode = candidate.getChild();
-					}
-				}
-				entry = itr.next();
-				System.out.println(entry);
-			}
-			
-			currEdge = nextNode;
-			nextMaximum.setConnected(true);
-			nextNode.setVisited(true);
-			itr = DAG.entrySet().iterator();
-		}*/
-
-		
-		/*while(itr.hasNext()){
-			entry = itr.next();
-			currEdges = entry.getValue();
-			
-			for(Edge edge: currEdges) {
-				
-				if(!edge.isConnected()) {
-					super.removeEdge(edge);
-				}
-			}
-		}*/
 	}
 	
-	private Node getMaximum(List<Edge> edges) {
+	private Node getMaximum(List<Edge> edges, Node parent) {
 		
 		double maximumWeigth = 0;
 		Edge maximumEdge = null;
@@ -86,7 +52,8 @@ public class Tree extends Graph{
 			}
 		}
 		
-		maximumEdge.setConnected(true);	
+		maximumEdge.setConnected(true);
+		this.addEdge(parent, maximumEdge.getChild(), maximumWeigth);
 		
 		return maximumEdge.getChild();
 	}
@@ -101,4 +68,27 @@ public class Tree extends Graph{
 	    }
 	    return false;
 	}
+	
+	//while there are nodes that were not visited
+			/*while (isDisconnected()) {
+				Edge nextMaximum = new Edge(null, false);
+				nextMaximum.setWeight(0);
+				
+				while(itr.hasNext()) {
+					if(entry.getKey().isVisited()) {
+						Edge candidate =  getMaximum(entry.getValue());
+						if(candidate.getWeight() > nextMaximum.getWeight() && candidate.getChild().equals(currEdge)) {
+							nextMaximum = candidate;
+							nextNode = candidate.getChild();
+						}
+					}
+					entry = itr.next();
+					System.out.println(entry);
+				}
+				
+				currEdge = nextNode;
+				nextMaximum.setConnected(true);
+				nextNode.setVisited(true);
+				itr = DAG.entrySet().iterator();
+			}*/
 }

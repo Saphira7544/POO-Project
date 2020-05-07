@@ -32,7 +32,6 @@ public class Graph {
 		this.TrainData = traindata;
 	}
 	
-	
 	/**
 	 * add in the hash table the key newNode and creates 
 	 * an empty list of edges
@@ -48,8 +47,8 @@ public class Graph {
 	 * @param child node that is going to be saved inside object edge
 	 * @param directed saves
 	 */
-	public void addEdge(Node parent, Node child, boolean directed) {
-		Edge newEdge = new Edge(child, directed); 
+	public void addEdge(Node parent, Node child, double weight) {
+		Edge newEdge = new Edge(child, weight); 
 	    DAG.get(parent).add(newEdge);
 	}
 	
@@ -199,7 +198,7 @@ public class Graph {
 		        }
 				
 		        found = true;
-		        addEdge(key1, key2, false);	
+		        addEdge(key1, key2, 0);	
 			}
 		}	
 	}
@@ -218,12 +217,35 @@ public class Graph {
 							
 				double weight = scoreModel.calc_weight(entry.getValue().get(i), entry.getKey(), N, s);
 				entry.getValue().get(i).setWeight(weight);
-			}
-			
-			
-			
+			}	
 		}
+	}
+	
+	public void createCompleteGraph() {
+		Edge edge;
+
+		Set<Node> keys1 = DAG.keySet();
+		Set<Node> keys2 = DAG.keySet();
+		//Iterator<Map.Entry<Node,List<Edge>>> itr1 = DAG.entrySet().iterator();
+		//Iterator<Map.Entry<Node,List<Edge>>> itr2 = DAG.entrySet().iterator();
 		
-		
+		for (Node key1 : keys1){
+			for (Node key2 : keys2){
+				
+				if ((key1).equals(key2)) {
+					break;
+				}				
+				
+				for(int i = 0; i < DAG.get(key2).size(); i++) {	
+					
+					edge = DAG.get(key2).get(i);
+					if((edge.getChild()).equals(key1)) {
+						
+						addEdge(key1, key2, edge.getWeight());
+						break;
+					}
+				}
+			}
+		}	
 	}
 }
