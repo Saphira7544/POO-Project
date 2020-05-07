@@ -21,7 +21,7 @@ public class Main {
 		
 		TrainSet TrainData = null;
 		try {	
-
+		//Graph g = new Graph();
 			TrainData = new TrainSet(TrainFile);
 			// update in the main the graph and nodes created with the information from the Train File
 			graph = TrainData.getGraph(); 
@@ -43,17 +43,18 @@ public class Main {
 		
 		graph.setTrainData( TrainData );
 		graph.updateNodeCounts();
-		
+	
 		graph.createAllEdges();
 		
-		graph.setAllWeights(scoreModel);
+		graph.setAllWeights(scoreModel);	
+
+		graph.createCompleteGraph();
+		
+		
+		Tree t = new Tree(graph.getDAG());
 		System.out.println(graph);
-		
-		
-	}
+		t.applyPrim();
+		System.out.println(graph);
 
-	
-	
-	
-
+	}	
 }
