@@ -177,7 +177,12 @@ public class Graph {
 		}	
 	}
 	
-	public void createAllEdges() {
+	/**
+	 * Creates the necessary edges to calculate the weights, since alpha_ij = alpha_ji
+	 * This means it only creates half the total edges in the whole graph, creates one 
+	 * per connection
+	 */
+	public void createHalfEdges() {
 
 		Set<Node> keys1 = DAG.keySet();
 		
@@ -185,40 +190,73 @@ public class Graph {
 		for (Node key1 : keys1) {
 			
 			boolean found = false;
-			Set<Node> keys2 = DAG.keySet();
-			
+			Set<Node> keys2 = DAG.keySet();	
+			// Runs every node until finding the node we were previously looking for
 			for (Node key2 : keys2) {
 				// if it hasn't found key1, continues the for
 				if (!found && !(key1.getKey()).equals(key2.getKey())) {
 		            continue;
-		        }
-				
+		        }				
 		        found = true;
 		        addEdge(key1, key2, false);	
 			}
 		}	
 	}
+	
+	/**
+	 * Function that calculates the weight of the triangular matrix
+	 * 
+	 * @param scoreModel : score model picked by the user to calculate the weights, LL or MDL
+	 */
 	public void setAllWeights(ScoreModel scoreModel) {
 		
 		int N = TrainData.get_N();
 		int s = TrainData.classRange;
 		
 		Iterator<Map.Entry<Node,List<Edge>>> itr = DAG.entrySet().iterator();
-			
+		
+		// While there are nodes 
 		while (itr.hasNext()) {
 			
 			Map.Entry<Node,List<Edge>> entry = itr.next();
-			
-			for(int i = 0; i < entry.getValue().size(); i++) {
-							
+			// Runs through all the edges of the current node and calculates the weight
+			for(int i = 0; i < entry.getValue().size(); i++) {							
 				double weight = scoreModel.calc_weight(entry.getValue().get(i), entry.getKey(), N, s);
 				entry.getValue().get(i).setWeight(weight);
-			}
-			
-			
-			
+			}			
 		}
-		
-		
 	}
+	
+	/**
+	 * Previously we only set half the weight, so
+	 */
+	public void createCompleteGraph() {
+		Edge edge;
+		Set<Node> keys1 = DAG.keySet();
+		Set<Node> keys2 = DAG.keySet();
+		//Iterator<Map.Entry<Node,List<Edge>>> itr1 = DAG.entrySet().iterator();
+		Iterator<Map.Entry<Node,List<Edge>>> itr2 = DAG.entrySet().iterator();
+		
+		for (Node key1 : keys1){
+			for (Node key2 : keys2){
+				
+				if ((key1).equals(key2)) {
+					break;
+				}				
+				for(int i = 0; i < DAG.get(key2).size(); i++) {	
+					System.out.println("ola");
+					edge = DAG.get(key2).get(i);
+					if((edge.getChild()).equals(key1)) {
+						
+						addEdge(key1, key2, false);
+						double weight = edge.getWeight();
+						DAG.get(key1).get(i).setWeight(weight);
+						System.out.println("1 - " + key1 + "  2 - "+ key2);
+						break;
+					}
+				}
+			}
+		}	
+	}
+	
 }

@@ -44,11 +44,12 @@ public class Main {
 		graph.setTrainData( TrainData );
 		graph.updateNodeCounts();
 		
-		graph.createAllEdges();
+		graph.createHalfEdges();
 		
 		graph.setAllWeights(scoreModel);
-		System.out.println(graph);
 		
+		System.out.println(graph);
+		graph.createCompleteGraph();
 		
 	}
 
