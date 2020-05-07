@@ -14,7 +14,7 @@ import java.util.Iterator;
 public class Graph {
 
 	TrainSet TrainData;
-	private final Map <Node, List<Edge>> DAG;
+	protected Map <Node, List<Edge>> DAG;
 	
 	/**
 	 * Creates the Graph constituted by a HashMap of nodes, where each Node is pointing 

@@ -5,8 +5,7 @@ import java.util.Objects;
 public class Edge {       
 	private final Node child;
 	//TRUE if there is a child and a parent FALSE if undirected graph
-	private boolean directed;
-	private boolean isConnected = false;
+	private boolean connected = false;
 	private boolean directed;//TRUE if child and parent are set; FALSE if undirected graph
 	private double weight; //saves the weight between two nodes based on LL or MDL
 	
@@ -28,11 +27,11 @@ public class Edge {
 	}
 
 	public boolean isConnected() {
-		return isConnected;
+		return connected;
 	}
 
 	public void setConnected(boolean isConnected) {
-		this.isConnected = isConnected;
+		this.connected = isConnected;
 	}
 
 	public double getWeight() {
@@ -45,7 +44,7 @@ public class Edge {
 
 	@Override
 	public String toString() {
-		return "Edge [child=" + child + ", directed=" + directed + ", weight=" + weight + "]";
+		return "Edge [child=" + child + ", connected=" + connected + ", weight=" + weight + "]";
 	}
 
 	@Override

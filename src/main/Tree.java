@@ -19,38 +19,46 @@ public class Tree extends Graph{
 		
 		Iterator<Map.Entry<Node,List<Edge>>> itr = DAG.entrySet().iterator();
 		Map.Entry<Node,List<Edge>> entry = DAG.entrySet().iterator().next();
+		
 		Node root = entry.getKey();
-		//Set<Node> keys = DAG.keySet();
-		List<Edge> currEdges = entry.getValue();
-		Node currNode = root;
-		Node nextNode;
-		
-		while(currEdges.isEmpty()) {
-			currEdges = entry.getValue();
-			entry = itr.next();
-		}
-		
-		root = entry.getKey();
-		currEdges = entry.getValue();
-		currNode = root;
-						
-		//while there are nodes that were not visited
-		while (isDisconnected()) {
-			
-			currNode.setVisited(true);
-			
-			System.out.println("currNode" + currNode);
-			
-			nextNode = getMaximum(currEdges);
-			
-			if(nextNode == null) {
-				currEdges = DAG.get(nextNode);
-				currNode = nextNode;
-			}
+		Node nextNode = root;
+		List<Edge> nextEdges = entry.getValue();
 
+		root.setVisited(true);
+		
+		while (isDisconnected()) {
+			nextNode = getMaximum(nextEdges);
+			
+			nextEdges = DAG.get(nextNode);
+			
+			nextNode.setVisited(true);	
 		}
-	
-		while(itr.hasNext()){
+		
+		//while there are nodes that were not visited
+		/*while (isDisconnected()) {
+			Edge nextMaximum = new Edge(null, false);
+			nextMaximum.setWeight(0);
+			
+			while(itr.hasNext()) {
+				if(entry.getKey().isVisited()) {
+					Edge candidate =  getMaximum(entry.getValue());
+					if(candidate.getWeight() > nextMaximum.getWeight() && candidate.getChild().equals(currEdge)) {
+						nextMaximum = candidate;
+						nextNode = candidate.getChild();
+					}
+				}
+				entry = itr.next();
+				System.out.println(entry);
+			}
+			
+			currEdge = nextNode;
+			nextMaximum.setConnected(true);
+			nextNode.setVisited(true);
+			itr = DAG.entrySet().iterator();
+		}*/
+
+		
+		/*while(itr.hasNext()){
 			entry = itr.next();
 			currEdges = entry.getValue();
 			
@@ -60,28 +68,26 @@ public class Tree extends Graph{
 					super.removeEdge(edge);
 				}
 			}
-		}
+		}*/
 	}
 	
 	private Node getMaximum(List<Edge> edges) {
 		
-		if(edges.isEmpty()) return null;
-
-		System.out.println("currNode" + edges);
-		
-		float maximumWeigth = edges.get(0).getWeight();
-		Edge maximumEdge = edges.get(0);
+		double maximumWeigth = 0;
+		Edge maximumEdge = null;
 		
 		for(Edge edge: edges) {
-			System.out.println("currEdge" + edge);
 			
-			if(edge.getWeight() > maximumWeigth && !edge.isConnected()) {
-				maximumWeigth = edge.getWeight();
-				maximumEdge = edge;
+			if(!edge.getChild().isVisited() && !edge.isConnected()) {
+				if(edge.getWeight() > maximumWeigth) {
+					maximumWeigth = edge.getWeight();
+					maximumEdge = edge;
+				}
 			}
 		}
-		System.out.println("Returned Node" + maximumEdge.getChild());
-		maximumEdge.setConnected(true);
+		
+		maximumEdge.setConnected(true);	
+		
 		return maximumEdge.getChild();
 	}
 	

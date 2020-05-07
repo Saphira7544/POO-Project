@@ -42,36 +42,16 @@ public class Main {
 			System.exit(-1);
 		}
 		
-		/*graph.setTrainData( TrainData );
+		graph.setTrainData( TrainData );
 		graph.updateNodeCounts();
-		
-		g.addNode(node1);
-		g.addNode(node2);
-		g.addNode(node3);
-		g.addEdge(node1, node2, false);
-		g.addEdge(node2, node1, false);
-		g.addEdge(node2, node3, false);
-		g.addEdge(node3, node2, false);
-		g.addEdge(node1, node3, false);
-		g.addEdge(node3, node1, false);
-		
-		
-		g.getDAG().keySet();
-		
-		Tree t = new Tree(g.getDAG());
-		System.out.println(g.getDAG());
-		t.applyPrim();
-		
-		System.out.println(g.getDAG());
+	
 		graph.createAllEdges();
 		
-		graph.setAllWeights(scoreModel);
-		System.out.println(graph);*/
+		graph.setAllWeights(scoreModel);		
 		
-	}
-
-	
-	
-	
-
+		Tree t = new Tree(graph.getDAG());
+		System.out.println(graph);
+		//t.applyPrim();
+		//System.out.println(graph);
+	}	
 }
