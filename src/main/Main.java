@@ -52,9 +52,9 @@ public class Main {
 		
 		Tree t = new Tree(graph.getDAG());
 		
-		System.out.println(graph);
-		
 		t.applyPrim();
+		
+		System.out.println(graph);
 		
 		System.out.println(t);
 

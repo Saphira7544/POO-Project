@@ -1,6 +1,5 @@
 package main;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,12 +16,12 @@ public class Tree extends Graph{
 
 	public void applyPrim() {
 		
-		Iterator<Map.Entry<Node,List<Edge>>> itr = auxDAG.entrySet().iterator();
-		Map.Entry<Node,List<Edge>> entry = auxDAG.entrySet().iterator().next();
+		Map.Entry<Node,List<Edge>> firstEntry = auxDAG.entrySet().stream().findFirst().get();
 		
-		Node root = entry.getKey();
+		Node root = firstEntry.getKey();
+		List<Edge> nextEdges = firstEntry.getValue();
+		
 		Node nextNode = root;
-		List<Edge> nextEdges = entry.getValue();
 
 		root.setVisited(true);
 		super.addNode(root);
