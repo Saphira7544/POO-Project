@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
+
 public class Graph {
-	private final Map <Node, List<Edge>> DAG;
+	protected Map <Node, List<Edge>> DAG;
 	
 	public Graph() {
 		DAG = new HashMap<Node, List<Edge>>();
@@ -33,11 +34,11 @@ public class Graph {
 	    DAG.get(parent).add(newEdge);
 	}
 	
-	/*
-	 * public void removeNode(Node a) { DAG.values().stream().forEach(e ->
-	 * e.remove(a)); DAG.remove(a); }
-	 */
-	
+
+	public void removeEdge(Edge a) { 
+		DAG.values().stream().forEach(e -> e.remove(a)); 
+	}  
+	  
 	@Override
 	public boolean equals(Object obj) {
 		//same position in memory

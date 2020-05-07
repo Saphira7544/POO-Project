@@ -8,6 +8,7 @@ public class Edge {
 	private boolean directed;
 	//saves the weight between two nodes based on LL or MDL
 	private float weight;
+	private boolean isConnected = false;
 	
 	public Edge(Node child, boolean directed) {
 		this.child = child;
@@ -24,6 +25,14 @@ public class Edge {
 
 	public void setDirected(boolean directed) {
 		this.directed = directed;
+	}
+
+	public boolean isConnected() {
+		return isConnected;
+	}
+
+	public void setConnected(boolean isConnected) {
+		this.isConnected = isConnected;
 	}
 
 	public float getWeight() {
