@@ -1,6 +1,5 @@
 package main;
 
-//import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -8,32 +7,33 @@ import java.util.Set;
 public class Tree extends Graph{
 	
 	Node root;
-	protected Map <Node, List<Edge>> DAG;
+	private Map <Node, List<Edge>> auxDAG;
 	
-	public Tree( Map<Node, List<Edge>> DAG ) {
+	public Tree( Map<Node, List<Edge>> auxDAG ) {
 		super();
-		super.DAG = DAG;
+		this.auxDAG = auxDAG;
 	}
 
 	public void applyPrim() {
-		Map <Node, List<Edge>> DAG = getDAG();
 		
-		Map.Entry<Node,List<Edge>> entry = DAG.entrySet().iterator().next();
+		Map.Entry<Node,List<Edge>> firstEntry = auxDAG.entrySet().stream().findFirst().get();
 		
-		Node root = entry.getKey();
+		Node root = firstEntry.getKey();
+		List<Edge> nextEdges = firstEntry.getValue();
+		
 		Node nextNode = root;
-		List<Edge> nextEdges = entry.getValue();
 
 		root.setVisited(true);
+		super.addNode(root);
 		
 		while (isDisconnected()) {
 			nextNode = getMaximum(nextEdges, nextNode);
 			
-			nextEdges = DAG.get(nextNode);
+			nextEdges = auxDAG.get(nextNode);
 			
 			nextNode.setVisited(true);	
 			
-			this.addNode(nextNode);
+			super.addNode(nextNode);
 		}
 	}
 	
@@ -53,13 +53,13 @@ public class Tree extends Graph{
 		}
 		
 		maximumEdge.setConnected(true);
-		this.addEdge(parent, maximumEdge.getChild(), maximumWeigth);
+		super.addEdge(parent, maximumEdge.getChild(), maximumWeigth);
 		
 		return maximumEdge.getChild();
 	}
 	
 	private boolean isDisconnected() {
-		Set<Node> keys = getDAG().keySet();
+		Set<Node> keys = auxDAG.keySet();
 		
 	    for (Node key : keys) {
 	        if (!key.isVisited()) {
@@ -68,27 +68,4 @@ public class Tree extends Graph{
 	    }
 	    return false;
 	}
-	
-	//while there are nodes that were not visited
-			/*while (isDisconnected()) {
-				Edge nextMaximum = new Edge(null, false);
-				nextMaximum.setWeight(0);
-				
-				while(itr.hasNext()) {
-					if(entry.getKey().isVisited()) {
-						Edge candidate =  getMaximum(entry.getValue());
-						if(candidate.getWeight() > nextMaximum.getWeight() && candidate.getChild().equals(currEdge)) {
-							nextMaximum = candidate;
-							nextNode = candidate.getChild();
-						}
-					}
-					entry = itr.next();
-					System.out.println(entry);
-				}
-				
-				currEdge = nextNode;
-				nextMaximum.setConnected(true);
-				nextNode.setVisited(true);
-				itr = DAG.entrySet().iterator();
-			}*/
 }
