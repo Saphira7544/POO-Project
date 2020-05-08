@@ -134,9 +134,7 @@ public class Graph {
 		
 			Inst = TrainData.getInstances().get(k).getArray();
 			C = TrainData.getInstances().get(k).getClassVariable(); 
-			
-			
-			
+
 			updateNodeCountsFromInstance(Inst , C );	
 			
 		}
@@ -152,33 +150,25 @@ public class Graph {
 
 		int nrXs = TrainData.get_n();
 		// Initialise nodes' counts
-		Set<Node> keys = DAG.keySet();
-		
-		
-		
+		Set<Node> keys = DAG.keySet();		
+
 		// Runs by each node considering it as the father
 		for (Node key : keys) {
 			
 			key.Nc[C]++;
 			
 			// Runs every node considering it the son
-			for (int j = 0; j < nrXs; j++) {
+			for (int i = 0; i < nrXs; i++) {
 				
-				if (key.getIndex() == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
-					
-					key.Nijkc[key.getIndex()][0][ Inst[key.getIndex()] ][C] ++;
-					
+				if (key.getIndex() == i) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself					
+					key.Nijkc[i][ 0 ][ Inst[i] ][C] ++;	
 					continue;
 				}	
-				key.Nijkc[j][ Inst[j] ][ Inst[key.getIndex()] ][C] ++;
 				
+				key.Nijkc[i][ Inst[key.getIndex()] ][ Inst[i] ][C] ++;
 			}
 			key.Nijc[Inst[key.getIndex()]][C] ++;
-			//System.out.println(aux2[Inst[key.getIndex()]][C]);
-			//key.setNijc(aux2);		
-			//key.setNijkc(aux);	
-			//System.out.println(key.getNijc()[Inst[key.getIndex()]][C]);
-		}	
+		}
 	}
 	
 	public void createAllEdges() {
@@ -206,19 +196,31 @@ public class Graph {
 		
 		int N = TrainData.get_N();
 		int s = TrainData.classRange;
+		Set<Node> keys = DAG.keySet();
 		
-		Iterator<Map.Entry<Node,List<Edge>>> itr = DAG.entrySet().iterator();
+		for (Node key : keys){
 			
+			for(int i = 0; i < DAG.get(key).size(); i++) {
+				
+				double weight = scoreModel.calc_weight(DAG.get(key).get(i), key, N, s);
+				DAG.get(key).get(i).setWeight(weight);
+			}
+		}
+		
+		
+		/*
+		Iterator<Map.Entry<Node,List<Edge>>> itr = DAG.entrySet().iterator();
+		Map.Entry<Node,List<Edge>> entry;
 		while (itr.hasNext()) {
 			
-			Map.Entry<Node,List<Edge>> entry = itr.next();
+			 entry = itr.next();
 			
 			for(int i = 0; i < entry.getValue().size(); i++) {
 							
 				double weight = scoreModel.calc_weight(entry.getValue().get(i), entry.getKey(), N, s);
 				entry.getValue().get(i).setWeight(weight);
 			}	
-		}
+		}*/
 	}
 	
 	public void createCompleteGraph() {
@@ -248,4 +250,6 @@ public class Graph {
 			}
 		}	
 	}
+	
+	
 }

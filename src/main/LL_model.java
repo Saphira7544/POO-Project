@@ -10,18 +10,19 @@ public class LL_model extends ScoreModel{
 		double weight = 0;
 		int qi = node.getRange();	
 		int ri = edge.getChild().getRange();	
-			
-		for( int j = 0; j < qi; j++ ) { 
-			
-			for( int k = 0; k < ri; k++ ) {
+		//System.out.println("qi - " + qi + " ri - " + ri + " s - " + s );	
 
-				for( int c = 0; c < s; c++ ) {
-					
-					int Nijkc = node.Nijkc[node.getIndex()][j][k][c]; 	
+		for( int j = 0; j < qi+1; j++ ) { 
+			
+			for( int k = 0; k < ri+1; k++ ) {
+
+				for( int c = 0; c <= s; c++ ) {
+
+					int Nijkc = node.Nijkc[edge.getChild().getIndex()][j][k][c]; 	
 					int Nc = node.Nc[c];		
 					int NikcJ = edge.getChild().Nijc[k][c];	
 					int NijcK = node.Nijc[j][c];
-					//System.out.println("Nc - " + Nc + "  Nijkc - " + Nijkc + "  NikcJ - " +NikcJ+ "  NijcK - " +NijcK);	
+					//System.out.println((node.getIndex()+1) + "  N [" + (edge.getChild().getIndex()+1) + "][" + (j+1) + "][" + (k+1) + "][" + (c+1) + "] = " + Nijkc);	
 					if (Nijkc != 0 && Nc != 0) {
 	
 						weight += (double) Nijkc/N *log2((double)(Nijkc*Nc)/(double)(NikcJ*NijcK));
@@ -34,4 +35,6 @@ public class LL_model extends ScoreModel{
 		//System.out.println(weight);		
 		return weight;	
 	}
+	
+	
 }
