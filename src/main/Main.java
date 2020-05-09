@@ -2,7 +2,6 @@ package main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Set;
 
 public class Main {
 	
@@ -45,42 +44,18 @@ public class Main {
 		graph.setTrainData( TrainData );
 		graph.updateNodeCounts();
 		graph.createAllEdges();
-		
-		/*Set<Node> keys1 = graph.getDAG().keySet();
-		
-		for (Node key : keys1){	
-			
-			int qi = key.getRange();	
-			
-			for(int a = 0; a < graph.getDAG().get(key).size(); a++) {
-				int ri = graph.getDAG().get(key).get(a).getChild().getRange();
-				System.out.println(qi);
-				for( int j = 0; j < qi+1; j++ ) { 
-					
-					for( int k = 0; k < ri+1; k++ ) {
-	
-						for( int c = 0; c <= TrainData.classRange; c++ ) {
-							int i = graph.getDAG().get(key).get(a).getChild().getIndex();
-							int Nijkc = key.Nijkc[i][j][k][c];
-							System.out.println((key.getIndex()+1) + "  N [" + (i+1) + "][" + (j+1) + "][" + (k+1) + "][" + (c+1) + "] = " + Nijkc);
-				
-						}		
-					}	
-				}
-			}	
-		}*/
 			
 
 		graph.setAllWeights(scoreModel);	
 		graph.createCompleteGraph();
 		System.out.println(graph);
 		
-		/*
+	
 		Tree t = new Tree(graph.getDAG());
 		
 		t.applyPrim();
 		
-		System.out.println(graph);
-		*/
+		System.out.println(t);
+		
 	}	
 }
