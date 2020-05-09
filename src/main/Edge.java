@@ -4,24 +4,25 @@ import java.util.Objects;
 
 public class Edge {       
 	private final Node child;
-	private boolean directed;//TRUE if child and parent are set; FALSE if undirected graph
+	//TRUE if there is a child and a parent FALSE if undirected graph
+	private boolean connected = false;
 	private double weight; //saves the weight between two nodes based on LL or MDL
 	
-	public Edge(Node child, boolean directed) {
+	public Edge(Node child, double weight) {
 		this.child = child;
-		this.directed = directed;
+		this.weight = weight;
 	}
 
 	public Node getChild() {
 		return child;
 	}
 
-	public boolean isDirected() {
-		return directed;
+	public boolean isConnected() {
+		return connected;
 	}
 
-	public void setDirected(boolean directed) {
-		this.directed = directed;
+	public void setConnected(boolean isConnected) {
+		this.connected = isConnected;
 	}
 
 	public double getWeight() {
@@ -34,12 +35,12 @@ public class Edge {
 
 	@Override
 	public String toString() {
-		return "Edge [child=" + child + ", directed=" + directed + ", weight=" + weight + "]";
+		return "Edge [child=" + child + ", connected=" + connected + ", weight=" + weight + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(child, directed, weight);
+		return Objects.hash(child, connected, weight);
 	}
 
 	@Override
@@ -51,8 +52,10 @@ public class Edge {
 		if (getClass() != obj.getClass())
 			return false;
 		Edge other = (Edge) obj;
-		return Objects.equals(child, other.child) && directed == other.directed;
+		return Objects.equals(child, other.child) && connected == other.connected
+				&& Double.doubleToLongBits(weight) == Double.doubleToLongBits(other.weight);
 	}
+
 	
 	
 	

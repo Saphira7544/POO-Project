@@ -10,10 +10,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 
+
 public class Graph {
 
 	TrainSet TrainData;
-	private final Map <Node, List<Edge>> DAG;
+	protected Map <Node, List<Edge>> DAG;
 	
 	/**
 	 * Creates the Graph constituted by a HashMap of nodes, where each Node is pointing 
@@ -31,7 +32,6 @@ public class Graph {
 		this.TrainData = traindata;
 	}
 	
-	
 	/**
 	 * add in the hash table the key newNode and creates 
 	 * an empty list of edges
@@ -47,17 +47,21 @@ public class Graph {
 	 * @param child node that is going to be saved inside object edge
 	 * @param directed saves
 	 */
-	public void addEdge(Node parent, Node child, boolean directed) {
-		Edge newEdge = new Edge(child, directed); 
+	public void addEdge(Node parent, Node child, double weight) {
+		Edge newEdge = new Edge(child, weight); 
 	    DAG.get(parent).add(newEdge);
 	}
 	
+	public void removeEdge(Edge a) { 
+		DAG.values().stream().forEach(e -> e.remove(a)); 
+	}  
+	  
 	/*
 	 * public void removeNode(Node a) { DAG.values().stream().forEach(e ->
 	 * e.remove(a)); DAG.remove(a); }
 	 */
 	
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		//same position in memory
@@ -130,9 +134,7 @@ public class Graph {
 		
 			Inst = TrainData.getInstances().get(k).getArray();
 			C = TrainData.getInstances().get(k).getClassVariable(); 
-			
-			
-			
+
 			updateNodeCountsFromInstance(Inst , C );	
 			
 		}
@@ -148,33 +150,25 @@ public class Graph {
 
 		int nrXs = TrainData.get_n();
 		// Initialise nodes' counts
-		Set<Node> keys = DAG.keySet();
-		
-		
-		
+		Set<Node> keys = DAG.keySet();		
+
 		// Runs by each node considering it as the father
 		for (Node key : keys) {
 			
 			key.Nc[C]++;
 			
 			// Runs every node considering it the son
-			for (int j = 0; j < nrXs; j++) {
+			for (int i = 0; i < nrXs; i++) {
 				
-				if (key.getIndex() == j) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself
-					
-					key.Nijkc[key.getIndex()][0][ Inst[key.getIndex()] ][C] ++;
-					
+				if (key.getIndex() == i) { // case in which Xi has no parent. We will store this case in the position where node Xi is the parent of itself					
+					key.Nijkc[i][ 0 ][ Inst[i] ][C] ++;	
 					continue;
 				}	
-				key.Nijkc[j][ Inst[j] ][ Inst[key.getIndex()] ][C] ++;
 				
+				key.Nijkc[i][ Inst[key.getIndex()] ][ Inst[i] ][C] ++;
 			}
 			key.Nijc[Inst[key.getIndex()]][C] ++;
-			//System.out.println(aux2[Inst[key.getIndex()]][C]);
-			//key.setNijc(aux2);		
-			//key.setNijkc(aux);	
-			//System.out.println(key.getNijc()[Inst[key.getIndex()]][C]);
-		}	
+		}
 	}
 	
 	/**
@@ -198,7 +192,7 @@ public class Graph {
 		            continue;
 		        }				
 		        found = true;
-		        addEdge(key1, key2, false);	
+		        addEdge(key1, key2, 0);	
 			}
 		}	
 	}
@@ -211,31 +205,41 @@ public class Graph {
 	public void setAllWeights(ScoreModel scoreModel) {
 		
 		int N = TrainData.get_N();
-		int s = TrainData.classRange;
+		int s = TrainData.getClassRange();
+		Set<Node> keys = DAG.keySet();
 		
+		for (Node key : keys){
+			
+			for(int i = 0; i < DAG.get(key).size(); i++) {
+				
+				double weight = scoreModel.calc_weight(DAG.get(key).get(i), key, N, s);
+				DAG.get(key).get(i).setWeight(weight);
+			}
+		}
+		
+		
+		/*
 		Iterator<Map.Entry<Node,List<Edge>>> itr = DAG.entrySet().iterator();
-		
-		// While there are nodes 
+		Map.Entry<Node,List<Edge>> entry;
 		while (itr.hasNext()) {
 			
-			Map.Entry<Node,List<Edge>> entry = itr.next();
-			// Runs through all the edges of the current node and calculates the weight
-			for(int i = 0; i < entry.getValue().size(); i++) {							
+			 entry = itr.next();
+			
+			for(int i = 0; i < entry.getValue().size(); i++) {
+							
 				double weight = scoreModel.calc_weight(entry.getValue().get(i), entry.getKey(), N, s);
 				entry.getValue().get(i).setWeight(weight);
-			}			
-		}
+			}	
+		}*/
 	}
 	
-	/**
-	 * Previously we only set half the weight, so
-	 */
 	public void createCompleteGraph() {
 		Edge edge;
+
 		Set<Node> keys1 = DAG.keySet();
 		Set<Node> keys2 = DAG.keySet();
 		//Iterator<Map.Entry<Node,List<Edge>>> itr1 = DAG.entrySet().iterator();
-		Iterator<Map.Entry<Node,List<Edge>>> itr2 = DAG.entrySet().iterator();
+		//Iterator<Map.Entry<Node,List<Edge>>> itr2 = DAG.entrySet().iterator();
 		
 		for (Node key1 : keys1){
 			for (Node key2 : keys2){
@@ -243,20 +247,19 @@ public class Graph {
 				if ((key1).equals(key2)) {
 					break;
 				}				
+				
 				for(int i = 0; i < DAG.get(key2).size(); i++) {	
-					System.out.println("ola");
+					
 					edge = DAG.get(key2).get(i);
 					if((edge.getChild()).equals(key1)) {
 						
-						addEdge(key1, key2, false);
-						double weight = edge.getWeight();
-						DAG.get(key1).get(i).setWeight(weight);
-						System.out.println("1 - " + key1 + "  2 - "+ key2);
+						addEdge(key1, key2, edge.getWeight());
 						break;
 					}
 				}
 			}
 		}	
 	}
+	
 	
 }
