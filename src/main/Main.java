@@ -75,12 +75,12 @@ public class Main {
 		graph.createCompleteGraph();
 		System.out.println(graph);
 		
-		/*
+		
 		Tree t = new Tree(graph.getDAG());
 		
 		t.applyPrim();
 		
 		System.out.println(graph);
-		*/
+		
 	}	
 }
