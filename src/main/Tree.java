@@ -27,7 +27,10 @@ public class Tree extends Graph{
 		super.addNode(root);
 		
 		while (isDisconnected()) {
+			System.out.println(nextNode + "" + nextEdges);
+			
 			nextNode = getMaximum(nextEdges, nextNode);
+			if(nextNode == null) break;
 			
 			nextEdges = auxDAG.get(nextNode);
 			
@@ -52,10 +55,13 @@ public class Tree extends Graph{
 			}
 		}
 		
-		maximumEdge.setConnected(true);
-		super.addEdge(parent, maximumEdge.getChild(), maximumWeigth);
-		
-		return maximumEdge.getChild();
+		if(maximumEdge != null) {
+			maximumEdge.setConnected(true);
+			super.addEdge(parent, maximumEdge.getChild(), maximumWeigth);
+			
+			return maximumEdge.getChild();
+		}
+		return null;
 	}
 	
 	private boolean isDisconnected() {
