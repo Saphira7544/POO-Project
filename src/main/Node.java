@@ -2,7 +2,6 @@ package main;
 
 import java.util.Objects;
 
-
 public class Node{
 	
 	private final String key;	
@@ -13,29 +12,20 @@ public class Node{
 	int[][][][] Nijkc;
 	int[][] Nijc;
 	int[] Nc;
-	
+	int[] cCounts;
 	
 	public int[] getNc() {
 		return Nc;
 	}
-	public void setNc(int[] nc) {
-		Nc = nc;
-	}
 	public int[][][][] getNijkc() {
 		return Nijkc;
-	}
-	public void setNijkc(int[][][][] nijkc) {
-		Nijkc = nijkc;
-	}
+	}	
 	public int[][] getNijc() {
 		return Nijc;
-	}
-	public void setNijc(int[][] nijc) {
-		Nijc = nijc;
-	}
+	}	
 
-	int[] cCounts;
-	
+	double [][][] theta;
+	int [] theta_c;
 
 	public Node(String key, int range, int index){
 		this.key = key;

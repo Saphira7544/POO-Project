@@ -195,7 +195,7 @@ public class Graph {
 	public void setAllWeights(ScoreModel scoreModel) {
 		
 		int N = TrainData.get_N();
-		int s = TrainData.classRange;
+		int s = TrainData.getClassRange();
 		Set<Node> keys = DAG.keySet();
 		
 		for (Node key : keys){

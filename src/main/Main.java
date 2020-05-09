@@ -44,12 +44,8 @@ public class Main {
 		graph.setTrainData( TrainData );
 		graph.updateNodeCounts();
 		graph.createAllEdges();
-			
-
 		graph.setAllWeights(scoreModel);	
-		graph.createCompleteGraph();
-		System.out.println(graph);
-		
+		graph.createCompleteGraph();		
 		
 		Tree t = new Tree(graph.getDAG());
 		

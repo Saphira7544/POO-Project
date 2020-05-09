@@ -19,7 +19,7 @@ public class FileSet {
 	List<Instance> Instances = new ArrayList<>();
 	int nFeatures = 0;
 	String[] features;
-	public int classRange;
+	private int classRange;
 	
 	
 	public int getClassRange() {

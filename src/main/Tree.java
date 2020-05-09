@@ -74,4 +74,58 @@ public class Tree extends Graph{
 	    }
 	    return false;
 	}
+	
+	/**
+	 * Function that calculates the thetas 
+	 */
+	public void calcThetas() {
+		
+		// Initialise nodes' counts
+		Set<Node> keys = DAG.keySet();
+		double Nlinha = 0.5;
+		int s = TrainData.getClassRange();
+		
+		//Runs every node as parent
+		for (Node key : keys) {
+			//Runs every child of the parent node
+			for(int i = 0; i < DAG.get(key).size(); i++) {
+				Node child = DAG.get(key).get(i).getChild();
+				
+				// Initialises the theta in the child node
+				child.theta = new double [key.getRange()][child.getRange()][s];
+				
+				
+				int qi = key.getRange(); // Parent's range
+				int ri = DAG.get(key).get(i).getChild().getRange();	// Child's range
+	
+				for( int j = 0; j < qi+1; j++ ) { 
+					
+					for( int k = 0; k < ri+1; k++ ) {
+	
+						for( int c = 0; c <= s; c++ ) {
+							
+							int Nijkc = child.Nijkc[child.getRange()][j][k][c];
+							int Nijc_K = child.Nijc[j][c];
+							child.theta[j][k][c] = (Nijkc + Nlinha) / (Nijc_K + ri*Nlinha);
+						
+							
+						}
+					}
+				}
+			}
+		}
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// COLOCAR AQUI O UPDATE DO THETA_C
+		// PARA O CLASS NODE CRIADO PARA SER
+		// PAI DE TODA A TREE
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		/* 
+	 	int N = TrainData.get_N();
+	 	for ( int c = 0; c <= s; c++ ){
+	 		int Nc = ClassNode.Nc[c];
+			classNode.theta_c = ( Nc + Nlinha )/( N + s*Nlinha);
+		}
+		*/
+	}
+	
 }
