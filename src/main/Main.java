@@ -48,13 +48,12 @@ public class Main {
 
 		graph.setAllWeights(scoreModel);	
 
-		graph.createCompleteGraph();		
+		graph.createCompleteGraph();	
 
 		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());
 
 		tree.applyPrim();
 		tree.createTAN(TrainData.getClassRange());
-		tree.calcThetaC(TrainData.get_N());
 		
 		System.out.println(tree);		
 		

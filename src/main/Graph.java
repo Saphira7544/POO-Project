@@ -155,7 +155,7 @@ public class Graph {
 	 * @param Inst : Instance, line of values from the Train Data
 	 * @param C :  Class Variable from a certain line in the Train Data
 	 */
-	private void updateNodeCountsFromInstance( int[] Inst, int C) {
+	private void updateNodeCountsFromInstance(int[] Inst, int C) {
 
 		int nrXs = TrainData.get_n();
 		// Initialise nodes' counts
