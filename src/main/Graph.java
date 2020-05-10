@@ -125,7 +125,7 @@ public class Graph {
 			for (int j = 0; j < nrXs; j++) {
 				// Initialise all possible values of Nijkc for each son
 				
-				key.Nijkc[j] = new int[TrainData.getRange(j)+1][key.getRange()+1][nrClass+1];
+				key.Nijkc[j] = new int[key.getRange()+1][TrainData.getRange(j)+1][nrClass+1];
 			}
 			// Initialise all possible values of Nijc and Nc
 			key.Nijc = new int[key.getRange()+1][nrClass+1];

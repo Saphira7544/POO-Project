@@ -22,7 +22,7 @@ public class Node{
 		return Nijc;
 	}	
 
-	double [][][] theta;
+	double [][][][] theta;
 	
 	public int[] getNc() {
 		return Nc;

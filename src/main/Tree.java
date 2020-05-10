@@ -99,17 +99,18 @@ public class Tree extends Graph{
 		// Initialise nodes' counts
 		Set<Node> keys = DAG.keySet();
 		double Nlinha = 0.5;
-		int s = classNode.getRange();
+		int s = 1;
 		
 		//Runs every node as parent
 		for (Node key : keys) {
+			
 			//Runs every child of the parent node
 			for(int i = 0; i < DAG.get(key).size(); i++) {
 				Node child = DAG.get(key).get(i).getChild();
-				
-				// Initialises the size of theta in the child node
-				child.theta = new double [key.getRange()][child.getRange()][s];
-				
+				// Initialises the size of theta in the parent node
+				//				nr. of possible children   range of parent   child range		  class range
+				key.theta = new double [TrainData.get_n()][key.getRange()+1][child.getRange()+1][s+1];
+			
 				int qi = key.getRange(); // Parent's range
 				int ri = DAG.get(key).get(i).getChild().getRange();	// Child's range
 	
@@ -119,9 +120,11 @@ public class Tree extends Graph{
 	
 						for( int c = 0; c <= s; c++ ) {
 							
-							int Nijkc = child.Nijkc[child.getRange()][j][k][c];
+							int Nijkc = child.Nijkc[child.getIndex()][j][k][c];
 							int Nijc_K = child.Nijc[j][c];
-							child.theta[j][k][c] = (Nijkc + Nlinha) / (Nijc_K + ri*Nlinha);						
+							child.theta[child.getIndex()][j][k][c] = (Nijkc + Nlinha) / (Nijc_K + ri*Nlinha);	
+							
+							System.out.println("Theta["+child.getIndex()+"]["+(j+1)+"]["+(k+1)+"]["+(c+1)+"] = "+ child.theta[j][k][c]);
 						}
 					}
 				}

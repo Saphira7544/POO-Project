@@ -48,7 +48,7 @@ public class Main {
 		graph.setTrainData( TrainData );
 
 		graph.updateNodeCounts();
-		graph.createAllEdges();
+		graph.createHalfEdges();
 
 		graph.setAllWeights(scoreModel);	
 
@@ -57,27 +57,27 @@ public class Main {
 		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());
 
 		tree.applyPrim();
-		tree.createTAN(TrainData.getClassRange());
-		tree.calcThetaC(TrainData.get_N());
 		
 		System.out.println(tree);		
 		
 		long endtime1 = System.currentTimeMillis();
-		System.out.println(t);
 		
 		// RESULTS //
-		Set<Node> keys = t.getDAG().keySet();
+		Set<Node> keys = tree.getDAG().keySet();
 		System.out.println("Classifier: \n	Parent : Child");
 		
 		for(Node key:keys) {
-			for(int i = 0; i < t.getDAG().get(key).size(); i++) {
-				Node child = t.getDAG().get(key).get(i).getChild();
+			for(int i = 0; i < tree.getDAG().get(key).size(); i++) {
+				Node child = tree.getDAG().get(key).get(i).getChild();
 				System.out.println( "	" + key + " : " + child.getKey());
 			}
 		}
 		
 		System.out.println("Time to build:\n	" + (endtime1 - starttime1) / 1000.0 + " seconds");
 		
+		tree.createTAN(TrainData.getClassRange());
+		tree.calcThetas();
+		tree.calcThetaC(TrainData.get_N());
 		
 	}	
 }
