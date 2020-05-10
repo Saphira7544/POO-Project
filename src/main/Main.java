@@ -50,16 +50,15 @@ public class Main {
 
 		graph.createCompleteGraph();		
 
-		Tree tree = new Tree(graph.getDAG());
+		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());
 
 		tree.applyPrim();
 		tree.createTAN(TrainData.getClassRange());
 		tree.calcThetaC(TrainData.get_N());
 		
 		System.out.println(tree);		
-		System.out.println(tree.getClassNode().Nc[0]); 
 		
-		tree.calcThetas(); //dá null exception
+		tree.calcThetas(); //dá null pointer exception
 
 		
 

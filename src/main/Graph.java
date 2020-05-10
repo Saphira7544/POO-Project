@@ -12,6 +12,8 @@ public class Graph {
 
 	TrainSet TrainData;
 	protected Map <Node, List<Edge>> DAG;
+	protected Node classNode;
+
 	
 	/**
 	 * Creates the Graph constituted by a HashMap of nodes, where each Node is pointing 
@@ -27,6 +29,8 @@ public class Graph {
 	 */
 	public void setTrainData(TrainSet traindata) {
 		this.TrainData = traindata;
+		classNode = new Node("C", traindata.getClassRange(), -1);
+		
 	}
 	
 	/**
@@ -52,6 +56,10 @@ public class Graph {
 	public void removeEdge(Edge a) { 
 		DAG.values().stream().forEach(e -> e.remove(a)); 
 	}  
+	
+	public Node getClassNode() {
+		return classNode;
+	}
 	  
 	/*
 	 * public void removeNode(Node a) { DAG.values().stream().forEach(e ->
@@ -125,12 +133,16 @@ public class Graph {
 		}
 		
 		int[] Inst = new int[TrainData.get_n()];
+		classNode.Nc = new int[TrainData.getClassRange()+1];
 		int C = 0;
 		// For every line of the Train Data, increments the values of the corresponding N
 		for (int k = 0; k < TrainData.get_N(); k++) {
 		
 			Inst = TrainData.getInstances().get(k).getArray();
 			C = TrainData.getInstances().get(k).getClassVariable(); 
+			
+			classNode.Nc[C]++;
+			//System.out.println(classNode.Nc[C]);
 
 			updateNodeCountsFromInstance(Inst , C );	
 			
@@ -148,6 +160,7 @@ public class Graph {
 		int nrXs = TrainData.get_n();
 		// Initialise nodes' counts
 		Set<Node> keys = DAG.keySet();	
+		
 
 		// Runs by each node considering it as the father
 		for (Node key : keys) {

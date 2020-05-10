@@ -8,10 +8,10 @@ public class Tree extends Graph{
 	
 	Node root;
 	private Map <Node, List<Edge>> auxDAG;
-	private Node classNode;
 	
-	public Tree( Map<Node, List<Edge>> auxDAG) {
+	public Tree( Map<Node, List<Edge>> auxDAG, Node classNode ) {
 		super();
+		super.classNode = classNode;
 		this.auxDAG = auxDAG;
 	}
 
@@ -80,9 +80,7 @@ public class Tree extends Graph{
 		// Initialise nodes' counts
 		Set<Node> keys = DAG.keySet();
 		
-		classNode = new Node("C", s, -1);
-		classNode.Nc= new int [s+1];	
-		classNode.theta_c= new double [s+1];	
+		classNode.theta_c = new double [s+1];	
 
 		super.addNode(classNode);
 		
@@ -135,11 +133,13 @@ public class Tree extends Graph{
 	public void calcThetaC(int N) {
 		
 		double Nlinha = 0.5;
-		int s = classNode.getRange();
+		int s = classNode.getRange()+1;
 		
-	 	for ( int c = 0; c <= s; c++ ){
+	 	for ( int c = 0; c < s; c++ ){
 	 		int Nc = classNode.Nc[c];
 	 		classNode.theta_c[c] = ( Nc + Nlinha )/( N + s*Nlinha);
+	 		System.out.println("Nc:" + Nc + "  N: "+ N + "  s:" + s);
+	 		System.out.println(classNode.theta_c[c]);
 		}
 	}
 
@@ -153,9 +153,4 @@ public class Tree extends Graph{
 		
 		return listS;
 	}
-
-	public Node getClassNode() {
-		return classNode;
-	}
-	
 }
