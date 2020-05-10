@@ -46,17 +46,18 @@ public class Main {
 		
 		
 		graph.setTrainData( TrainData );
-
-		graph.updateNodeCounts();
-		graph.createHalfEdges();
-
+		graph.updateNodeCounts();	
+		graph.createAllEdges();
 		graph.setAllWeights(scoreModel);	
-
 		graph.createCompleteGraph();	
+		
+		System.out.println(graph);		
 
 		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());
 
 		tree.applyPrim();
+		tree.createTAN(TrainData.getClassRange());
+
 		
 		System.out.println(tree);		
 		
@@ -67,6 +68,9 @@ public class Main {
 		System.out.println("Classifier: \n	Parent : Child");
 		
 		for(Node key:keys) {
+			if(key.getIndex() == -1) {
+				break;
+			}
 			for(int i = 0; i < tree.getDAG().get(key).size(); i++) {
 				Node child = tree.getDAG().get(key).get(i).getChild();
 				System.out.println( "	" + key + " : " + child.getKey());
@@ -75,9 +79,8 @@ public class Main {
 		
 		System.out.println("Time to build:\n	" + (endtime1 - starttime1) / 1000.0 + " seconds");
 		
-		tree.createTAN(TrainData.getClassRange());
-		tree.calcThetas();
-		tree.calcThetaC(TrainData.get_N());
+		//tree.calcThetas();
+		//tree.calcThetaC(TrainData.get_N());
 		
 	}	
 }
