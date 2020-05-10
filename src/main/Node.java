@@ -48,6 +48,11 @@ public class Node{
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash(index+1);
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -56,7 +61,7 @@ public class Node{
 		if (getClass() != obj.getClass())
 			return false;
 		Node other = (Node) obj;
-		return Objects.equals(key, other.key) & Objects.equals(range, other.range);
+		return index == other.index;
 	}
 		
 	@Override
