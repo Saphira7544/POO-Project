@@ -8,6 +8,7 @@ public class Tree extends Graph{
 	
 	Node root;
 	private Map <Node, List<Edge>> auxDAG;
+	TrainSet TrainData;
 	
 	public Tree( Map<Node, List<Edge>> auxDAG, Node classNode ) {
 		super();
@@ -21,7 +22,7 @@ public class Tree extends Graph{
 		Set<Node> keys = auxDAG.keySet();
 		
 		
-		Node root = firstEntry.getKey();
+		root = firstEntry.getKey();
 		Node parent = root;		
 		Node child = root;
 
@@ -103,52 +104,79 @@ public class Tree extends Graph{
 	 * Function that calculates the thetas 
 	 */
 	public void calcThetas() {
-		
+		this.TrainData = super.TrainData;
 		// Initialise nodes' counts
 		Set<Node> keys = DAG.keySet();
 		double Nlinha = 0.5;
-		int s = 1;
+		int s = classNode.getRange();
 		
-		calcThetaC(super.TrainData.get_N());
+		calcThetaC();
 		
 		//Runs every node as parent
 		for (Node key : keys) {
 			
+			// Class node now belongs in the keys, we need to stop the loop when it finds the class node
+			if(key.getIndex() == -1) {	// since the class node has index -1, it's always in the end
+				break;
+			}	
+			
+			if(key.equals(root)) {
+				key.theta = new double [key.getIndex()+1][key.getIndex()+1][key.getRange()+1][s+1];
+				
+				for( int k = 0; k < key.getRange()+1; k++ ) {
+					for( int c = 0; c <= s; c++ ) {
+						int Nijkc = key.Nijkc[key.getIndex()][key.getIndex()][k][c];							
+						int Nijc_K = classNode.Nc[c];//key.Nijc[j][c];
+						
+						key.theta[key.getIndex()][key.getIndex()][k][c] = (Nijkc + Nlinha) / (Nijc_K + (key.getRange()+1)*Nlinha);	
+					}
+				}					
+			}
+			
 			//Runs every child of the parent node
 			for(int i = 0; i < DAG.get(key).size(); i++) {
+				
 				Node child = DAG.get(key).get(i).getChild();
 				// Initialises the size of theta in the parent node
-				//				nr. of possible children   range of parent   child range		  class range
-				key.theta = new double [TrainData.get_n()][key.getRange()+1][child.getRange()+1][s+1];
-			
+				//				 nr. of possible children   range of parent   child range		  class range
+				key.theta = new double [TrainData.get_n()+1][key.getRange()+1][child.getRange()+1][s+1];
+				
 				int qi = key.getRange(); // Parent's range
-				int ri = DAG.get(key).get(i).getChild().getRange();	// Child's range
-	
+				int ri = child.getRange();	// Child's range
+		
 				for( int j = 0; j < qi+1; j++ ) { 
 					
 					for( int k = 0; k < ri+1; k++ ) {
 	
 						for( int c = 0; c <= s; c++ ) {
-							
-							int Nijkc = child.Nijkc[child.getIndex()][j][k][c];
-							int Nijc_K = child.Nijc[j][c];
-							child.theta[child.getIndex()][j][k][c] = (Nijkc + Nlinha) / (Nijc_K + ri*Nlinha);	
-							
-							System.out.println("Theta["+child.getIndex()+"]["+(j+1)+"]["+(k+1)+"]["+(c+1)+"] = "+ child.theta[j][k][c]);
+		
+							int Nijkc = key.Nijkc[child.getIndex()][j][k][c];							
+							int Nijc_K = key.Nijc[j][c];
+
+							key.theta[child.getIndex()][j][k][c] = (Nijkc + Nlinha) / (Nijc_K + (ri+1)*Nlinha);								
+							//System.out.println("Theta["+(child.getIndex()+1)+"]["+(j+1)+"]["+(k+1)+"]["+(c+1)+"] = "+ key.theta[child.getIndex()][j][k][c]);
+							//System.out.println("	" + (key.getIndex()+1) + "  N [" + (child.getIndex()+1) + "][" + (j+1) + "][" + (k+1) + "][" + (c+1) + "] = " + Nijkc);
+							//System.out.println( "	NijcK [" + (j+1) + "][" + (c+1) + "] = " + Nijc_K);
+							//System.out.println("	" +  ri);
+						
+						
 						}
+						
+						
 					}
 				}
 			}
 		}
 	}
-	private void calcThetaC(int N) {
-		
+	private void calcThetaC() {
+		int N = TrainData.get_N();
 		double Nlinha = 0.5;
 		int s = classNode.getRange()+1;
 		
 	 	for ( int c = 0; c < s; c++ ){
 	 		int Nc = classNode.Nc[c];
 	 		classNode.theta_c[c] = ( Nc + Nlinha )/( N + s*Nlinha);
+	 		System.out.println(classNode.theta_c[c]);
 		}
 	}
 

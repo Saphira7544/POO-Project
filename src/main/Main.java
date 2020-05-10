@@ -47,14 +47,15 @@ public class Main {
 		
 		graph.setTrainData( TrainData );
 		graph.updateNodeCounts();	
-		graph.createAllEdges();
+		graph.createHalfEdges();
 		graph.setAllWeights(scoreModel);	
 		graph.createCompleteGraph();	
 		
 		System.out.println(graph);		
 
 		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());
-
+		
+		tree.setTrainData(TrainData);
 		tree.applyPrim();
 		tree.createTAN(TrainData.getClassRange());
 
@@ -79,7 +80,7 @@ public class Main {
 		
 		System.out.println("Time to build:\n	" + (endtime1 - starttime1) / 1000.0 + " seconds");
 		
-		//tree.calcThetas();
+		tree.calcThetas();
 		//tree.calcThetaC(TrainData.get_N());
 		
 	}	

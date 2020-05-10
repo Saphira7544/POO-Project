@@ -15,7 +15,7 @@ public class Node{
 	int[] cCounts;
 	
 	
-	double [][][] theta;
+	double[][][][] theta;
 	
 	public int[] getNc() {
 		return Nc;
@@ -46,11 +46,6 @@ public class Node{
 	public int getRange() {
 		return range;
 	}
-	
-	@Override
-    public int hashCode() {
-        return Objects.hash(index+1);
-    }
 	
 	@Override
 	public int hashCode() {

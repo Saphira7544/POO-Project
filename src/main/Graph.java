@@ -29,8 +29,6 @@ public class Graph {
 	 */
 	public void setTrainData(TrainSet traindata) {
 		this.TrainData = traindata;
-		classNode = new Node("C", traindata.getClassRange(), -1);
-		
 	}
 	
 	/**
@@ -111,7 +109,8 @@ public class Graph {
 	 * the remaining nodes are the son, and Initialises the several Ns for that case.
 	 */
 	public void updateNodeCounts()  {
-	
+		classNode = new Node("C", TrainData.getClassRange(), -1);		
+
 		int nrXs = TrainData.get_n(); 
 		int nrClass = TrainData.getClassRange();
 		

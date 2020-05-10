@@ -36,7 +36,7 @@ public class NaiveBayesClassifier {
 					// gets from the test file the yi equivalent to the son's index
 					int k = TestInst[key.getIndex()];
 					
-					P_B *= child.theta[j][k][c];
+					P_B *= key.theta[child.getIndex()][j][k][c];
 				}
 			}
 			

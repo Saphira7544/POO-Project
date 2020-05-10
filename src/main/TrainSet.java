@@ -23,11 +23,11 @@ public class TrainSet extends FileSet{
 		for(int i = 0; i < Instances.size()  ; i++) {			
 			for(int j = 0; j < nFeatures; j++) {
 				if(Instances.get(i).getValue(j) > ranges[j]) {
-					ranges[j] = Instances.get(i).getValue(j)+1;
+					ranges[j] = Instances.get(i).getValue(j);
 				}
 			}
 		}
-		
+		System.out.println(ranges[0] + " " + ranges[1] + " " + ranges[2]);
 		// Creates a new node for each feature and adds it to the graph
 		for(int a = 0; a < nFeatures ; a++) {
 			newNode = new Node(features[a], ranges[a], a);
