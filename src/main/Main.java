@@ -46,14 +46,21 @@ public class Main {
 		
 		
 		graph.setTrainData( TrainData );
+
 		graph.updateNodeCounts();
-		graph.createHalfEdges();
+		graph.createAllEdges();
+
 		graph.setAllWeights(scoreModel);	
+
 		graph.createCompleteGraph();		
+
+		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());
+
+		tree.applyPrim();
+		tree.createTAN(TrainData.getClassRange());
+		tree.calcThetaC(TrainData.get_N());
 		
-		Tree t = new Tree(graph.getDAG());
-		
-		t.applyPrim();
+		System.out.println(tree);		
 		
 		long endtime1 = System.currentTimeMillis();
 		System.out.println(t);
