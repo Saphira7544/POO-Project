@@ -8,8 +8,9 @@ public class Tree extends Graph{
 	
 	Node root;
 	private Map <Node, List<Edge>> auxDAG;
+	private Node classNode;
 	
-	public Tree( Map<Node, List<Edge>> auxDAG ) {
+	public Tree( Map<Node, List<Edge>> auxDAG) {
 		super();
 		this.auxDAG = auxDAG;
 	}
@@ -22,15 +23,13 @@ public class Tree extends Graph{
 		List<Edge> nextEdges = firstEntry.getValue();
 		
 		Node nextNode = root;
-
-		root.setVisited(true);
+		
+		root.setVisited(true);	
 		super.addNode(root);
 		
 		while (isDisconnected()) {
-			System.out.println(nextNode + "" + nextEdges);
 			
 			nextNode = getMaximum(nextEdges, nextNode);
-			if(nextNode == null) break;
 			
 			nextEdges = auxDAG.get(nextNode);
 			
@@ -47,21 +46,22 @@ public class Tree extends Graph{
 		
 		for(Edge edge: edges) {
 			
-			if(!edge.getChild().isVisited() && !edge.isConnected()) {
-				if(edge.getWeight() > maximumWeigth) {
+			if(!edge.getChild().isVisited() && !edge.isConnected()){
+				if(edge.getWeight() >= maximumWeigth) {
 					maximumWeigth = edge.getWeight();
 					maximumEdge = edge;
 				}
 			}
 		}
 		
-		if(maximumEdge != null) {
-			maximumEdge.setConnected(true);
-			super.addEdge(parent, maximumEdge.getChild(), maximumWeigth);
-			
-			return maximumEdge.getChild();
-		}
-		return null;
+		//if(maximumEdge != null) {
+
+		maximumEdge.setConnected(true);
+		super.addEdge(parent, maximumEdge.getChild(), maximumWeigth);
+		
+		return maximumEdge.getChild();
+		//}
+		//return null;
 	}
 	
 	private boolean isDisconnected() {
@@ -75,6 +75,24 @@ public class Tree extends Graph{
 	    return false;
 	}
 	
+	public void createTAN(int s) {
+		
+		// Initialise nodes' counts
+		Set<Node> keys = DAG.keySet();
+		
+		classNode = new Node("C", s, -1);
+		classNode.Nc= new int [s+1];	
+		classNode.theta_c= new double [s+1];	
+
+		super.addNode(classNode);
+		
+		//Runs every node as parent
+		for (Node key : keys) {
+			super.addEdge(classNode, key, -1);
+		}
+
+	}
+		
 	/**
 	 * Function that calculates the thetas 
 	 */
@@ -83,7 +101,7 @@ public class Tree extends Graph{
 		// Initialise nodes' counts
 		Set<Node> keys = DAG.keySet();
 		double Nlinha = 0.5;
-		int s = TrainData.getClassRange();
+		int s = classNode.getRange();
 		
 		//Runs every node as parent
 		for (Node key : keys) {
@@ -93,7 +111,6 @@ public class Tree extends Graph{
 				
 				// Initialises the theta in the child node
 				child.theta = new double [key.getRange()][child.getRange()][s];
-				
 				
 				int qi = key.getRange(); // Parent's range
 				int ri = DAG.get(key).get(i).getChild().getRange();	// Child's range
@@ -114,18 +131,31 @@ public class Tree extends Graph{
 				}
 			}
 		}
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// COLOCAR AQUI O UPDATE DO THETA_C
-		// PARA O CLASS NODE CRIADO PARA SER
-		// PAI DE TODA A TREE
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		/* 
-	 	int N = TrainData.get_N();
+	}
+	public void calcThetaC(int N) {
+		
+		double Nlinha = 0.5;
+		int s = classNode.getRange();
+		
 	 	for ( int c = 0; c <= s; c++ ){
-	 		int Nc = ClassNode.Nc[c];
-			classNode.theta_c = ( Nc + Nlinha )/( N + s*Nlinha);
+	 		int Nc = classNode.Nc[c];
+	 		classNode.theta_c[c] = ( Nc + Nlinha )/( N + s*Nlinha);
 		}
-		*/
+	}
+
+	@Override
+	public String toString() {
+		String listS = new String("Tree \n");
+			
+		for (Node N: DAG.keySet()){
+			listS += N.toString() + "=" + DAG.get(N).toString() + "\n";
+		} 
+		
+		return listS;
+	}
+
+	public Node getClassNode() {
+		return classNode;
 	}
 	
 }

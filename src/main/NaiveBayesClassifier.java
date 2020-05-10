@@ -13,6 +13,7 @@ public class NaiveBayesClassifier {
 		
 		// Initialise nodes' counts
 		Set<Node> keys = tree.getDAG().keySet();
+		Node classNode =  tree.getClassNode(); 
 		double highestProb = 0;
 		
 		for (int c = 0; c < TrainData.getClassRange(); c++) {
@@ -21,8 +22,7 @@ public class NaiveBayesClassifier {
 			
 			for (Node key : keys) {
 				
-				
-				//P_B *= classNode.theta_c[c]; //ALTERAR ISTO PARA O QUE A AMARO FIZER
+				P_B *= classNode.theta_c[c]; //ALTERAR ISTO PARA O QUE A AMARO FIZER
 				
 				// Running through the edges of a certain node
 				for(int i = 0; i < tree.getDAG().get(key).size(); i++) {

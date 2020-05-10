@@ -7,9 +7,6 @@ import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-
-
 
 public class Graph {
 
@@ -150,7 +147,7 @@ public class Graph {
 
 		int nrXs = TrainData.get_n();
 		// Initialise nodes' counts
-		Set<Node> keys = DAG.keySet();		
+		Set<Node> keys = DAG.keySet();	
 
 		// Runs by each node considering it as the father
 		for (Node key : keys) {
@@ -206,21 +203,6 @@ public class Graph {
 				DAG.get(key).get(i).setWeight(weight);
 			}
 		}
-		
-		
-		/*
-		Iterator<Map.Entry<Node,List<Edge>>> itr = DAG.entrySet().iterator();
-		Map.Entry<Node,List<Edge>> entry;
-		while (itr.hasNext()) {
-			
-			 entry = itr.next();
-			
-			for(int i = 0; i < entry.getValue().size(); i++) {
-							
-				double weight = scoreModel.calc_weight(entry.getValue().get(i), entry.getKey(), N, s);
-				entry.getValue().get(i).setWeight(weight);
-			}	
-		}*/
 	}
 	
 	public void createCompleteGraph() {
@@ -228,8 +210,6 @@ public class Graph {
 
 		Set<Node> keys1 = DAG.keySet();
 		Set<Node> keys2 = DAG.keySet();
-		//Iterator<Map.Entry<Node,List<Edge>>> itr1 = DAG.entrySet().iterator();
-		//Iterator<Map.Entry<Node,List<Edge>>> itr2 = DAG.entrySet().iterator();
 		
 		for (Node key1 : keys1){
 			for (Node key2 : keys2){

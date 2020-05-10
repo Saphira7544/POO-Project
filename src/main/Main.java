@@ -42,16 +42,26 @@ public class Main {
 		}
 		
 		graph.setTrainData( TrainData );
+
 		graph.updateNodeCounts();
 		graph.createAllEdges();
+
 		graph.setAllWeights(scoreModel);	
+
 		graph.createCompleteGraph();		
+
+		Tree tree = new Tree(graph.getDAG());
+
+		tree.applyPrim();
+		tree.createTAN(TrainData.getClassRange());
+		tree.calcThetaC(TrainData.get_N());
 		
-		Tree t = new Tree(graph.getDAG());
+		System.out.println(tree);		
+		System.out.println(tree.getClassNode().Nc[0]); 
 		
-		t.applyPrim();
+		tree.calcThetas(); //dá null exception
+
 		
-		System.out.println(t);
-		
+
 	}	
 }

@@ -14,9 +14,7 @@ public class Node{
 	int[] Nc;
 	int[] cCounts;
 	
-	public int[] getNc() {
-		return Nc;
-	}
+	
 	public int[][][][] getNijkc() {
 		return Nijkc;
 	}	
@@ -25,7 +23,11 @@ public class Node{
 	}	
 
 	double [][][] theta;
-	int [] theta_c;
+	
+	public int[] getNc() {
+		return Nc;
+	}
+	double [] theta_c;
 
 	public Node(String key, int range, int index){
 		this.key = key;
