@@ -52,7 +52,7 @@ public class Main {
 
 		graph.setAllWeights(scoreModel);	
 
-		graph.createCompleteGraph();		
+		graph.createCompleteGraph();	
 
 		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());
 

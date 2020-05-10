@@ -18,28 +18,42 @@ public class Tree extends Graph{
 	public void applyPrim() {
 		
 		Map.Entry<Node,List<Edge>> firstEntry = auxDAG.entrySet().stream().findFirst().get();
+		Set<Node> keys = auxDAG.keySet();
+		
 		
 		Node root = firstEntry.getKey();
-		List<Edge> nextEdges = firstEntry.getValue();
-		
-		Node nextNode = root;
-		
+		Node parent = root;		
+		Node child = root;
+
+			
 		root.setVisited(true);	
 		super.addNode(root);
 		
 		while (isDisconnected()) {
+			Edge maximumEdge = new Edge(null, 0);
+			Edge candidateEdge = new Edge(null, 0);
 			
-			nextNode = getMaximum(nextEdges, nextNode);
+			for (Node key : keys) {
+				if (key.isVisited()) {
+					candidateEdge = getMaximum(auxDAG.get(key), key);
+					
+					if (candidateEdge.getWeight() >= maximumEdge.getWeight()) {
+						parent = key;
+						child = candidateEdge.getChild();
+						maximumEdge = candidateEdge;
+	                }
+	        	}
+	        }
+						
+			child.setVisited(true);	
+			maximumEdge.setConnected(true);
 			
-			nextEdges = auxDAG.get(nextNode);
-			
-			nextNode.setVisited(true);	
-			
-			super.addNode(nextNode);
+			super.addEdge(parent, child, maximumEdge.getWeight());
+			super.addNode(child);
 		}
 	}
 	
-	private Node getMaximum(List<Edge> edges, Node parent) {
+	private Edge getMaximum(List<Edge> edges, Node parent) {
 		
 		double maximumWeigth = 0;
 		Edge maximumEdge = null;
@@ -53,15 +67,9 @@ public class Tree extends Graph{
 				}
 			}
 		}
-		
-		//if(maximumEdge != null) {
+	
+		return maximumEdge;
 
-		maximumEdge.setConnected(true);
-		super.addEdge(parent, maximumEdge.getChild(), maximumWeigth);
-		
-		return maximumEdge.getChild();
-		//}
-		//return null;
 	}
 	
 	private boolean isDisconnected() {
@@ -101,6 +109,8 @@ public class Tree extends Graph{
 		double Nlinha = 0.5;
 		int s = 1;
 		
+		calcThetaC(super.TrainData.get_N());
+		
 		//Runs every node as parent
 		for (Node key : keys) {
 			
@@ -131,7 +141,7 @@ public class Tree extends Graph{
 			}
 		}
 	}
-	public void calcThetaC(int N) {
+	private void calcThetaC(int N) {
 		
 		double Nlinha = 0.5;
 		int s = classNode.getRange()+1;
@@ -139,8 +149,6 @@ public class Tree extends Graph{
 	 	for ( int c = 0; c < s; c++ ){
 	 		int Nc = classNode.Nc[c];
 	 		classNode.theta_c[c] = ( Nc + Nlinha )/( N + s*Nlinha);
-	 		System.out.println("Nc:" + Nc + "  N: "+ N + "  s:" + s);
-	 		System.out.println(classNode.theta_c[c]);
 		}
 	}
 

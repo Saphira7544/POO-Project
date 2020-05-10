@@ -15,14 +15,7 @@ public class Node{
 	int[] cCounts;
 	
 	
-	public int[][][][] getNijkc() {
-		return Nijkc;
-	}	
-	public int[][] getNijc() {
-		return Nijc;
-	}	
-
-	double [][][][] theta;
+	double [][][] theta;
 	
 	public int[] getNc() {
 		return Nc;
