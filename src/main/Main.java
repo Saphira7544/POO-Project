@@ -2,6 +2,7 @@ package main;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Set;
 
 public class Main {
 	
@@ -17,8 +18,10 @@ public class Main {
 			System.exit(-1);
 		}
 		
-		File TrainFile = new File(args[0]);
+		// Start counting the time it takes to build the TANBC
+		long starttime1 = System.currentTimeMillis();
 		
+		File TrainFile = new File(args[0]);		
 		TrainSet TrainData = null;
 		try {	
 		//Graph g = new Graph();
@@ -41,9 +44,10 @@ public class Main {
 			System.exit(-1);
 		}
 		
+		
 		graph.setTrainData( TrainData );
 		graph.updateNodeCounts();
-		graph.createAllEdges();
+		graph.createHalfEdges();
 		graph.setAllWeights(scoreModel);	
 		graph.createCompleteGraph();		
 		
@@ -51,7 +55,22 @@ public class Main {
 		
 		t.applyPrim();
 		
+		long endtime1 = System.currentTimeMillis();
 		System.out.println(t);
+		
+		// RESULTS //
+		Set<Node> keys = t.getDAG().keySet();
+		System.out.println("Classifier: \n	Parent : Child");
+		
+		for(Node key:keys) {
+			for(int i = 0; i < t.getDAG().get(key).size(); i++) {
+				Node child = t.getDAG().get(key).get(i).getChild();
+				System.out.println( "	" + key + " : " + child.getKey());
+			}
+		}
+		
+		System.out.println("Time to build:\n	" + (endtime1 - starttime1) / 1000.0 + " seconds");
+		
 		
 	}	
 }

@@ -91,10 +91,9 @@ public class Tree extends Graph{
 			for(int i = 0; i < DAG.get(key).size(); i++) {
 				Node child = DAG.get(key).get(i).getChild();
 				
-				// Initialises the theta in the child node
+				// Initialises the size of theta in the child node
 				child.theta = new double [key.getRange()][child.getRange()][s];
-				
-				
+								
 				int qi = key.getRange(); // Parent's range
 				int ri = DAG.get(key).get(i).getChild().getRange();	// Child's range
 	
@@ -106,9 +105,7 @@ public class Tree extends Graph{
 							
 							int Nijkc = child.Nijkc[child.getRange()][j][k][c];
 							int Nijc_K = child.Nijc[j][c];
-							child.theta[j][k][c] = (Nijkc + Nlinha) / (Nijc_K + ri*Nlinha);
-						
-							
+							child.theta[j][k][c] = (Nijkc + Nlinha) / (Nijc_K + ri*Nlinha);						
 						}
 					}
 				}
