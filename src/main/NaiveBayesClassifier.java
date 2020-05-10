@@ -22,7 +22,7 @@ public class NaiveBayesClassifier {
 			
 			for (Node key : keys) {
 				
-				P_B *= classNode.theta_c[c]; //ALTERAR ISTO PARA O QUE A AMARO FIZER
+				P_B *= classNode.theta_c[c]; 
 				
 				// Running through the edges of a certain node
 				for(int i = 0; i < tree.getDAG().get(key).size(); i++) {
@@ -43,8 +43,6 @@ public class NaiveBayesClassifier {
 			if (P_B > highestProb) {
 				highestProb = P_B;
 			}
-			
-			
 		}
 		
 		

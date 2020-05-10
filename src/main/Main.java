@@ -55,7 +55,7 @@ public class Main {
 		tree.applyPrim();
 		tree.createTAN(TrainData.getClassRange());
 		
-		System.out.println(tree);		
+		System.out.println(graph);		
 		
 		tree.calcThetas(); //dá null pointer exception
 
