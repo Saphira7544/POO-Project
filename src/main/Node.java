@@ -51,11 +51,6 @@ public class Node{
     public int hashCode() {
         return Objects.hash(index+1);
     }
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(index+1);
-	}
 
 	@Override
 	public boolean equals(Object obj) {
