@@ -79,6 +79,9 @@ public class Main {
 				Node child = tree.getDAG().get(key).get(i).getChild();
 				System.out.println( "	" + key + " : " + child.getKey());
 			}
+			if(tree.getDAG().get(key).size() == 0) {
+				System.out.println( "	" + key + " : " );
+			}
 		}
 		
 		System.out.println("Time to build:\n	" + (endtime1 - starttime1) / 1000.0 + " seconds");
