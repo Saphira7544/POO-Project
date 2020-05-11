@@ -1,8 +1,7 @@
 package structure;
-import main.*;
+
 import model.*;
 import files.*;
-
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;

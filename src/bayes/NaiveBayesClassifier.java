@@ -1,5 +1,6 @@
 package bayes;
 
+import files.*;
 import structure.*;
 import java.util.Set;
 

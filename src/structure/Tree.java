@@ -1,6 +1,5 @@
 package structure;
 
-import main.*;
 import files.*;
 import java.util.List;
 import java.util.Map;

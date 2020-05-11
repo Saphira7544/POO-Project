@@ -14,12 +14,12 @@ public class Node{
 	public int[] cCounts;
 	
 	
-	double[][][][] theta;
+	public double[][][][] theta;
 	
 	public int[] getNc() {
 		return Nc;
 	}
-	double [] theta_c;
+	public double [] theta_c;
 
 	public Node(String key, int range, int index){
 		this.key = key;
