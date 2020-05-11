@@ -1,4 +1,4 @@
-package main;
+package files;
 
 public class Instance {
 	

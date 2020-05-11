@@ -1,5 +1,7 @@
-package main;
-
+package structure;
+import main.*;
+import model.*;
+import files.*;
 
 import java.util.Map;
 import java.util.Objects;
@@ -161,7 +163,7 @@ public class Graph {
 		Set<Node> keys = DAG.keySet();	
 		
 
-		// Runs by each node considering it as the father
+		// Runs by each node considering it as the father6t
 		for (Node key : keys) {
 			
 			key.Nc[C]++;

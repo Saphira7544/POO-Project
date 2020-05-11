@@ -1,5 +1,6 @@
-package main;
+package bayes;
 
+import structure.*;
 import java.util.Set;
 
 public class NaiveBayesClassifier {

@@ -1,4 +1,6 @@
-package main;
+package model;
+
+import structure.*;
 
 public class MDL_model extends LL_model{
 

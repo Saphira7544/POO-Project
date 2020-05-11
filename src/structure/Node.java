@@ -1,5 +1,4 @@
-package main;
-
+package structure;
 import java.util.Objects;
 
 public class Node{
@@ -9,10 +8,10 @@ public class Node{
 	private final int index;
 	private boolean isVisited = false;
 
-	int[][][][] Nijkc;
-	int[][] Nijc;
-	int[] Nc;
-	int[] cCounts;
+	public int[][][][] Nijkc;
+	public int[][] Nijc;
+	public int[] Nc;
+	public int[] cCounts;
 	
 	
 	double[][][][] theta;

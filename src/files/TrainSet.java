@@ -1,5 +1,6 @@
-package main;
+package files;
 
+import structure.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 

@@ -1,4 +1,6 @@
-package main;
+package model;
+
+import structure.*;
 
 /**
  * Abstract class, it's incomplete and general and therefore needs to be extended by actual score models

@@ -1,5 +1,8 @@
 package main;
 
+import files.*;
+import model.*;
+import structure.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Set;

@@ -1,4 +1,6 @@
-package main;
+package model;
+
+import structure.*;
 
 /**
  * Calculate weight of the edge using the Log-Likelihood (LL) Method
