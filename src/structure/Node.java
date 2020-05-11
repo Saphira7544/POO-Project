@@ -51,6 +51,7 @@ public class Node{
 		return Objects.hash(index+1);
 	}
 
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
