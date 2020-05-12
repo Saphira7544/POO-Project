@@ -3,18 +3,25 @@ package bayes;
 import files.*;
 import structure.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 public class NaiveBayesClassifier {
 	
-	private int[] classification;
+	int[] classification;
 	private final TrainSet TrainData;
 	private final TestSet TestData;
+	private final Tree tree;
+	List<Instance> Instances;
 	
-	public NaiveBayesClassifier(TrainSet TrainData, TestSet TestData) {
+	
+	public NaiveBayesClassifier(TrainSet TrainData, TestSet TestData, Tree tree) {
 		this.TrainData = TrainData;
 		this.TestData = TestData;
+		this.tree = tree;
+		
+		Instances = TestData.getInstances();
 	}
 	
 	/**
@@ -22,90 +29,143 @@ public class NaiveBayesClassifier {
 	 * @param tree
 	 * @param TestInst
 	 */
-	public void calcPB(Tree tree, int []TestInst) {
+	public void calcPB(Tree tree, Instance Instances, int idx) {
 		
 		// Initialise nodes' counts
 		Set<Node> keys = tree.getDAG().keySet();
 		Node classNode =  tree.getClassNode(); 
-		classification = new int[TrainData.get_N()];
 		double highestProb = 0;
+		Node root = tree.getRoot();
+		classification[idx] = -1;
+		boolean flag = false;
 		
-		for (int c = 0; c < TrainData.getClassRange(); c++) {
+		int[] TestInst = Instances.getArray();
+		
+		System.out.println("\n\n INSTANCE " + idx);
+		
+		for (int c = 0; c < TrainData.getClassRange()+1; c++) {
 			
 			double P_B = 1;
 			
 			for (Node key : keys) {
 				
+				if(key.getIndex() == -1) {
+					break;
+				}
+
 				P_B *= classNode.theta_c[c]; 
+				
+				//if( tree.getDAG().get(key).size() == 0 ) {
+				//	int j = TestInst[key.getIndex()];
+				//	int k = 0;
+				//	P_B *= key.theta[key.getIndex()][j][k][c];
+				//}
 				
 				// Running through the edges of a certain node
 				for(int i = 0; i < tree.getDAG().get(key).size(); i++) {
 					
+					int j;
 					// FAZER CASO EM QUE NÃO TEM PAI AKA ROOT!!!!!!!!!!!!!!
-					
-					
+										
 					Node child = tree.getDAG().get(key).get(i).getChild();
-					// gets from the test file the yi equivalent to the parent's index
-					int j = TestInst[child.getIndex()];
+					
+					//if(key.equals(root)) {
+
+					//	j = 0;
+										
+					//}
+					
+					//else {
+						// gets from the test file the yi equivalent to the parent's index
+						j = TestInst[key.getIndex()];
+					//}
 					// gets from the test file the yi equivalent to the son's index
-					int k = TestInst[key.getIndex()];
+					int k = TestInst[child.getIndex()];
 					
 					P_B *= key.theta[child.getIndex()][j][k][c];
-				}
+					//System.out.println("pai:"+ (key.getIndex()+1) + "	Theta["+(child.getIndex()+1)+"]["+(j+1)+"]["+(k+1)+"]["+(c+1)+"] = "+ key.theta[child.getIndex()][j][k][c]);
+					
+					//System.out.println("PB( Xi=" + (child.getIndex()+1) + "|pai=" + (key.getIndex()+1) + ",C=" + c + ") = " + P_B);
+				}	
+				
 			}
 			
+			System.out.println("Instance " + idx + "	c " + c + "	  PB " + P_B);
 			if (P_B > highestProb) {
 				highestProb = P_B;
+				classification[idx] = c;
+				System.out.println(" IF	Class[idx] " + classification[idx] + "	curr c " +  c);
+				flag = true;
 			}
 		}
 	}
+	
+	public void instanceCalcPB() {
 		
+		classification = TestData.getClassification();
 		
-	public double getAccuracy(){
-		List<Instance> list = TestData.getInstances();
-		double trueClass = 0;
-		
-		for(int i = 0; i < TrainData.get_N(); i++) {
-			Instance inst = list.get(i);
-			if(inst.getValue(TrainData.get_n()+1) == classification[i]) trueClass++;			
-		}
-		
-		return trueClass/TrainData.get_N();
+		for(int i = 0; i < TestData.get_N(); i++) {
+			calcPB(tree, Instances.get(i), i );
+		}		
 	}
 		
-	public double getSensitivity(){
+	/**
+	 * 	
+	 * @return
+	 */
+	public double getAccuracy(){
+		
+		double trueClass = 0;
+		
+		for(int i = 0; i < TestData.get_N(); i++) {
+			Instance inst = Instances.get(i);
+			if(inst.getClassVariable() == classification[i]) trueClass++;	
+			System.out.println("Indstance: " + (i+1) + "	predict:" + classification[i] + "	actual" + inst.getClassVariable());
+
+		}		
+		return trueClass/TestData.get_N() * 100.0;
+	}
 	
-		List<Instance> list = TestData.getInstances();
+	/**
+	 * 
+	 * @return
+	 */
+	public double getSensitivity(){
+		
 		double truePositive = 0;
 		double falseNegative = 0;
-		int cIdx = TrainData.get_n()+1;
 		
 		//considering positive the 0 
-		for(int i = 0; i < TrainData.get_N(); i++) {
-			Instance inst = list.get(i);
-			if(inst.getValue(cIdx) == classification[i] && classification[i] == 0) truePositive++;		
-			if(inst.getValue(cIdx) != classification[i] && classification[i] == 1) falseNegative++;			
+		for(int i = 0; i < TestData.get_N(); i++) {
+			Instance inst = Instances.get(i);
+			if(inst.getClassVariable() == classification[i] && classification[i] == 0) truePositive++;		
+			if(inst.getClassVariable() != classification[i] && classification[i] == 1) falseNegative++;			
 		}
 		
 		return truePositive/(falseNegative + truePositive);
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getSpecificity(){
-		List<Instance> list = TestData.getInstances();
+
 		double trueNegative = 0;
 		double falsePositive = 0;
-		int cIdx = TrainData.get_n()+1;
 		
 		//considering positive the 0 
-		for(int i = 0; i < TrainData.get_N(); i++) {
-			Instance inst = list.get(i);
-			if(inst.getValue(cIdx) == classification[i] && classification[i] == 1) trueNegative++;		
-			if(inst.getValue(cIdx) != classification[i] && classification[i] == 0) falsePositive++;			
+		for(int i = 0; i < TestData.get_N(); i++) {
+			Instance inst = Instances.get(i);
+			if(inst.getClassVariable() == classification[i] && classification[i] == 1) trueNegative++;		
+			if(inst.getClassVariable() != classification[i] && classification[i] == 0) falsePositive++;			
 		}
 		
 		return trueNegative/(trueNegative + falsePositive);
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
 	public double getF1score(){
 		double precision = getPrecision();
 		double sensitivity = getSensitivity();
@@ -113,21 +173,29 @@ public class NaiveBayesClassifier {
 		return 2*(precision*sensitivity)/(precision+sensitivity);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private double getPrecision(){
 		
-		List<Instance> list = TestData.getInstances();
 		double truePositive = 0;
 		double falsePositive = 0;
-		int cIdx = TrainData.get_n()+1;
 		
 		//considering positive the 0 
-		for(int i = 0; i < TrainData.get_N(); i++) {
-			Instance inst = list.get(i);
-			if(inst.getValue(cIdx) == classification[i] && classification[i] == 0) truePositive++;		
-			if(inst.getValue(cIdx) != classification[i] && classification[i] == 0) falsePositive++;			
+		for(int i = 0; i < TestData.get_N(); i++) {
+			Instance inst = Instances.get(i);
+			if(inst.getClassVariable() == classification[i] && classification[i] == 0) truePositive++;		
+			if(inst.getClassVariable() != classification[i] && classification[i] == 0) falsePositive++;			
 		}
 		
 		return truePositive/(falsePositive + truePositive);
+	}
+
+	@Override
+	public String toString() {
+		return "NaiveBayesClassifier [classification=" + Arrays.toString(classification) + ", Instances=" + Instances
+				+ "]";
 	}
 	
 }

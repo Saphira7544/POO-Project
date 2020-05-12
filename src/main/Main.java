@@ -46,8 +46,7 @@ public class Main {
 			System.err.println("Third argument must be LL or MDL to pick Score Model.");
 			System.exit(-1);
 		}
-		
-		
+				
 		graph.setTrainData( TrainData );
 		graph.updateNodeCounts();	
 		graph.createHalfEdges();
@@ -60,7 +59,8 @@ public class Main {
 		tree.applyPrim();
 		tree.createTAN(TrainData.getClassRange());
 		tree.calcThetas();
-				
+		
+			
 		
 		long endtime1 = System.currentTimeMillis();
 		
@@ -76,9 +76,8 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		NaiveBayesClassifier classifier = new NaiveBayesClassifier(TrainData, TestData);
-		
-		//calcPB(tree, TestData, TrainData);
+		NaiveBayesClassifier classifier = new NaiveBayesClassifier(TrainData, TestData, tree);
+		classifier.instanceCalcPB();
 		
 		long endtime2 = System.currentTimeMillis();
 		
@@ -106,6 +105,7 @@ public class Main {
 		
 		System.out.println("Time to test:\n	" + (endtime2 - starttime2) / 1000.0 + " seconds");
 		
-		//System.out.println("Resume: " + classifier.getAccuracy() + " " + classifier.getSpecificity() + " " +classifier.getSensitivity() + " " + classifier.getF1score());
-	}	
+		System.out.println("Resume: " + classifier.getAccuracy() + " " + classifier.getSpecificity() + " " +classifier.getSensitivity() + " " + classifier.getF1score());
+
+	}
 }

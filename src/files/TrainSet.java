@@ -19,6 +19,7 @@ public class TrainSet extends FileSet{
 		
 		super(file);
 		
+		// Check the ranges for each Xi
 		ranges = new int [nFeatures];
 		// Checks the max value of each node
 		for(int i = 0; i < Instances.size()  ; i++) {			
