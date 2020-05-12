@@ -87,7 +87,6 @@ public class Main {
 		System.out.println("Time to build:\n	" + (endtime1 - starttime1) / 1000.0 + " seconds");
 		
 		tree.calcThetas();
-		//tree.calcThetaC(TrainData.get_N());
 		
 	}	
 }

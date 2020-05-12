@@ -161,11 +161,9 @@ public class Tree extends Graph{
 							//System.out.println("	" +  ri);
 						
 						
-						}
-						
-						
+						}						
 					}
-				}
+				} 
 			}
 		}
 	}
@@ -177,7 +175,6 @@ public class Tree extends Graph{
 	 	for ( int c = 0; c < s; c++ ){
 	 		int Nc = classNode.Nc[c];
 	 		classNode.theta_c[c] = ( Nc + Nlinha )/( N + s*Nlinha);
-	 		System.out.println(classNode.theta_c[c]);
 		}
 	}
 
