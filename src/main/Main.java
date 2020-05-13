@@ -6,16 +6,15 @@ import structure.*;
 import bayes.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Set;
 
 public class Main {
 	
 	public static Graph graph = new Graph(); 
-	
-	
+		
 	public static void main(String[] args) {
-		
-		
+				
 		// Exits if arguments are not correctly input
 		if(args.length != 3) { 
 			System.err.println("Necessary arguments: TrainFile TestFile Score(LL or MDL)");
@@ -37,6 +36,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
+		// Reads the input from the arguments and executes the requested Score Model
 		ScoreModel scoreModel = null;
 		if ("LL".equals(args[2])) {
 			scoreModel = new LL_model();
@@ -46,27 +46,35 @@ public class Main {
 			System.err.println("Third argument must be LL or MDL to pick Score Model.");
 			System.exit(-1);
 		}
-				
-		graph.setTrainData( TrainData );
-		graph.updateNodeCounts();	
-		graph.createHalfEdges();
-		graph.setAllWeights(scoreModel);	
-		graph.createCompleteGraph();	
 		
-		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());
+		// Does the complete Graph class
+		graph.doGraph(TrainData, scoreModel);
 		
-		tree.setTrainData(TrainData);
-		tree.applyPrim();
-		tree.createTAN(TrainData.getClassRange());
-		tree.calcThetas();
+		// Does the complete Tree class
+		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());	
+		tree.doTree(TrainData);
 		
-			
 		
 		long endtime1 = System.currentTimeMillis();
+		// PRINT THE CLASSIFIER //
+		Set<Node> keys = tree.getDAG().keySet();
+		String []child_name;
+		System.out.println("\nClassifier: \n	Parent : Child");		
+		for(Node key:keys) {
+			child_name = new String [tree.getDAG().get(key).size()];
+			for(int i = 0; i < tree.getDAG().get(key).size(); i++) {				
+				Node child = tree.getDAG().get(key).get(i).getChild();
+				child_name[i] = child.getKey();
+			}
+			System.out.println( "	" + key + " :	" + Arrays.toString(child_name));
+		}
 		
+		// PRINT TIME TO BUILD CLASSIFIER //
+		System.out.println("\nTime to build:\n	" + (endtime1 - starttime1) / 1000.0 + " seconds");
+				
 		// CLASSIFY //
 		long starttime2 = System.currentTimeMillis();
-		
+		// Opens the Test File
 		File TestFile = new File(args[1]);		
 		TestSet TestData = null;
 		try {	
@@ -76,36 +84,18 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		NaiveBayesClassifier classifier = new NaiveBayesClassifier(TrainData, TestData, tree);
+		// Starts testing the classifier
+		NaiveBayesClassifier classifier = new NaiveBayesClassifier(TestData, tree);
 		classifier.instanceCalcPB();
 		
-		long endtime2 = System.currentTimeMillis();
-		
-		
-		// RESULTS //
-		Set<Node> keys = tree.getDAG().keySet();
-		System.out.println("Classifier: \n	Parent : Child");
-		
-		for(Node key:keys) {
-			if(key.getIndex() == -1) {
-				break;
-			}
-			for(int i = 0; i < tree.getDAG().get(key).size(); i++) {
-				Node child = tree.getDAG().get(key).get(i).getChild();
-				System.out.println( "	" + key + " : " + child.getKey());
-			}
-			if(tree.getDAG().get(key).size() == 0) {
-				System.out.println( "	" + key + " : " );
-			}
-		}
-		
-		System.out.println("Time to build:\n	" + (endtime1 - starttime1) / 1000.0 + " seconds");
-		
-		System.out.println("Testing the classifier:\n");
-		
-		System.out.println("Time to test:\n	" + (endtime2 - starttime2) / 1000.0 + " seconds");
-		
-		System.out.println("Resume: " + classifier.getAccuracy() + " " + classifier.getSpecificity() + " " +classifier.getSensitivity() + " " + classifier.getF1score());
-
+		long endtime2 = System.currentTimeMillis();		
+			
+		System.out.println("\nTesting the classifier:\n");		
+		double accuracy = classifier.getAccuracy();
+		// PRINTS TIME TO TEST THE CLASSIFIER // 
+		System.out.println("\nTime to test:\n	" + (endtime2 - starttime2) / 1000.0 + " seconds");	
+		// PRINTS RESUME //
+		System.out.println("\nResume: " + accuracy + " " + classifier.getSpecificity() + " " +classifier.getSensitivity() + " " + classifier.getF1score());
+				
 	}
 }

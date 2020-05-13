@@ -14,7 +14,6 @@ public class Graph {
 	TrainSet TrainData;
 	protected Map <Node, List<Edge>> DAG;
 	protected Node classNode;
-
 	
 	/**
 	 * Creates the Graph constituted by a HashMap of nodes, where each Node is pointing 
@@ -22,14 +21,6 @@ public class Graph {
 	 */
 	public Graph() {
 		this.DAG = new HashMap<Node, List<Edge>>();
-	}
-	
-	/**
-	 * Sets the train data to be used in the Graph class
-	 * @param traindata : data from input argument Train File
-	 */
-	public void setTrainData(TrainSet traindata) {
-		this.TrainData = traindata;
 	}
 	
 	/**
@@ -77,7 +68,7 @@ public class Graph {
 	}
 	
 	/**
-	 * 
+	 * Getter for the entire graph
 	 * @return Returns the full graph
 	 */
 	public Map<Node, List<Edge>> getDAG() {
@@ -98,6 +89,19 @@ public class Graph {
 		} 
 		
 		return listS;
+	}
+	
+	/**
+	 * Calls all the functions that create the entire Graph
+	 * @param traindata : contains the entire data from the train file
+	 * @param scoreModel : score model picked by the user to calculate the weights, LL or MDL
+	 */
+	public void doGraph(TrainSet traindata, ScoreModel scoreModel) {
+		this.TrainData = traindata;
+		updateNodeCounts();	
+		createHalfEdges();
+		setAllWeights(scoreModel);	
+		createCompleteGraph();	
 	}
 	
 	/**
