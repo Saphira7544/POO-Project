@@ -7,7 +7,7 @@ import structure.*;
  * @author 
  *
  */
-public abstract class ScoreModel {
+public interface ScoreModel {
 	
 	/**
 	 *  Abstract method to be completed in the Models extended by it
@@ -17,17 +17,5 @@ public abstract class ScoreModel {
 	 */
 	public abstract double calc_weight(Edge edge, Node node, int N, int s);
 	
-	protected static final double ln2 = Math.log(2);
-	
-	/**
-	 * Function that calculates the logarithm of base 2
-	 * @param number : log_2(number), number whose logarithm is to be calculated
-	 * @return : returns the logarithm of the said number
-	 */
-	protected final double log2(double number) {
-		double log2Value = Math.log(number) / ScoreModel.ln2;
-		if (Double.isNaN(log2Value))
-			throw new RuntimeException("Error calculating log2(" + number + "): NaN");
-		return log2Value;
-	}
+	public static final double ln2 = Math.log(2);
 }

@@ -19,10 +19,10 @@ public class Tree extends Graph{
 	 * @param auxDAG: DAG from which the tree will be constructed
 	 * @param classNode: class node of the graph that the tree will be based on
 	 */
-	public Tree( Map<Node, List<Edge>> auxDAG, Node classNode ) {
+	public Tree( Map<Node, List<Edge>> inputDAG, Node classNode ) {
 		super();
 		super.classNode = classNode;
-		this.inputDAG = auxDAG;
+		this.inputDAG = inputDAG;
 	}
 	/**
 	 * Function that calls all the functions that create the tree

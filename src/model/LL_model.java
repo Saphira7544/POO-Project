@@ -5,7 +5,7 @@ import structure.*;
 /**
  * Calculate weight of the edge using the Log-Likelihood (LL) Method
  */
-public class LL_model extends ScoreModel{
+public class LL_model implements ScoreModel{
 	
 	@Override
 	public double calc_weight(Edge edge, Node node, int N, int s) {
@@ -31,6 +31,18 @@ public class LL_model extends ScoreModel{
 			}
 		}
 		return weight;	
+	}
+	
+	/**
+	 * Function that calculates the logarithm of base 2
+	 * @param number : log_2(number), number whose logarithm is to be calculated
+	 * @return : returns the logarithm of the said number
+	 */
+	protected final double log2(double number) {
+		double log2Value = Math.log(number) / ScoreModel.ln2;
+		if (Double.isNaN(log2Value))
+			throw new RuntimeException("Error calculating log2(" + number + "): NaN");
+		return log2Value;
 	}
 		
 }
