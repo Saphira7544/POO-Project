@@ -76,7 +76,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		NaiveBayesClassifier classifier = new NaiveBayesClassifier(TrainData, TestData, tree);
+		NaiveBayesClassifier classifier = new NaiveBayesClassifier(TestData, tree);
 		classifier.instanceCalcPB();
 		
 		long endtime2 = System.currentTimeMillis();
@@ -105,7 +105,6 @@ public class Main {
 		
 		System.out.println("Time to test:\n	" + (endtime2 - starttime2) / 1000.0 + " seconds");
 		
-		System.out.println("Resume: " + classifier.getAccuracy() + " " + classifier.getSpecificity() + " " +classifier.getSensitivity() + " " + classifier.getF1score());
-
+		System.out.println("Resume: \n   " + classifier.getAccuracy() + "\n   " + classifier.getSpecificity() + "\n   " + classifier.getSensitivity() + "\n   " + classifier.getF1score());
 	}
 }

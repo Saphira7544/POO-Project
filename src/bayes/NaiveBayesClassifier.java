@@ -10,14 +10,13 @@ import java.util.Set;
 public class NaiveBayesClassifier {
 	
 	int[] classification;
-	private final TrainSet TrainData;
+	double[][][] confMatrix;
 	private final TestSet TestData;
 	private final Tree tree;
 	List<Instance> Instances;
 	
 	
-	public NaiveBayesClassifier(TrainSet TrainData, TestSet TestData, Tree tree) {
-		this.TrainData = TrainData;
+	public NaiveBayesClassifier(TestSet TestData, Tree tree) {
 		this.TestData = TestData;
 		this.tree = tree;
 		
@@ -106,91 +105,137 @@ public class NaiveBayesClassifier {
 		for(int i = 0; i < TestData.get_N(); i++) {
 			calcPB(tree, Instances.get(i), i );
 		}		
+		
+		getMetrics();
+	}
+	
+	private void getMetrics() {
+		int range = TestData.getClassRange()+1;
+		// stores for each possible value of C the a 2*2 confusion matrix with TP, TN, FP, FN
+		confMatrix = new double[range][2][2];
+		int i = 0;
+		
+		for(Instance inst: Instances) {
+			int output = inst.getClassVariable();
+			int actual =  classification[i];
+			
+			//true positive
+			if(output == actual) {
+				confMatrix[actual][0][0]++;
+				for(int j = 0; j < range; j++) {
+					//true negative
+					if(j != actual) confMatrix[j][0][1]++;
+				}
+			}
+			if(output != actual) {
+				//false positive
+				confMatrix[actual][1][0]++;
+				//false negative
+				confMatrix[output][1][1]++;
+			}
+
+			i++;
+		}		
 	}
 		
 	/**
 	 * 	
 	 * @return
 	 */
-	public double getAccuracy(){
+	public String getAccuracy(){
+		int range = TestData.getClassRange()+1;
 		
-		double trueClass = 0;
+		double accuracy = 0;
+		double total = 0;
+		String result = new String("accuracy : ");
 		
-		for(int i = 0; i < TestData.get_N(); i++) {
-			Instance inst = Instances.get(i);
-			if(inst.getClassVariable() == classification[i]) trueClass++;	
-			System.out.println("Indstance: " + (i+1) + "	predict:" + classification[i] + "	actual" + inst.getClassVariable());
-
+		for(int i = 0; i < range; i++) {
+			accuracy = confMatrix[i][0][0]/TestData.get_N();
+			total += accuracy;
 		}		
-		return trueClass/TestData.get_N() * 100.0;
+		result +=  total;
+		
+		return result;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public String getSpecificity(){
+		
+		double[] countClass = TestData.getCountClass();
+		int range = TestData.getClassRange()+1;
+		
+		String result = new String("specificity : [ ");
+		double sensitivity = 0;
+		double average = 0;
+		
+		//considering positive the 0 
+		for(int i = 0; i < range; i++) {
+			sensitivity = confMatrix[i][0][1]/(confMatrix[i][0][1] + confMatrix[i][1][0]);
+			result += i + ": " + sensitivity + ",  ";	
+			average += sensitivity * countClass[i];
+		}
+		
+		result += average/TestData.get_N() + "]";
+		
+		return result;
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public double getSensitivity(){
+	public String getSensitivity(){
+		double[] countClass = TestData.getCountClass();
+		int range = TestData.getClassRange()+1;
 		
-		double truePositive = 0;
-		double falseNegative = 0;
-		
-		//considering positive the 0 
-		for(int i = 0; i < TestData.get_N(); i++) {
-			Instance inst = Instances.get(i);
-			if(inst.getClassVariable() == classification[i] && classification[i] == 0) truePositive++;		
-			if(inst.getClassVariable() != classification[i] && classification[i] == 1) falseNegative++;			
-		}
-		
-		return truePositive/(falseNegative + truePositive);
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public double getSpecificity(){
-
-		double trueNegative = 0;
-		double falsePositive = 0;
+		String result = new String("sensitivity : [ ");
+		double sensitivity = 0;
+		double average = 0;
 		
 		//considering positive the 0 
-		for(int i = 0; i < TestData.get_N(); i++) {
-			Instance inst = Instances.get(i);
-			if(inst.getClassVariable() == classification[i] && classification[i] == 1) trueNegative++;		
-			if(inst.getClassVariable() != classification[i] && classification[i] == 0) falsePositive++;			
+		for(int i = 0; i < range; i++) {
+			sensitivity = confMatrix[i][0][0]/(confMatrix[i][0][0] + confMatrix[i][1][1]);
+			result += i + ": " + sensitivity + ",  ";	
+			average += sensitivity * countClass[i];
 		}
 		
-		return trueNegative/(trueNegative + falsePositive);
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public double getF1score(){
-		double precision = getPrecision();
-		double sensitivity = getSensitivity();
+		result += average/TestData.get_N() + "]";
 		
-		return 2*(precision*sensitivity)/(precision+sensitivity);
+		return result;
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	private double getPrecision(){
+	public String getF1score(){
+		double[] countClass = TestData.getCountClass();
+		int range = TestData.getClassRange()+1;
 		
-		double truePositive = 0;
-		double falsePositive = 0;
+		String result = new String("f1score : [ ");
+		double sensitivity = 0;
+		double precision = 0;
+		double f1score = 0;
+		double average = 0;
 		
 		//considering positive the 0 
-		for(int i = 0; i < TestData.get_N(); i++) {
-			Instance inst = Instances.get(i);
-			if(inst.getClassVariable() == classification[i] && classification[i] == 0) truePositive++;		
-			if(inst.getClassVariable() != classification[i] && classification[i] == 0) falsePositive++;			
+		for(int i = 0; i < range; i++) {
+			sensitivity = confMatrix[i][0][0]/(confMatrix[i][0][0] + confMatrix[i][1][1]);
+			precision = confMatrix[i][0][0]/(confMatrix[i][0][0] + confMatrix[i][1][0]);
+			f1score = 2*(precision*sensitivity)/(precision+sensitivity);
+			
+			average += f1score * countClass[i];
+			
+			result += i + ": " + f1score + ",  ";	
 		}
 		
-		return truePositive/(falsePositive + truePositive);
+		result += average/TestData.get_N() + "]";
+		
+		return result;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "NaiveBayesClassifier [classification=" + Arrays.toString(classification) + ", Instances=" + Instances
