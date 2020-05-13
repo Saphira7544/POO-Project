@@ -1,5 +1,9 @@
 package main;
 
+import files.*;
+import model.*;
+import structure.*;
+import bayes.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Set;
@@ -24,7 +28,6 @@ public class Main {
 		File TrainFile = new File(args[0]);		
 		TrainSet TrainData = null;
 		try {	
-		//Graph g = new Graph();
 			TrainData = new TrainSet(TrainFile);
 			// update in the main the graph and nodes created with the information from the Train File
 			graph = TrainData.getGraph(); 
@@ -43,25 +46,41 @@ public class Main {
 			System.err.println("Third argument must be LL or MDL to pick Score Model.");
 			System.exit(-1);
 		}
-		
-		
+				
 		graph.setTrainData( TrainData );
 		graph.updateNodeCounts();	
-		graph.createAllEdges();
+		graph.createHalfEdges();
 		graph.setAllWeights(scoreModel);	
 		graph.createCompleteGraph();	
 		
-		System.out.println(graph);		
-
 		Tree tree = new Tree(graph.getDAG(), graph.getClassNode());
-
+		
+		tree.setTrainData(TrainData);
 		tree.applyPrim();
 		tree.createTAN(TrainData.getClassRange());
-
+		tree.calcThetas();
 		
-		System.out.println(tree);		
+			
 		
 		long endtime1 = System.currentTimeMillis();
+		
+		// CLASSIFY //
+		long starttime2 = System.currentTimeMillis();
+		
+		File TestFile = new File(args[1]);		
+		TestSet TestData = null;
+		try {	
+			TestData = new TestSet(TestFile);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		NaiveBayesClassifier classifier = new NaiveBayesClassifier(TrainData, TestData, tree);
+		classifier.instanceCalcPB();
+		
+		long endtime2 = System.currentTimeMillis();
+		
 		
 		// RESULTS //
 		Set<Node> keys = tree.getDAG().keySet();
@@ -75,12 +94,18 @@ public class Main {
 				Node child = tree.getDAG().get(key).get(i).getChild();
 				System.out.println( "	" + key + " : " + child.getKey());
 			}
+			if(tree.getDAG().get(key).size() == 0) {
+				System.out.println( "	" + key + " : " );
+			}
 		}
 		
 		System.out.println("Time to build:\n	" + (endtime1 - starttime1) / 1000.0 + " seconds");
 		
-		//tree.calcThetas();
-		//tree.calcThetaC(TrainData.get_N());
+		System.out.println("Testing the classifier:\n");
 		
-	}	
+		System.out.println("Time to test:\n	" + (endtime2 - starttime2) / 1000.0 + " seconds");
+		
+		System.out.println("Resume: " + classifier.getAccuracy() + " " + classifier.getSpecificity() + " " +classifier.getSensitivity() + " " + classifier.getF1score());
+
+	}
 }

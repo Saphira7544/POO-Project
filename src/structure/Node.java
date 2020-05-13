@@ -1,0 +1,75 @@
+package structure;
+import java.util.Objects;
+
+public class Node{
+	
+	private final String key;	
+	private final int range;
+	private final int index;
+	private boolean isVisited = false;
+
+	public double[][][][] Nijkc;
+	public double[][] Nijc;
+	public double[] Nc;
+	public double[] cCounts;
+	
+	
+	public double[][][][] theta;
+	
+	public double[] getNc() {
+		return Nc;
+	}
+	public double [] theta_c;
+
+	public Node(String key, int range, int index){
+		this.key = key;
+		this.range = range;
+		this.index = index;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+	public boolean isVisited() {
+		return isVisited;
+	}
+
+	public void setVisited(boolean isVisited) {
+		this.isVisited = isVisited;
+	}
+
+	public String getKey() {
+		return key;
+	}
+	
+	public int getRange() {
+		return range;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(index+1);
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Node other = (Node) obj;
+		return index == other.index;
+	}
+		
+	@Override
+	public String toString() {
+		return key;
+	}
+
+}
+	
+
+	
