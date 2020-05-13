@@ -8,15 +8,15 @@ public class Node{
 	private final int index;
 	private boolean isVisited = false;
 
-	public int[][][][] Nijkc;
-	public int[][] Nijc;
-	public int[] Nc;
-	public int[] cCounts;
+	public double[][][][] Nijkc;
+	public double[][] Nijc;
+	public double[] Nc;
+	public double[] cCounts;
 	
 	
 	public double[][][][] theta;
 	
-	public int[] getNc() {
+	public double[] getNc() {
 		return Nc;
 	}
 	public double [] theta_c;

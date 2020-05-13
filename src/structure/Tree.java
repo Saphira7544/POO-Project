@@ -129,8 +129,8 @@ public class Tree extends Graph{
 				
 				for( int k = 0; k < key.getRange()+1; k++ ) {
 					for( int c = 0; c <= s; c++ ) {
-						int Nijkc = key.Nijc[k][c];							
-						int Nijc_K = classNode.Nc[c];//key.Nijc[j][c];
+						double Nijkc = key.Nijc[k][c];							
+						double Nijc_K = classNode.Nc[c];//key.Nijc[j][c];
 						
 						key.theta[key.getIndex()][key.getIndex()][k][c] = (Nijkc + Nlinha) / (Nijc_K + (key.getRange()+1)*Nlinha);	
 						//System.out.println("pai:"+ (key.getIndex()+1) + "	Theta["+(key.getIndex()+1)+"]["+(key.getIndex()+1)+"]["+(k+1)+"]["+(c+1)+"] = "+ key.theta[key.getIndex()][key.getIndex()][k][c]);

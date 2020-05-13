@@ -115,20 +115,20 @@ public class Graph {
 		
 		// Runs by each node considering it as the father
 		for (Node key : keys) {
-			key.Nijkc = new int[nrXs+1][][][];
+			key.Nijkc = new double[nrXs+1][][][];
 		    // Runs every node considering it the son
 			for (int j = 0; j < nrXs; j++) {
 				// Initialise all possible values of Nijkc for each son
 				
-				key.Nijkc[j] = new int[key.getRange()+1][TrainData.getRange(j)+1][nrClass+1];
+				key.Nijkc[j] = new double[key.getRange()+1][TrainData.getRange(j)+1][nrClass+1];
 			}
 			// Initialise all possible values of Nijc and Nc
-			key.Nijc = new int[key.getRange()+1][nrClass+1];
-			key.Nc= new int [nrClass+1];	
+			key.Nijc = new double[key.getRange()+1][nrClass+1];
+			key.Nc= new double [nrClass+1];	
 		}
 		
 		int[] Inst = new int[TrainData.get_n()];
-		classNode.Nc = new int[TrainData.getClassRange()+1];
+		classNode.Nc = new double[TrainData.getClassRange()+1];
 		int C = 0;
 		// For every line of the Train Data, increments the values of the corresponding N
 		for (int k = 0; k < TrainData.get_N(); k++) {

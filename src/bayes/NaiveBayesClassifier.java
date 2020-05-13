@@ -32,69 +32,68 @@ public class NaiveBayesClassifier {
 	public void calcPB(Tree tree, Instance Instances, int idx) {
 		
 		// Initialise nodes' counts
-		Set<Node> keys = tree.getDAG().keySet();
+		//Set<Node> keys = tree.getDAG().keySet();
 		Node classNode =  tree.getClassNode(); 
 		double highestProb = 0;
 		Node root = tree.getRoot();
-		classification[idx] = -1;
-		boolean flag = false;
+		//classification[idx] = -1;
 		
 		int[] TestInst = Instances.getArray();
 		
 		System.out.println("\n\n INSTANCE " + idx);
 		
-		for (int c = 0; c < TrainData.getClassRange()+1; c++) {
-			
+		for (int c = 0; c < TestData.getClassRange()+1; c++) {
+			boolean flag = false;
 			double P_B = 1;
 			
+			P_B *= classNode.theta_c[c];
+			System.out.println(P_B);
+			Set<Node> keys = tree.getDAG().keySet();
 			for (Node key : keys) {
 				
 				if(key.getIndex() == -1) {
 					break;
 				}
 
-				P_B *= classNode.theta_c[c]; 
-				
-				//if( tree.getDAG().get(key).size() == 0 ) {
-				//	int j = TestInst[key.getIndex()];
-				//	int k = 0;
-				//	P_B *= key.theta[key.getIndex()][j][k][c];
-				//}
-				
 				// Running through the edges of a certain node
 				for(int i = 0; i < tree.getDAG().get(key).size(); i++) {
 					
 					int j;
-					// FAZER CASO EM QUE NÃO TEM PAI AKA ROOT!!!!!!!!!!!!!!
+					int k;
 										
 					Node child = tree.getDAG().get(key).get(i).getChild();
 					
-					//if(key.equals(root)) {
+					if(key.equals(root) && !flag) {
 
-					//	j = 0;
-										
-					//}
+						k = TestInst[key.getIndex()];
+						P_B *= key.theta[key.getIndex()][key.getIndex()][k][c];	
+						System.out.println(P_B);
+						System.out.println("pai:"+ (key.getIndex()+1) + "	Theta["+(key.getIndex()+1)+"]["+(key.getIndex()+1)+"]["+(k+1)+"]["+(c+1)+"] = "+ key.theta[key.getIndex()][key.getIndex()][k][c]);
+						flag = true;
 					
-					//else {
-						// gets from the test file the yi equivalent to the parent's index
-						j = TestInst[key.getIndex()];
-					//}
+					}					
+
+					j = TestInst[key.getIndex()];
+					
 					// gets from the test file the yi equivalent to the son's index
-					int k = TestInst[child.getIndex()];
+					k = TestInst[child.getIndex()];
 					
 					P_B *= key.theta[child.getIndex()][j][k][c];
+						
 					//System.out.println("pai:"+ (key.getIndex()+1) + "	Theta["+(child.getIndex()+1)+"]["+(j+1)+"]["+(k+1)+"]["+(c+1)+"] = "+ key.theta[child.getIndex()][j][k][c]);
+					//System.out.println(P_B);
+					//}
 					
 					//System.out.println("PB( Xi=" + (child.getIndex()+1) + "|pai=" + (key.getIndex()+1) + ",C=" + c + ") = " + P_B);
 				}	
 				
 			}
 			
-			System.out.println("Instance " + idx + "	c " + c + "	  PB " + P_B);
+			//System.out.println("Instance " + idx + "	c " + c + "	  PB " + P_B);
 			if (P_B > highestProb) {
 				highestProb = P_B;
 				classification[idx] = c;
-				System.out.println(" IF	Class[idx] " + classification[idx] + "	curr c " +  c);
+				//System.out.println(" IF	Class[idx] " + classification[idx] + "	curr c " +  c);
 				flag = true;
 			}
 		}

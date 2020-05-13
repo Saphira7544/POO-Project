@@ -20,10 +20,10 @@ public class LL_model extends ScoreModel{
 
 				for( int c = 0; c <= s; c++ ) {
 
-					int Nijkc = node.Nijkc[edge.getChild().getIndex()][j][k][c]; 	
-					int Nc = node.Nc[c];		
-					int NikcJ = edge.getChild().Nijc[k][c];	
-					int NijcK = node.Nijc[j][c];
+					double Nijkc = node.Nijkc[edge.getChild().getIndex()][j][k][c]; 	
+					double Nc = node.Nc[c];		
+					double NikcJ = edge.getChild().Nijc[k][c];	
+					double NijcK = node.Nijc[j][c];
 					//System.out.println((node.getIndex()+1) + "  N [" + (edge.getChild().getIndex()+1) + "][" + (j+1) + "][" + (k+1) + "][" + (c+1) + "] = " + Nijkc);	
 					if (Nijkc != 0 && Nc != 0) {
 	
