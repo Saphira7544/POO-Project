@@ -91,11 +91,11 @@ public class Main {
 		long endtime2 = System.currentTimeMillis();		
 			
 		System.out.println("\nTesting the classifier:\n");		
-		double accuracy = classifier.getAccuracy();
+		System.out.println(classifier);
 		// PRINTS TIME TO TEST THE CLASSIFIER // 
 		System.out.println("\nTime to test:\n	" + (endtime2 - starttime2) / 1000.0 + " seconds");	
 		// PRINTS RESUME //
-		System.out.println("\nResume: " + accuracy + " " + classifier.getSpecificity() + " " +classifier.getSensitivity() + " " + classifier.getF1score());
+		System.out.println("Resume: \n   " + classifier.getAccuracy() + "\n   " + classifier.getSpecificity() + "\n   " + classifier.getSensitivity() + "\n   " + classifier.getF1score());
 				
 	}
 }
