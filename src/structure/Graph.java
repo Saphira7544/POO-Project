@@ -14,7 +14,6 @@ public class Graph {
 	TrainSet TrainData;
 	protected Map <Node, List<Edge>> DAG;
 	protected Node classNode;
-
 	
 	/**
 	 * Creates the Graph constituted by a HashMap of nodes, where each Node is pointing 
@@ -22,14 +21,6 @@ public class Graph {
 	 */
 	public Graph() {
 		this.DAG = new HashMap<Node, List<Edge>>();
-	}
-	
-	/**
-	 * Sets the train data to be used in the Graph class
-	 * @param traindata : data from input argument Train File
-	 */
-	public void setTrainData(TrainSet traindata) {
-		this.TrainData = traindata;
 	}
 	
 	/**
@@ -45,7 +36,7 @@ public class Graph {
 	/**
 	 * @param parent : defines the key of the hash
 	 * @param child : node that is going to be saved inside object edge
-	 * @param directed : saves
+	 * @param weight : weight of that edge
 	 */
 	public void addEdge(Node parent, Node child, double weight) {
 		Edge newEdge = new Edge(child, weight); 
@@ -77,7 +68,7 @@ public class Graph {
 	}
 	
 	/**
-	 * 
+	 * Getter for the entire graph
 	 * @return Returns the full graph
 	 */
 	public Map<Node, List<Edge>> getDAG() {
@@ -101,10 +92,23 @@ public class Graph {
 	}
 	
 	/**
+	 * Calls all the functions that create the entire Graph
+	 * @param traindata : contains the entire data from the train file
+	 * @param scoreModel : score model picked by the user to calculate the weights, LL or MDL
+	 */
+	public void doGraph(TrainSet traindata, ScoreModel scoreModel) {
+		this.TrainData = traindata;
+		initialiseNodeNs();	
+		createHalfEdges();
+		setAllWeights(scoreModel);	
+		createCompleteGraph();	
+	}
+	
+	/**
 	 * Function that, for each node, considers the possibilities where it is the father and all 
 	 * the remaining nodes are the son, and Initialises the several Ns for that case.
 	 */
-	public void updateNodeCounts()  {
+	public void initialiseNodeNs()  {
 		classNode = new Node("C", TrainData.getClassRange(), -1);		
 
 		int nrXs = TrainData.get_n(); 
@@ -139,7 +143,7 @@ public class Graph {
 			classNode.Nc[C]++;
 			//System.out.println(classNode.Nc[C]);
 
-			updateNodeCountsFromInstance(Inst , C );	
+			computeNodeNs(Inst , C );	
 			
 		}
 	}
@@ -150,7 +154,7 @@ public class Graph {
 	 * @param Inst : Instance, line of values from the Train Data
 	 * @param C :  Class Variable from a certain line in the Train Data
 	 */
-	private void updateNodeCountsFromInstance(int[] Inst, int C) {
+	private void computeNodeNs(int[] Inst, int C) {
 
 		int nrXs = TrainData.get_n();
 		// Initialise nodes' counts
@@ -223,6 +227,10 @@ public class Graph {
 		}
 	}
 	
+	/**
+	 * Function to add the edges that are not already included in the graph because
+	 * the weights are Symmetric , that are added to use in the Prim algorithm
+	 */
 	public void createCompleteGraph() {
 		Edge edge;
 
