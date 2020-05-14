@@ -36,7 +36,7 @@ public class Graph {
 	/**
 	 * @param parent : defines the key of the hash
 	 * @param child : node that is going to be saved inside object edge
-	 * @param directed : saves
+	 * @param weight : weight of that edge
 	 */
 	public void addEdge(Node parent, Node child, double weight) {
 		Edge newEdge = new Edge(child, weight); 
@@ -227,6 +227,10 @@ public class Graph {
 		}
 	}
 	
+	/**
+	 * Function to add the edges that are not already included in the graph because
+	 * the weights are Symmetric , that are added to use in the Prim algorithm
+	 */
 	public void createCompleteGraph() {
 		Edge edge;
 

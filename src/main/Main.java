@@ -90,7 +90,8 @@ public class Main {
 		
 		long endtime2 = System.currentTimeMillis();		
 			
-		System.out.println("\nTesting the classifier:\n");		
+		System.out.println("\nTesting the classifier:");		
+		// PRINTS THE CLASSIFICATION RESULT //
 		System.out.println(classifier);
 		// PRINTS TIME TO TEST THE CLASSIFIER // 
 		System.out.println("\nTime to test:\n	" + (endtime2 - starttime2) / 1000.0 + " seconds");	

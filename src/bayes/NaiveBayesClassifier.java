@@ -3,7 +3,6 @@ package bayes;
 import files.*;
 import structure.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -80,41 +79,53 @@ public class NaiveBayesClassifier {
 			}
 		}
 	}
-	
+	/**
+	 * Function that iterates threw all the instances to calculate their probability and class
+	 */
 	public void instanceCalcPB() {
 		
 		classification = TestData.getClassification();
+		int i = 0;
 		
-		for(int i = 0; i < TestData.get_N(); i++) {
-			calcPB(tree, Instances.get(i), i );
+		for(Instance inst: Instances) {
+			calcPB(tree, inst, i);
+			i++;
 		}		
 		
 		getMetrics();
 	}
-	
+	/**
+	 * Function that computed all of the TN, TP, FP and FN matrix to use in the metrics below the function 
+	 * is private because is only use inside the package when the probabilities are all calculated
+	 */
 	private void getMetrics() {
 		int range = TestData.getClassRange()+1;
-		// stores for each possible value of C the a 2*2 confusion matrix with TP, TN, FP, FN
+		// stores for each possible value of C the a 2x2 confusion matrix with TP, TN, FP and FN
 		confMatrix = new double[range][2][2];
 		int i = 0;
-		
+		// iterates threw all the instances in the test set
 		for(Instance inst: Instances) {
-			int output = inst.getClassVariable();
-			int actual =  classification[i];
+			// stores the classified value
+			int output = classification[i];
+			// stores the actual classification value
+			int actual = inst.getClassVariable();
 			
-			//true positive
+			// if the classification is correct
 			if(output == actual) {
-				confMatrix[actual][0][0]++;
+				// updates in the matrix of the value, that is correctly classified, as a TP
+				confMatrix[actual][0][0]++; //true positive
+				// iterates to all the other matrix and updates as a TN 
 				for(int j = 0; j < range; j++) {
-					//true negative
-					if(j != actual) confMatrix[j][0][1]++;
+					// does not consider value that was already updated with the TP
+					if(j != actual) confMatrix[j][0][1]++; //true negative
 				}
 			}
+			// if the classification is not correct
 			if(output != actual) {
-				//false positive
-				confMatrix[actual][1][0]++;
-				//false negative
-				confMatrix[output][1][1]++;
+				// updates in the matrix of the classified value as a FP
+				confMatrix[output][1][0]++; //false positive
+				// updates in the matrix of the value that was supposed to be classified as a FN
+				confMatrix[actual][1][1]++; //false negative
 			}
 
 			i++;
@@ -122,8 +133,8 @@ public class NaiveBayesClassifier {
 	}
 		
 	/**
-	 * 	
-	 * @return
+	 * Function to compute the accuracy per class and his average based on the confusion matrix	
+	 * @return result : String with the results of the accuracy to be printed in the terminal
 	 */
 	public String getAccuracy(){
 		int range = TestData.getClassRange()+1;
@@ -132,17 +143,21 @@ public class NaiveBayesClassifier {
 		double total = 0;
 		String result = new String("accuracy : ");
 		
+		// iterates threw all the possible value of c
 		for(int i = 0; i < range; i++) {
+			// computes the specificity as TP/N
 			accuracy = confMatrix[i][0][0]/TestData.get_N();
+			// sums the accuracy of all the possible values of c
 			total += accuracy;
 		}		
+		// adds the result to the string
 		result +=  total;
 		
 		return result;
 	}
 	/**
-	 * 
-	 * @return
+	 * Function to compute the specificity per class and his average based on the confusion matrix	
+	 * @return result : String with the results of the specificity to be printed in the terminal
 	 */
 	public String getSpecificity(){
 		
@@ -150,24 +165,27 @@ public class NaiveBayesClassifier {
 		int range = TestData.getClassRange()+1;
 		
 		String result = new String("specificity : [ ");
-		double sensitivity = 0;
+		double specificity = 0;
 		double average = 0;
 		
-		//considering positive the 0 
+		// iterates threw all the possible value of c
 		for(int i = 0; i < range; i++) {
-			sensitivity = confMatrix[i][0][1]/(confMatrix[i][0][1] + confMatrix[i][1][0]);
-			result += i + ": " + sensitivity + ",  ";	
-			average += sensitivity * countClass[i];
+			// computes the specificity as TN/(TN+FP)
+			specificity = confMatrix[i][0][1]/(confMatrix[i][0][1] + confMatrix[i][1][0]);
+			// stores the result in the string
+			result += i + ": " + specificity + ",  ";
+			// adds to the average the specificity of this value of c multiplied by the 
+			// number of times that the value appears in the test set
+			average += specificity * countClass[i];
 		}
 		
 		result += average/TestData.get_N() + "]";
 		
 		return result;
 	}
-	
 	/**
-	 * 
-	 * @return
+	 * Function to compute the sensitivity per class and his average based on the confusion matrix	
+	 * @return result : String with the results of the sensitivity to be printed in the terminal
 	 */
 	public String getSensitivity(){
 		double[] countClass = TestData.getCountClass();
@@ -177,21 +195,26 @@ public class NaiveBayesClassifier {
 		double sensitivity = 0;
 		double average = 0;
 		
-		//considering positive the 0 
+		// iterates threw all the possible value of c
 		for(int i = 0; i < range; i++) {
+			// computes the sensitivity as TP/(TP+FN)
 			sensitivity = confMatrix[i][0][0]/(confMatrix[i][0][0] + confMatrix[i][1][1]);
+			// stores the result in the string
 			result += i + ": " + sensitivity + ",  ";	
+			// adds to the average the sensitivity of this value of c multiplied by the 
+			// number of times that the value appears in the test set
 			average += sensitivity * countClass[i];
 		}
 		
+		// computes the final average and adds it to the string
 		result += average/TestData.get_N() + "]";
 		
 		return result;
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Function to compute the f1score per class and his average based on the confusion matrix	
+	 * @return result : String with the results of the f1score to be printed in the terminal
 	 */
 	public String getF1score(){
 		double[] countClass = TestData.getCountClass();
@@ -207,13 +230,15 @@ public class NaiveBayesClassifier {
 		for(int i = 0; i < range; i++) {
 			sensitivity = confMatrix[i][0][0]/(confMatrix[i][0][0] + confMatrix[i][1][1]);
 			precision = confMatrix[i][0][0]/(confMatrix[i][0][0] + confMatrix[i][1][0]);
+			// computes the f1score based on the harmonic mean between the precision and sensitivity
 			f1score = 2*(precision*sensitivity)/(precision+sensitivity);
-			
+			// adds to the average the f1score of this value of c multiplied by the 
+			// number of times that the value appears in the test set 
 			average += f1score * countClass[i];
-			
+			// stores the result in the string
 			result += i + ": " + f1score + ",  ";	
 		}
-		
+		// computes the final average and adds it to the string
 		result += average/TestData.get_N() + "]";
 		
 		return result;
@@ -221,8 +246,13 @@ public class NaiveBayesClassifier {
 	
 	@Override
 	public String toString() {
-		return "NaiveBayesClassifier [classification=" + Arrays.toString(classification) + ", Instances=" + Instances
-				+ "]";
+		String result = new String();
+
+		for(int i = 0; i < TestData.get_N(); i++) {
+			result += "\n   -> instance " + (i+1) + ":	" + classification[i];
+		}
+			
+		return result;
 	}
 	
 }
