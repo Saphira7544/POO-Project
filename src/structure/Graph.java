@@ -98,7 +98,7 @@ public class Graph {
 	 */
 	public void doGraph(TrainSet traindata, ScoreModel scoreModel) {
 		this.TrainData = traindata;
-		updateNodeCounts();	
+		initialiseNodeNs();	
 		createHalfEdges();
 		setAllWeights(scoreModel);	
 		createCompleteGraph();	
@@ -108,7 +108,7 @@ public class Graph {
 	 * Function that, for each node, considers the possibilities where it is the father and all 
 	 * the remaining nodes are the son, and Initialises the several Ns for that case.
 	 */
-	public void updateNodeCounts()  {
+	public void initialiseNodeNs()  {
 		classNode = new Node("C", TrainData.getClassRange(), -1);		
 
 		int nrXs = TrainData.get_n(); 
@@ -143,7 +143,7 @@ public class Graph {
 			classNode.Nc[C]++;
 			//System.out.println(classNode.Nc[C]);
 
-			updateNodeCountsFromInstance(Inst , C );	
+			computeNodeNs(Inst , C );	
 			
 		}
 	}
@@ -154,7 +154,7 @@ public class Graph {
 	 * @param Inst : Instance, line of values from the Train Data
 	 * @param C :  Class Variable from a certain line in the Train Data
 	 */
-	private void updateNodeCountsFromInstance(int[] Inst, int C) {
+	private void computeNodeNs(int[] Inst, int C) {
 
 		int nrXs = TrainData.get_n();
 		// Initialise nodes' counts
