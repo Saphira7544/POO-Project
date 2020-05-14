@@ -13,7 +13,8 @@ public class TrainSet extends FileSet{
 	}
 
 	private Node newNode;
-	int[] ranges;
+	private int[] ranges;
+	private int maxRange;
 	
 	public TrainSet(File file) throws FileNotFoundException {
 		
@@ -26,6 +27,9 @@ public class TrainSet extends FileSet{
 			for(int j = 0; j < nFeatures; j++) {
 				if(Instances.get(i).getValue(j) > ranges[j]) {
 					ranges[j] = Instances.get(i).getValue(j);
+					if(ranges[j] > maxRange) {
+						maxRange = ranges[j];
+					}
 				}
 			}
 		}
@@ -38,7 +42,17 @@ public class TrainSet extends FileSet{
 	}
 	
 	
-	
+	/**
+	 * Getter for the maximum range of all the Features. Used to initialise
+	 * the K value of the theta array
+	 * @return : Maximum range of all features
+	 */
+	public int getMaxRange() {
+		return maxRange;
+	}
+
+
+
 	/**
 	 * Gets max range of a Feature
 	 * @param i : Index of Feature

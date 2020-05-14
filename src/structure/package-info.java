@@ -23,8 +23,9 @@
  * edges and copying the weights from the previous computed ones.
  * 
  * -	The Tree class extends the Graph, this happens because a tree is a type of graph but minimally connected.
- * 		ACABAR DEPOIS DA AMARO FAZER OS COMENTÁRIOS DELA
- * EWFRSDHFODHFUOSDHFUSDHFSUDHFSUDHFUSHDF
+ * It starts by applying the Prim algorithm, it assigns the root to the first feature of the HashMap and goes 
+ * through all the edges picking the one with the heaviest weight for every connection. With the final tree completed
+ * we compute the Theta_ijkc and Theta_c for every connection, to be later used in the Naive Bayes Classifier.
  */
 package structure;
 

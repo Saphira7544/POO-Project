@@ -16,6 +16,7 @@ public class Tree extends Graph{
 	
 	
 	/**
+	 * Tree constructor.
 	 * @param auxDAG: DAG from which the tree will be constructed
 	 * @param classNode: class node of the graph that the tree will be based on
 	 */
@@ -59,7 +60,7 @@ public class Tree extends Graph{
 			Edge maximumEdge = new Edge(null, 0);
 			Edge candidateEdge = new Edge(null, 0);
 			
-			// iterates threw all the nodes that are already on the tree to take the maximum  
+			// iterates through all the nodes that are already on the tree to take the maximum  
 			// edge of all it's connections
 			for (Node key : keys) {
 				if (key.isVisited()) {
@@ -161,7 +162,7 @@ public class Tree extends Graph{
 		for (Node key : keys) {
 			// Initialises the size of theta in the parent node
 			//			 	nr. of possible children    range of parent    child range	    class range
-			key.theta = new double [TrainData.get_n()+1][key.getRange()+5][key.getRange()+5][s+1];
+			key.theta = new double [TrainData.get_n()+1][key.getRange()+1][TrainData.getMaxRange()+1][s+1];
 			// Class node now belongs in the keys, we need to stop the loop when it finds the class node
 			if(key.getIndex() == -1) {	// Since the class node has index -1, it's always in the end
 				break;
@@ -178,7 +179,6 @@ public class Tree extends Graph{
 						/* Puts the theta for the root in position [root.index][root.index] since it has no
 						father and here we're not accounting for children*/
 						key.theta[key.getIndex()][key.getIndex()][k][c] = (Nijkc + Nlinha) / (Nijc_K + (key.getRange()+1)*Nlinha);	
-						System.out.println("Theta["+(key.getIndex()+1)+"]["+(key.getIndex()+1)+"]["+(k+1)+"]["+(c+1)+"] = " + key.theta[key.getIndex()][key.getIndex()][k][c]);
 					}
 				}					
 			}
@@ -201,8 +201,6 @@ public class Tree extends Graph{
 							double Nijc_K = key.Nijc[j][c];
 							//
 							key.theta[child.getIndex()][j][k][c] = (double)(Nijkc + Nlinha) / (double)(Nijc_K + (double)(ri+1)*(double)Nlinha);								
-							System.out.println("Theta["+(child.getIndex()+1)+"]["+(j+1)+"]["+(k+1)+"]["+(c+1)+"] = " + key.theta[child.getIndex()][j][k][c]);
-
 						}						
 					}
 				} 
