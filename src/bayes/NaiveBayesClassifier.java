@@ -18,11 +18,11 @@ import java.util.Set;
  */
 public class NaiveBayesClassifier {
 	
-	int[] classification;
-	double[][][] confMatrix;
+	private int[] classification;
+	private double[][][] confMatrix;
 	private final TestSet TestData;
 	private final Tree tree;
-	List<Instance> Instances;
+	private final List<Instance> Instances;
 	
 	/**
 	 * Naive Bayes Classifier Constructor

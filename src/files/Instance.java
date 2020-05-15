@@ -8,8 +8,8 @@ package files;
  */
 public class Instance {
 	
-	int [] values; 		// Line of values
-	int class_variable;	// Class variable
+	private int [] values; 		// Line of values
+	protected int class_variable;	// Class variable
 	int range_Cvar = 0;		// Max value of class variable
 	
 	/**

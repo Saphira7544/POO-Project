@@ -13,8 +13,8 @@ import java.io.FileNotFoundException;
  */
 public class TestSet extends FileSet{
 	
-	double[] countClass;
-	int[] classification;
+	private double[] countClass;
+	private int[] classification;
 	
 	/**
 	 * TestSet constructor

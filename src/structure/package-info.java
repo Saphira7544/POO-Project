@@ -1,6 +1,7 @@
 /**
  * This package creates the entire Tree Augmented Structure. It's constituted by the following classes:
  * 		<p>- Node
+ * 		<p>- Edge
  * 		<p>- Graph
  * 		<p>- Tree
  *
