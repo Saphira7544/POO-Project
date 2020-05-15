@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
-  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+<class-diagram version="1.2.4" icons="true" always-add-relationships="true" generalizations="true" realizations="true" 
+  associations="true" dependencies="true" nesting-relationships="true" router="FAN">  
   <package id="1" language="java" name="structure" project="POO-Project" file="/POO-Project/src/structure" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="268" y="218"/>    
@@ -63,7 +63,7 @@
   </class>  
   <class id="9" language="java" name="files.Instance" project="POO-Project" file="/POO-Project/src/files/Instance.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="383" y="845"/>    
+    <position height="-1" width="-1" x="436" y="846"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -90,8 +90,8 @@
   </interface>  
   <class id="12" language="java" name="structure.Graph" project="POO-Project" 
     file="/POO-Project/src/structure/Graph.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="878" y="1295"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    <position height="-1" width="-1" x="878" y="1293"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
@@ -179,10 +179,10 @@
     <bendpoint x="258" y="846"/>    
     <end type="SOURCE" refId="8" navigable="false">      
       <attribute id="29" name="Instances">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="53" y="1"/>      
       </attribute>      
       <multiplicity id="30" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="53" y="1"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
@@ -191,10 +191,10 @@
   <association id="31">    
     <end type="SOURCE" refId="2" navigable="false">      
       <attribute id="32" name="graph">        
-        <position height="0" width="0" x="135" y="2"/>      
+        <position height="0" width="0" x="135" y="0"/>      
       </attribute>      
       <multiplicity id="33" minimum="0" maximum="1">        
-        <position height="0" width="0" x="135" y="2"/>      
+        <position height="0" width="0" x="135" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="12" navigable="true"/>    
@@ -207,10 +207,10 @@
   <association id="35">    
     <end type="SOURCE" refId="5" navigable="false">      
       <attribute id="36" name="Instances">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="53" y="1"/>      
       </attribute>      
       <multiplicity id="37" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
+        <position height="0" width="0" x="53" y="1"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="9" navigable="true"/>    
@@ -283,7 +283,7 @@
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
     <operations public="true" package="true" protected="true" private="true" static="true"/>  
