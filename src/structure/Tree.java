@@ -5,19 +5,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
-
+/**
+ * This Class extends the Graph, this happens because a tree is a type of graph but minimally connected.
+ * It starts by applying the Prim algorithm, it assigns the root to the first feature of the HashMap and goes 
+ * through all the edges picking the one with the heaviest weight for every connection. With the final tree completed
+ * we compute the Theta_ijkc and Theta_c for every connection, to be later used in the Naive Bayes Classifier.
+ * 
+ * @author Group 18
+ *
+ */
 public class Tree extends Graph{
 	
 	Node root;
-
 	private Map <Node, List<Edge>> inputDAG;
 	TrainSet TrainData;
 	
 	
 	/**
 	 * Tree constructor.
-	 * @param auxDAG: DAG from which the tree will be constructed
+	 * @param inputDAG: DAG from which the tree will be constructed
 	 * @param classNode: class node of the graph that the tree will be based on
 	 */
 	public Tree( Map<Node, List<Edge>> inputDAG, Node classNode ) {
@@ -43,8 +49,7 @@ public class Tree extends Graph{
 		// retrieves the first entry of the hash map to assign it as the root
 		Map.Entry<Node,List<Edge>> firstEntry = inputDAG.entrySet().stream().findFirst().get();
 		Set<Node> keys = inputDAG.keySet();
-		
-		
+				
 		root = firstEntry.getKey();
 		Node parent = root;		
 		Node child = root;
@@ -106,10 +111,10 @@ public class Tree extends Graph{
 					maximumEdge = edge;
 				}
 			}
-		}
-	
+		}	
 		return maximumEdge;
 	}
+	
 	/**
 	 * Function that returns true if there is any node in the input DAG graph 
 	 * the is disconnected
@@ -148,7 +153,7 @@ public class Tree extends Graph{
 	 * Function that computes all the thetas for the final tree in all the possible situations
 	 * The situations include the root and all the sets of parent/child, also calls the function
 	 * that computes the Theta_C for the class node.
-	 * Stores every Theta in the parent node, same as done before for computing the Ns.
+	 * <p> Stores every Theta in the parent node, same as done before for computing the Ns.
 	 */
 	public void calcThetas() {
 
@@ -161,7 +166,6 @@ public class Tree extends Graph{
 		//Runs every node as parent
 		for (Node key : keys) {
 			// Initialises the size of theta in the parent node
-			//			 	nr. of possible children    range of parent    child range	    class range
 			key.theta = new double [TrainData.get_n()+1][key.getRange()+1][TrainData.getMaxRange()+1][s+1];
 			// Class node now belongs in the keys, we need to stop the loop when it finds the class node
 			if(key.getIndex() == -1) {	// Since the class node has index -1, it's always in the end
@@ -199,7 +203,7 @@ public class Tree extends Graph{
 		
 							double Nijkc = key.Nijkc[child.getIndex()][j][k][c];							
 							double Nijc_K = key.Nijc[j][c];
-							//
+							// Computes the theta
 							key.theta[child.getIndex()][j][k][c] = (double)(Nijkc + Nlinha) / (double)(Nijc_K + (double)(ri+1)*(double)Nlinha);								
 						}						
 					}
@@ -231,12 +235,11 @@ public class Tree extends Graph{
 	
 	@Override
 	public String toString() {
-		String listS = new String("Tree \n");
-			
+		String listS = new String("Tree \n");			
 		for (Node N: DAG.keySet()){
 			listS += N.toString() + "=" + DAG.get(N).toString() + "\n";
-		} 
-		
+		} 		
 		return listS;
 	}
+	
 }

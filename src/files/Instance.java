@@ -1,15 +1,22 @@
 package files;
 
+/**
+ * Instance of a file, to be used in a Linked List containing all Instances.
+ * 
+ * @author Group 18
+ *
+ */
 public class Instance {
 	
-	int [] values; 		// Line of values from 0 to ri-1
+	int [] values; 		// Line of values
 	int class_variable;	// Class variable
 	int range_Cvar = 0;		// Max value of class variable
+	
 	/**
 	 * Receives a String[] containing the elements of a line from the file and converts
 	 * each element to an integer so it can be used 
 	 * 
-	 * @param elements : Line from the file divided by commas
+	 * @param line : Line from the file
 	 */
 	public Instance(String line) {
 		
@@ -18,8 +25,7 @@ public class Instance {
 
 	    values = new int [ size - 1 ];
 	    
-	    for(int i = 0; i < size -1; i++) {
-	    	
+	    for(int i = 0; i < size -1; i++) {	    	
 	         values[i] = Integer.parseInt(elements[i]);   
 	    }	    
 	    class_variable = Integer.parseInt(elements[size-1]); //last position	    
@@ -37,7 +43,7 @@ public class Instance {
 	
 	/**
 	 * Gets the value x_ik for this line
-	 * @param i : feature from the line
+	 * @param i : feature index from the line
 	 * @return	returns the value of the corresponding feature from this line
 	 */
 	public int getValue(int i) {

@@ -3,10 +3,21 @@ package model;
 import structure.*;
 
 /**
- * Calculate weight of the edge using the Log-Likelihood (LL) Method
+ * Computes weight of the edge using the Log-Likelihood (LL) Method
+ * 
+ * @author Group 18
+ *
  */
 public class LL_model implements ScoreModel{
 	
+	/**
+	 *  Override of the Interface completed to do the LL Score
+	 * @param edge : Edge containing the child whose weight is going to be calculated
+	 * @param node : Parent node
+	 * @param N : total number of Instances (lines in the Train File)
+	 * @param s : Class variable range
+	 * @return	returns the weight of the edge
+	 */
 	@Override
 	public double calc_weight(Edge edge, Node node, int N, int s) {
 		double weight = 0;

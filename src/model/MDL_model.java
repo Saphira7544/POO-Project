@@ -2,8 +2,22 @@ package model;
 
 import structure.*;
 
+/**
+ * Computes weight of the edge using the Minimum Description Length (MDL) Method
+ * 
+ * @author Group 18
+ *
+ */
 public class MDL_model extends LL_model{
-
+	
+	/**
+	 *  Override of the LL model completed to do the MDL Score
+	 * @param edge : Edge containing the child whose weight is going to be calculated
+	 * @param node : Parent node
+	 * @param N : total number of Instances (lines in the Train File)
+	 * @param s : Class variable range
+	 * @return	returns the weight of the edge
+	 */
 	@Override
 	public double calc_weight(Edge edge, Node node, int N, int s) {
 		

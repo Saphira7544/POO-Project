@@ -6,6 +6,16 @@ import structure.*;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * In the NaiveBayesClassifier class we go through each Instance of the Test File and
+ * compute the joint probability P_B. Depending on the value of this probability, a prediction
+ * is done for the Class Variable of that instance. Later all the predictions are compared with 
+ * the real values in the Test Set and an accuracy for the TANBC is created. Other requested
+ * evaluation metrics are also computed in this class.
+ * 
+ * @author Group 18
+ *
+ */
 public class NaiveBayesClassifier {
 	
 	int[] classification;
@@ -14,7 +24,11 @@ public class NaiveBayesClassifier {
 	private final Tree tree;
 	List<Instance> Instances;
 	
-	
+	/**
+	 * Naive Bayes Classifier Constructor
+	 * @param TestData : Entire Data from the Test File
+	 * @param tree : Completed and final tree computed based on Train File
+	 */
 	public NaiveBayesClassifier(TestSet TestData, Tree tree) {
 		this.TestData = TestData;
 		this.tree = tree;
@@ -23,57 +37,57 @@ public class NaiveBayesClassifier {
 	}
 	
 	/**
-	 * 
-	 * @param tree
-	 * @param TestInst
+	 * Function that computes the joint Probability needed to classify the Trained tree
+	 * @param tree : Completed and final tree computed based on Train File
+	 * @param Instances : Instance (line) of the Test File
+	 * @param idx : index of the current instance
 	 */
 	public void calcPB(Tree tree, Instance Instances, int idx) {
 		
-		// Initialise nodes' counts
-		//Set<Node> keys = tree.getDAG().keySet();
 		Node classNode =  tree.getClassNode(); 
 		double highestProb = 0;
-		Node root = tree.getRoot();
-		//classification[idx] = -1;
-		
+		Node root = tree.getRoot();		
 		int[] TestInst = Instances.getArray();
-				
+		
+		// Run through all the Cs
 		for (int c = 0; c < TestData.getClassRange()+1; c++) {
 			boolean flag = false;
 			double P_B = 1;
 			
+			// Account P_B(C)
 			P_B *= classNode.theta_c[c];
 			
 			Set<Node> keys = tree.getDAG().keySet();
+			// Get the parent
 			for (Node key : keys) {
 				
+				// If we have reached the class node
 				if(key.getIndex() == -1) {
 					break;
 				}
-
 				// Running through the edges of a certain node
 				for(int i = 0; i < tree.getDAG().get(key).size(); i++) {					
 					int j;
 					int k;
-										
+					// Get the child					
 					Node child = tree.getDAG().get(key).get(i).getChild();
-					
+					// If we're in the root
 					if(key.equals(root) && !flag) {
 						k = TestInst[key.getIndex()];
 						P_B *= key.theta[key.getIndex()][key.getIndex()][k][c];	
-						flag = true;					
+						flag = true; // Makes it so that we only account the root once					
 					}					
-
+					// gets from the test file the yi equivalent to the parent's index
 					j = TestInst[key.getIndex()];					
 					// gets from the test file the yi equivalent to the son's index
 					k = TestInst[child.getIndex()];
-					
-					P_B *= key.theta[child.getIndex()][j][k][c];
-						
+					//Accounts the P_B(Xi|father,C)
+					P_B *= key.theta[child.getIndex()][j][k][c];						
 				}					
 			}
-			
+			// If P_B is higher than the previous higher probability
 			if (P_B > highestProb) {
+				// Replaces the C with the current one
 				highestProb = P_B;
 				classification[idx] = c;
 			}
@@ -244,6 +258,9 @@ public class NaiveBayesClassifier {
 		return result;
 	}
 	
+	/**
+	 * Override of toString to print the Instances and the predicted classification
+	 */
 	@Override
 	public String toString() {
 		String result = new String();

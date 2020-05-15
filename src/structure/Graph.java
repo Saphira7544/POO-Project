@@ -9,6 +9,20 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The Graph class builds the entire graph, which means it contains all the information regarding all the 
+ * Nodes and the Edges between them. This function is called to add the nodes and create the edges, and then
+ * stores them in a Hash Map, which is a java structure. A typical Hash Map has structure (k,v), in our case
+ * k is a parent Node, and v is the list of edges between this parent Node, and all the other nodes considering 
+ * the remaining Nodes as the child. So our Hash Map is of type Map(Node, List(Edge)).
+ *<p> 	It starts by initialising and incrementing the several Ns. Follows by computing the weights of half of the
+ * edges, only half because the weights are the same independent of the direction of the edge (this is done to
+ * improve efficiency by saving time), and finally it creates the complete graph by creating the remaining
+ * edges and copying the weights from the previous computed ones.
+ * 
+ * @author Group 18
+ *
+ */
 public class Graph {
 
 	TrainSet TrainData;
@@ -24,7 +38,7 @@ public class Graph {
 	}
 	
 	/**
-	 * add in the hash table the key newNode and creates 
+	 * Add in the hash table the key newNode and creates 
 	 * an empty list of edges
 	 * @param newNode : node with the feature index and range
 	 */
@@ -34,6 +48,7 @@ public class Graph {
 	}
 	
 	/**
+	 * Adds an edge to the graph.
 	 * @param parent : defines the key of the hash
 	 * @param child : node that is going to be saved inside object edge
 	 * @param weight : weight of that edge
@@ -43,15 +58,25 @@ public class Graph {
 	    DAG.get(parent).add(newEdge);
 	}
 	
+	/**
+	 * Removes an edge from the graph
+	 * @param a : edge to be removed
+	 */
 	public void removeEdge(Edge a) { 
 		DAG.values().stream().forEach(e -> e.remove(a)); 
 	}  
 	
+	/**
+	 * Getter for the Class Node
+	 * @return : Class Node
+	 */
 	public Node getClassNode() {
 		return classNode;
 	}
 	  
-
+	/**
+	 * Overrides Java's equals
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		//same position in memory
@@ -74,12 +99,18 @@ public class Graph {
 	public Map<Node, List<Edge>> getDAG() {
 		return DAG;
 	}
-
+	
+	/**
+	 * Override for Java's Hashcode
+	 */
 	@Override
 	public int hashCode() {
 		return Objects.hash(DAG);
 	}
 	
+	/**
+	 * Override for Java's toString so it prints the entire Graph
+	 */
 	@Override
 	public String toString() {
 		String listS = new String("Graph \n");
@@ -207,7 +238,7 @@ public class Graph {
 	}
 	
 	/**
-	 * Function that calculates the weight of the triangular matrix
+	 * Function that computes the weights of the triangular matrix
 	 * 
 	 * @param scoreModel : score model picked by the user to calculate the weights, LL or MDL
 	 */

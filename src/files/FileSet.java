@@ -11,7 +11,8 @@ import java.util.List;
 /**
  * Receives the file and decomposes them line by line, sending it to the correct place.
  * It can receive a train set or a test set.
- * @author 
+ * 
+ * @author Group 18
  *
  */
 public class FileSet {
@@ -20,16 +21,11 @@ public class FileSet {
 	int nFeatures = 0;
 	String[] features;
 	private int classRange;
-	
-	
-	public int getClassRange() {
-		return classRange;
-	}
 
 	/**
-	 * 
-	 * @param file
-	 * 			CSV type of file formated with a heading containing the attributes of the random variables (X1, ... , Xn, C) and bellow the elements
+	 * File Set constructor.
+	 * @param file : CSV type of file formated with a heading containing the attributes of the random variables 
+	 * (X1, ... , Xn, C) and bellow the elements
 	 */
 	public FileSet(File file) {
 
@@ -66,14 +62,13 @@ public class FileSet {
             		// Updates the max range of the class_variable
                     if( Instance.class_variable > classRange) {
                         classRange = Instance.class_variable;
-                    }
-            		
-                    
+                    }                    
             	}	
-            	else // in case the line with the follows isn't right after the headline
+            	else // in case the line with the values isn't right after the headline
             		continue;
+            
             }
-
+        // Exceptions in case any error occurs
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -125,6 +120,13 @@ public class FileSet {
 		return Instances.size();
 	}
 	
+	/**
+	 * Getter for class variable range.
+	 * @return : Range of the class variable
+	 */
+	public int getClassRange() {
+		return classRange;
+	}
 	
 	
 }

@@ -9,6 +9,12 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Set;
 
+/**
+ * This class calls every other class by the correct order, receives the inputs from the users, and prints the correct outcome.
+ * 
+ * @author Group 18
+ *
+ */
 public class Main {
 	
 	public static Graph graph = new Graph(); 
